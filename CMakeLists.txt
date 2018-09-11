@@ -3,4 +3,4 @@ project(eindopdracht)
 
 set(CMAKE_CXX_STANDARD 11)
 
-add_executable(eindopdracht main.cpp)
+add_executable(eindopdracht main.cpp nostd/String.cpp nostd/String.h)

@@ -8,14 +8,26 @@
 #include <ostream>
 
 namespace nostd {
+    //Think of this class as merely a wrapper for the annoying char literal or char* stuff
+    //The pointer you pass is rai to String so will clean it up when you clean String up.
     class String {
     public:
         //Construct
         // Yes it is immutable cause we want to edit and also don't want char literals
         String(char* val);
+        String(const String &str);
 
         //Operators
-        friend std::ostream &operator<<(std::ostream &os, const String &string);
+        friend std::ostream &operator<<(std::ostream &os, String &string);
+        String &operator=(String &string);
+        String &operator+(String &string);
+        int operator==(String &string);
+
+        //Methods
+        char* getValue() const;
+        const int getLength() const;
+        void setValue(char* val);
+
     private:
         char* val;
     };
