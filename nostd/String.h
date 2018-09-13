@@ -19,8 +19,11 @@ namespace nostd {
 
         //Operators
         friend std::ostream &operator<<(std::ostream &os, String &string);
+        // Assign string to left hand string.
         String &operator=(String &string);
+        // Adds 2nd string to left hand string.
         String &operator+(String &string);
+        // Executes cstring function strcmp on val returns 1 or 0
         int operator==(String &string);
 
         //Methods
