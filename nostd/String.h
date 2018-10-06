@@ -41,7 +41,6 @@ namespace nostd {
         String& operator+=(char c);
         int operator==(String& compare);
 
-
         //Methods
         char* c_str();
         const char* c_str() const;

@@ -1,5 +1,6 @@
 #include <iostream>
 #include "nostd/String.h"
+#include "nostd/Array.h"
 
 int main() {
     std::cout << "Hello, World!" << std::endl;
@@ -12,6 +13,12 @@ int main() {
     nostd::String s(str);
     nostd::String s2(str2);
     std::cout << s << std::endl;
+
+    char c1 = 'C';
+    char c2 = 'D';
+    nostd::Array<char> string_array;
+    string_array.AddElement(c1);
+    string_array.AddElement(c2);
 
     nostd::String c(s);
     nostd::String d = str2;
