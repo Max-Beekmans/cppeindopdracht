@@ -6,51 +6,136 @@
 #include "String.h"
 
 namespace nostd {
-    String::String(char* val) : val(val) {}
-    String::String(const String &str) : val(str.val) {}
 
+    String::String() : count{0}, ptr(ss) {
+        ss[0] = 0;
+    }
+
+    String::String(const char *val)
+        :count{strlen(val)},
+        ptr{(count <= short_max) ? ss : new char[count + 1]},
+        space{0} {
+        strcpy(ptr, val);
+    }
+
+    String::String(const String& copy) {
+        copy_from(copy);
+    }
+
+    String::String(String&& move) {
+        move_from(move);
+    }
+
+    //operator overloading methods
     std::ostream &operator<<(std::ostream &os, String &string) {
-        os << string.getValue();
-        return os;
+        return os << string.c_str();
     }
 
-    String &String::operator=(String &string) {
-        this->val = string.getValue();
+    String& String::operator=(const String& copy) {
+        if (this == &copy) return *this;
+        char* p = (short_max < count) ? ptr : 0;
+        copy_from(p);
+        delete[] p;
         return *this;
     }
 
-    String& String::operator+(nostd::String &string) {
-        int total_length = this->getLength() + string.getLength();
-        char newstr[total_length];
-        //TODO make into heap mem
-        strcpy(newstr, this->val);
-        strcat(newstr, string.getValue());
-        this->setValue(newstr);
+    String& String::operator=(String&& move) noexcept{
+        if (this == &move) return *this;
+        if (short_max < count) delete [] ptr;
+        move_from(move);
         return *this;
+    }
+
+//    String& String::operator+(nostd::String &string) {
+//        int total_length = this->getLength() + string.getLength();
+//        char newstr[total_length];
+//        //TODO make into heap mem
+//        strcpy(newstr, this->val);
+//        strcat(newstr, string.getValue());
+//        this->setValue(newstr);
+//        return *this;
+//    }
+
+    String& String::operator+=(char c) {
+        if (count == short_max) {
+            //double the alloc (+2 for terminating 0)
+            size_t n = count + count + 2;
+            ptr = expand(ptr, n);
+            //assert space left
+            space = static_cast<int>(n - count - 2);
+        } else if (short_max < count) {
+            //there is no more space
+            if (space == 0) {
+                //double the alloc (+2 for terminating 0)
+                size_t n = count + count + 2;
+            } else {
+                //there is still space
+                --space;
+            }
+        }
     }
 
     int String::operator==(String &string) {
-        if(strcmp(string.getValue(), this->getValue()) == 0) {
+        if(strcmp(string.c_str(), this->c_str()) == 0) {
             return 1;
         } else {
             return 0;
         }
     }
 
-    char *String::getValue() const {
-        return this->val;
+    //public methods
+    char *String::c_str() {
+        return ptr;
     }
 
-    const int String::getLength() const{
-        int count = 0;
-        char * value = this->val;
-        while(value[count] != '\0') {
-            count++;
+    const char *String::c_str() const {
+        return ptr;
+    }
+
+    char &String::at(const int n) {
+        check(n);
+        return ptr[n];
+    }
+
+    char String::at(int n) const {
+        check(n);
+        return ptr[n];
+    }
+
+    //private methods
+    void String::check(int n) const {
+        if (n < 0 || count <= n)
+            throw std::out_of_range("String::at()");
+    }
+
+    char *String::expand(const char *ptr, size_t n) {
+        char* p = new char[n];
+        strcpy(p, ptr);
+        return p;
+    }
+
+    void String::copy_from(const String &copy) {
+        if (copy.count <= short_max) {
+            memcpy(this, &copy, sizeof(copy));
+            ptr = ss;
+        } else {
+            ptr = this->expand(copy.ptr, copy.count + 1);
+            count = copy.count;
+            space = 0;
         }
-        return count;
     }
 
-    void String::setValue(char *val) {
-        this->val = val;
+    void String::move_from(String &move) {
+        if (move.count <= short_max) {
+            memcpy(this, &move, sizeof(move));
+            ptr = ss;
+        } else {
+            ptr = move.ptr;
+            count = move.count;
+            space = move.space;
+            move.ptr = move.ss;
+            move.ss[0] = 0;
+            move.count = 0;
+        }
     }
 }
