@@ -9,21 +9,15 @@
 
 namespace nostd {
     //Think of this class as merely a wrapper for the annoying char literal or char* stuff
-    //The pointer you pass is rai to String so will clean it up when you clean String up.
     class String {
     public:
-        //Construct
+        //Construct ro5
         String();
-        String(const char* val);
+        ~String();
+        explicit String(const char* val);
         String(const String &str);
+        String(String&& move) noexcept;
 
-        String(String&& move);
-
-        ~String() {
-            if (short_max < count) {
-                delete[] ptr;
-            }
-        }
 
         //Operators
         //unchecked element access
@@ -39,9 +33,10 @@ namespace nostd {
         //String& operator+(String& add);
         //add char to the end of the string
         String& operator+=(char c);
-        int operator==(String& compare);
 
         //Methods
+        int size() const;
+        int capacity() const;
         char* c_str();
         const char* c_str() const;
         char& at(const int n);
@@ -49,7 +44,7 @@ namespace nostd {
 
     private:
         static const int short_max = 15;
-        size_t count;
+        int count;
         char* ptr;
         // discriminated union (count <= short_max)
         union {
@@ -60,10 +55,20 @@ namespace nostd {
         };
 
         void check(int n) const;
-        char* expand(const char* ptr, size_t n);
+        char* expand(const char* ptr, int n);
         void copy_from(const String& copy);
         void move_from(String& move);
     };
+    //nonmember functions
+    char* begin(String& x);
+    char* end(String& x);
+    const char* begin(const String& x);
+    const char* end(const String& x);
+    String& operator+=(String& a, const String& b);
+    String& operator+(const String& a, const String& b);
+    bool operator==(const String& a, const String& b);
+    bool operator!=(const String& a, const String& b);
+    String operator""_s(const char* p, size_t);
 }
 
 

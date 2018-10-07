@@ -11,10 +11,16 @@ namespace nostd {
         ss[0] = 0;
     }
 
-    String::String(const char *val)
-        :count{strlen(val)},
-        ptr{(count <= short_max) ? ss : new char[count + 1]},
-        space{0} {
+    String::~String() {
+        if (short_max < count) {
+            delete[] ptr;
+        }
+    }
+
+    String::String(const char* val)
+            :count{static_cast<int>(strlen(val))},
+             ptr{(count <= short_max) ? ss : new char[count + 1]},
+             space{0} {
         strcpy(ptr, val);
     }
 
@@ -22,7 +28,7 @@ namespace nostd {
         copy_from(copy);
     }
 
-    String::String(String&& move) {
+    String::String(String&& move) noexcept {
         move_from(move);
     }
 
@@ -33,33 +39,24 @@ namespace nostd {
 
     String& String::operator=(const String& copy) {
         if (this == &copy) return *this;
-        char* p = (short_max < count) ? ptr : 0;
-        copy_from(p);
+        char* p = (short_max < count) ? ptr : nullptr;
+        copy_from(copy);
         delete[] p;
         return *this;
     }
 
     String& String::operator=(String&& move) noexcept{
         if (this == &move) return *this;
+        //only release memory when there is any
         if (short_max < count) delete [] ptr;
         move_from(move);
         return *this;
     }
 
-//    String& String::operator+(nostd::String &string) {
-//        int total_length = this->getLength() + string.getLength();
-//        char newstr[total_length];
-//        //TODO make into heap mem
-//        strcpy(newstr, this->val);
-//        strcat(newstr, string.getValue());
-//        this->setValue(newstr);
-//        return *this;
-//    }
-
     String& String::operator+=(char c) {
         if (count == short_max) {
             //double the alloc (+2 for terminating 0)
-            size_t n = count + count + 2;
+            int n = count + count + 2;
             ptr = expand(ptr, n);
             //assert space left
             space = static_cast<int>(n - count - 2);
@@ -67,23 +64,30 @@ namespace nostd {
             //there is no more space
             if (space == 0) {
                 //double the alloc (+2 for terminating 0)
-                size_t n = count + count + 2;
+                int n = count + count + 2;
             } else {
                 //there is still space
                 --space;
             }
-        }
-    }
+            ptr[count] = c;
+            ptr[++count] = '\0';
 
-    int String::operator==(String &string) {
-        if(strcmp(string.c_str(), this->c_str()) == 0) {
-            return 1;
-        } else {
-            return 0;
+            return *this;
         }
     }
 
     //public methods
+    int String::size() const {
+        return count;
+    };
+
+    int String::capacity() const {
+        if (count <= short_max) {
+            return count;
+        }
+        return count + space;
+    }
+
     char *String::c_str() {
         return ptr;
     }
@@ -108,13 +112,13 @@ namespace nostd {
             throw std::out_of_range("String::at()");
     }
 
-    char *String::expand(const char *ptr, size_t n) {
+    char* String::expand(const char *ptr, int n) {
         char* p = new char[n];
         strcpy(p, ptr);
         return p;
     }
 
-    void String::copy_from(const String &copy) {
+    void String::copy_from(const String& copy) {
         if (copy.count <= short_max) {
             memcpy(this, &copy, sizeof(copy));
             ptr = ss;
@@ -137,5 +141,53 @@ namespace nostd {
             move.ss[0] = 0;
             move.count = 0;
         }
+    }
+    //helper nonmember functions
+    char* begin(String& x) {
+        return x.c_str();
+    }
+
+    char* end(String& x) {
+        return x.c_str() + x.size();
+    }
+
+    const char* begin(const String& x) {
+        return x.c_str();
+    }
+
+    const char* end(const String& x) {
+        return x.c_str() + x.size();
+    }
+
+    String& operator+=(String& a, const String& b) {
+        for (auto x : b) {
+            a += x;
+        }
+        return a;
+    }
+
+    String& operator+(const String& a, const String& b) {
+        nostd::String res {a};
+        res += b;
+        return res;
+    }
+
+    bool operator==(const String& a, const String& b) {
+        if (a.size() != b.size()) {
+            return false;
+        }
+        for (int i = 0; i != a.size(); ++i) {
+            if(a[i] != b[i])
+                return false;
+        }
+        return true;
+    }
+
+    bool operator!=(const String& a, const String& b) {
+        return !(a==b);
+    }
+
+    String operator""_s(const char* p, size_t) {
+        return String{p};
     }
 }

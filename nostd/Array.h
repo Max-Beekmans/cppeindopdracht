@@ -11,16 +11,20 @@ namespace nostd {
     template <typename T>
     class Array {
     public:
-        void AddElement(T element);
-        T& GetElement(const int index);
     private:
-        //Scales the array up by 10 more ellements
-        void ScaleArray();
-        int length_ = 0;
-        //start to allocate 10 elements of T
-        //whenever length reaches 10 folds execute ScaleArray to scale up 10 more
-        T* elements_ = (T) malloc(10 * sizeof(T));
-        T elements[10];
+        //short-string optimization for array
+        static const int short_max = 15;
+        int length;
+        T* ptr;
+        // discriminated union (count <= short_max)
+        union {
+            // unused space;
+            int space;
+            // +1 for terminating char
+            T ss[short_max + 1];
+        };
+
+        T* expand(const T* ptr, int n);
     };
 }
 
