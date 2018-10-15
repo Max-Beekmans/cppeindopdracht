@@ -1,6 +1,7 @@
 #include <iostream>
 #include "nostd/String.h"
 #include "nostd/Array.h"
+#include "nostd/Random.h"
 
 int main() {
     nostd::String s("Hello World");
@@ -13,8 +14,22 @@ int main() {
     //[] support
     std::cout << d[6] << std::endl;
     //+= support
-    s + d;
+    s += d;
     std::cout << s << std::endl;
+
+    nostd::Random r;
+    nostd::Array<int> random_array{5};
+    const int min = 0;
+    const int max = 10;
+
+    for (int i = 0; i < random_array.size(); ++i) {
+        int rand = r.getRand(min, max);
+        random_array.addBack(rand);
+    }
+
+    for (int j : random_array) {
+        std::cout << j;
+    }
 
 //    char c1 = 'C';
 //    char c2 = 'D';

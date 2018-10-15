@@ -9,15 +9,15 @@
 
 namespace nostd {
     //Think of this class as merely a wrapper for the annoying char literal or char* stuff
+    //Char* wrapping pointer semantics and providing short string optimization
     class String {
     public:
         //Construct ro5
         String();
         ~String();
         explicit String(const char* val);
-        String(const String &str);
+        String(const String& str);
         String(String&& move) noexcept;
-
 
         //Operators
         //unchecked element access
@@ -65,7 +65,7 @@ namespace nostd {
     const char* begin(const String& x);
     const char* end(const String& x);
     String& operator+=(String& a, const String& b);
-    String& operator+(const String& a, const String& b);
+    String operator+(const String& a, const String& b);
     bool operator==(const String& a, const String& b);
     bool operator!=(const String& a, const String& b);
     String operator""_s(const char* p, size_t);

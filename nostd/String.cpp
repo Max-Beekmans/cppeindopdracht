@@ -59,21 +59,24 @@ namespace nostd {
             int n = count + count + 2;
             ptr = expand(ptr, n);
             //assert space left
-            space = static_cast<int>(n - count - 2);
+            space = n - count - 2;
         } else if (short_max < count) {
             //there is no more space
             if (space == 0) {
                 //double the alloc (+2 for terminating 0)
                 int n = count + count + 2;
+                char* p = expand(ptr, n);
+                delete[] ptr;
+                ptr = p;
+                space = n - count - 2;
             } else {
                 //there is still space
                 --space;
             }
-            ptr[count] = c;
-            ptr[++count] = '\0';
-
-            return *this;
         }
+        ptr[count] = c;
+        ptr[++count] = '\0';
+        return *this;
     }
 
     //public methods
@@ -166,7 +169,7 @@ namespace nostd {
         return a;
     }
 
-    String& operator+(const String& a, const String& b) {
+    String operator+(const String& a, const String& b) {
         nostd::String res {a};
         res += b;
         return res;
