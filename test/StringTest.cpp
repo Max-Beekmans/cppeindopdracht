@@ -7,6 +7,6 @@
 
 TEST_CASE("Compare two strings", "[single-file]") {
     nostd::String a("String One");
-    nostd::String b("String Two");
+    nostd::String b("String One");
     REQUIRE(a == b);
 }

@@ -6,6 +6,7 @@
 #define EINDOPDRACHT_ARRAY_H
 
 #include <stdexcept>
+#include <cstring>
 
 namespace nostd {
     //Generic array object using pointer semantics and providing short string optimization
@@ -33,7 +34,7 @@ namespace nostd {
 
         T* expand(const T* ptr, int n) {
             T* temp = new T[n];
-            memcpy(temp, ptr);
+            memcpy(temp, ptr, n);
             return temp;
         }
 
@@ -152,7 +153,7 @@ namespace nostd {
             }
             ptr[count] = obj;
             ptr[++count] = '\0';
-            return *this;
+            //return *this;
         }
 
         //exceptional add operation (for room shuffle)
@@ -162,13 +163,12 @@ namespace nostd {
         }
 
         //helper nonmember functions
-        T* begin(Array<T>& arr) {
-            return arr.getPtr();
+        T* begin() {
+            return ptr;
         }
 
-        T* end(Array<T>& arr) {
-            T* p = arr.getPtr();
-            return p[arr.getCount()];
+        T* end() {
+            return ptr + count;
         }
     };
 }
