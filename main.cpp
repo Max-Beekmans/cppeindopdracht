@@ -2,6 +2,7 @@
 #include "nostd/String.h"
 #include "nostd/Array.h"
 #include "nostd/Random.h"
+#include "Dungeon.h"
 
 int main() {
     nostd::String s("Hello World");
@@ -22,14 +23,21 @@ int main() {
     const int min = 0;
     const int max = 10;
 
-    for (int i = 0; i < random_array.size(); ++i) {
+    int x = random_array.size();
+    for (int i = 0; i < x; ++i) {
         int rand = r.getRand(min, max);
-        random_array.addBack(rand);
+        random_array[i] = rand;
     }
 
     for (int j : random_array) {
         std::cout << j;
     }
+
+    std::cout << std::endl;
+
+    Dungeon dungeon = Dungeon(5, 5);
+    dungeon.GenerateDungeon();
+    dungeon.PrintDungeon();
 
 //    char c1 = 'C';
 //    char c2 = 'D';

@@ -151,13 +151,13 @@ namespace nostd {
                     --space;
                 }
             }
-            ptr[count] = obj;
-            ptr[++count] = '\0';
+            ptr[count++] = obj;
+            //ptr[++count] = '\0';
             //return *this;
         }
 
         //exceptional add operation (for room shuffle)
-        //TODO Shuffle Add last element to front! ez extra credit
+        //TODO Shuffle Rooms, Add last element to front! ez extra credit
         void addFront(T obj) {
 
         }
