@@ -16,7 +16,12 @@ Room::~Room() {
     //no memory to free yet
 }
 
-Room::Room(const int Id, const Coordinate c) : _Id(Id), coords(c) {}
+Room::Room(const int Id, const Coordinate c) : _Id(Id), coords(c) {
+    this->north = nullptr;
+    this->south = nullptr;
+    this->east = nullptr;
+    this->west = nullptr;
+}
 
 Room::Room(const Room &r) {
     copy_from(r);

@@ -22,7 +22,6 @@ private:
     Room* _begin = nullptr;
     nostd::Array<Room> _rooms;
     nostd::Array<Hall> _halls;
-    int* arr = new int[10];
     const int _width;
     const int _height;
     int _roomCount;
