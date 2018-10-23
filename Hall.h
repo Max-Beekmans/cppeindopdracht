@@ -5,17 +5,17 @@
 #ifndef EINDOPDRACHT_HALL_H
 #define EINDOPDRACHT_HALL_H
 
-#include "Room.h"
+#include "Coordinate.h"
 
 class Hall {
 public:
     Hall();
-    Hall(const Room* enda, const Room* endb);
+    Hall(const Coordinate enda, const Coordinate endb);
 
     //I guess we just hold the pointers and promise to not alter the rooms.
     //I just wanna look at them right?
-    const Room* enda;
-    const Room* endb;
+    const Coordinate enda;
+    const Coordinate endb;
 private:
     bool _visible = false;
 };
