@@ -23,7 +23,7 @@ public:
     Hall* east;
     Hall* west;
 
-    const Coordinate coords;
+    Coordinate coords;
 
     char GetChar();
     bool IsStart = false;

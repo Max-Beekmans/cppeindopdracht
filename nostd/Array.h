@@ -49,7 +49,7 @@ namespace nostd {
             count = arr.count;
         }
 
-        void move_from(const Array<T>&& arr) {
+        void move_from(Array<T>& arr) {
             if (arr.count <= short_max) {
                 memcpy(this, &arr, sizeof(arr));
                 ptr = ss;
@@ -57,7 +57,7 @@ namespace nostd {
                 ptr = arr.ptr;
                 space = arr.space;
                 arr.ptr = arr.ss;
-                arr.ss[0] = 0;
+//                arr.ss = [];
             }
             count = arr.count;
             arr.count = 0;
@@ -100,7 +100,7 @@ namespace nostd {
         }
 
         Array<T>& operator=(Array<T>&& arr) noexcept {
-            if (this == arr) return *this;
+            if (this == &arr) return *this;
             if (count > short_max) delete [] ptr;
             move_from(arr);
             return *this;

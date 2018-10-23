@@ -16,10 +16,7 @@ Room::~Room() {
     //no memory to free yet
 }
 
-Room::Room(const int Id, const Coordinate c) {
-    this->_Id = Id;
-    this->coords = c;
-}
+Room::Room(const int Id, const Coordinate c) : _Id(Id), coords(c) {}
 
 Room::Room(const Room &r) {
     copy_from(r);
@@ -77,6 +74,7 @@ void Room::copy_from(const Room& r) {
     this->IsStairUp = r.IsStairUp;
     this->IsStairDown = r.IsStairDown;
     this->IsVisited = r.IsVisited;
+    this->coords = r.coords;
 }
 
 //move operation used in constructor and operator
@@ -87,6 +85,7 @@ void Room::move_from(Room& r) {
     this->IsStairUp = r.IsStairUp;
     this->IsStairDown = r.IsStairDown;
     this->IsVisited = r.IsVisited;
+    this->coords = r.coords;
 }
 
 

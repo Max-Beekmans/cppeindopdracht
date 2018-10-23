@@ -19,7 +19,7 @@ void Dungeon::GenerateDungeon() {
     nostd::Random r{};
     int max = (_width * _height) / 2;
     int count = 0;
-    this->_rooms = new Room[max];
+    this->_rooms = nostd::Array<Room>(max);
     this->_halls = new Hall[max * 2];
 
     //if start == nullptr, find random start
@@ -37,28 +37,98 @@ void Dungeon::GenerateDungeon() {
 
     for (int i = 0; i < max; i++) {
         Room current = _rooms[count];
+        Coordinate c{current.coords};
+        Coordinate d{current.coords.x, current.coords.y};
         //loop through possible edges
         //north
-        if (current.coords.x != 0 || current.north != nullptr) {
+        if (current.coords.x != 0 && current.north != nullptr) {
             int rand = r.getRand(0, 100);
             //Make edge if coin toss is true
             if (rand > 50) {
                 //new north coordinate
                 Coordinate c{current.coords.x, current.coords.y - 1};
-                Room north_room = *new Room(_roomCount++, c);
-                _rooms[++count] = north_room;
+                Room north_room;
+                //change to abstraction where not everything is default room
+                //If room north already exist lay connection with the existing node.
+                if (this->_dungeon[c.x][c.y].IsFilledRoom) {
+                    north_room = this->_dungeon[c.x][c.y];
+                } else {
+                    north_room = *new Room(_roomCount++, c);
+                    _rooms[++count] = north_room;
+                }
                 Coordinate enda = Coordinate{current.coords};
                 Coordinate endb = Coordinate{north_room.coords};
                 current.north = new Hall(enda, endb);
             }
         }
 
+        //south
+        if (current.coords.y != _height - 1 && current.south != nullptr) {
+            int rand = r.getRand(0, 100);
+            //Make edge if coin toss is true
+            if (rand > 50) {
+                //new north coordinate
+                Coordinate c{current.coords.x, current.coords.y + 1};
+                Room south_room;
+                //change to abstraction where not everything is default room
+                //If room north already exist lay connection with the existing node.
+                if (this->_dungeon[c.x][c.y].IsFilledRoom) {
+                    south_room = this->_dungeon[c.x][c.y];
+                } else {
+                    south_room = *new Room(_roomCount++, c);
+                    _rooms[++count] = south_room;
+                }
+                Coordinate enda = Coordinate{current.coords};
+                Coordinate endb = Coordinate{south_room.coords};
+                current.south = new Hall(enda, endb);
+            }
+        }
+
+        //east
+        if (current.coords.x != _width - 1 && current.east != nullptr) {
+            int rand = r.getRand(0, 100);
+            //Make edge if coin toss is true
+            if (rand > 50) {
+                //new north coordinate
+                Coordinate c{current.coords.x + 1, current.coords.y};
+                Room east_room;
+                //change to abstraction where not everything is default room
+                //If room north already exist lay connection with the existing node.
+                if (this->_dungeon[c.x][c.y].IsFilledRoom) {
+                    east_room = this->_dungeon[c.x][c.y];
+                } else {
+                    east_room = *new Room(_roomCount++, c);
+                    _rooms[++count] = east_room;
+                }
+                Coordinate enda = Coordinate{current.coords};
+                Coordinate endb = Coordinate{east_room.coords};
+                current.east = new Hall(enda, endb);
+            }
+        }
+
+        //west
+        if (current.coords.x != 0 && current.west != nullptr) {
+            int rand = r.getRand(0, 100);
+            //Make edge if coin toss is true
+            if (rand > 50) {
+                //new north coordinate
+                Coordinate c{current.coords.x - 1, current.coords.y};
+                Room west_room;
+                //change to abstraction where not everything is default room
+                //If room north already exist lay connection with the existing node.
+                if (this->_dungeon[c.x][c.y].IsFilledRoom) {
+                    west_room = this->_dungeon[c.x][c.y];
+                } else {
+                    west_room = *new Room(_roomCount++, c);
+                    _rooms[++count] = west_room;
+                }
+                Coordinate enda = Coordinate{current.coords};
+                Coordinate endb = Coordinate{west_room.coords};
+                current.west = new Hall(enda, endb);
+            }
+        }
+        _dungeon[c.x][c.y] = current;
     }
-
-    this->_halls = new Hall[_roomCount];
-
-    this->_begin = &this->_dungeon[0][0];
-    this->_begin->IsStart = true;
 }
 
 void Dungeon::PrintDungeon() {
