@@ -12,17 +12,16 @@ Room::~Room() {
     //no memory to free yet
 }
 
-
 Room::Room(const int Id) {
     this->_Id = Id;
 }
 
 Room::Room(const Room &r) {
-
+    copy_from(r);
 }
 
 Room::Room(Room &&r) {
-
+    move_from(r);
 }
 
 //overrule the char get if

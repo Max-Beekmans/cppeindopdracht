@@ -5,6 +5,7 @@
 #ifndef EINDOPDRACHT_DUNGEON_H
 #define EINDOPDRACHT_DUNGEON_H
 
+#include "Hall.h"
 #include "Room.h"
 
 class Dungeon {
@@ -15,6 +16,9 @@ public:
 private:
     Room** _dungeon;
     Room* _begin;
+    Room* _rooms;
+    Hall* _halls;
+    int* arr = new int[10];
     const int _width;
     const int _height;
     int _roomCount;

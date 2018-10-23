@@ -22,7 +22,9 @@ public:
     bool IsStairUp = false;
     bool IsStairDown = false;
     bool IsVisited = false;
-
+    //even dots that aren't visitable rooms are still rooms but just with this bool on false.
+    //this makes it allot easier to represent a Room**
+    bool IsFilledRoom = false;
 private:
     int _Id;
     void copy_from(const Room& r);

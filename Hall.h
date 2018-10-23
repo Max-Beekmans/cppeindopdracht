@@ -9,6 +9,7 @@
 
 class Hall {
 public:
+    Hall();
     Hall(const Room* enda, const Room* endb);
 
     //I guess we just hold the pointers and promise to not alter the rooms.
