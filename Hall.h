@@ -9,13 +9,20 @@
 
 class Hall {
 public:
-    Hall();
-    Hall(const Coordinate enda, const Coordinate endb);
+    Hall() : enda(nullptr), endb(nullptr) {}
+    Hall(const Coordinate& enda, const Coordinate& endb) : enda(&enda), endb(&endb) {}
+    Hall(const int x1, const int y1, const int x2, const int y2) {
+        enda = new Coordinate(x1, y1);
+        endb = new Coordinate(x2, y2);
+    }
+    ~Hall() {
+        delete enda;
+        delete endb;
+    }
 
-    //I guess we just hold the pointers and promise to not alter the rooms.
-    //I just wanna look at them right?
-    const Coordinate enda;
-    const Coordinate endb;
+    //We same the coordinates of the adjacent rooms const
+    const Coordinate* enda;
+    const Coordinate* endb;
 private:
     bool _visible = false;
 };

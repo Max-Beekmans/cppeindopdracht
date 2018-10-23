@@ -5,6 +5,8 @@
 #ifndef EINDOPDRACHT_ROOM_H
 #define EINDOPDRACHT_ROOM_H
 
+#include "Hall.h"
+
 class Room {
 public:
     Room();
@@ -15,6 +17,11 @@ public:
 
     Room& operator=(const Room& copy);
     Room& operator=(Room&& move) noexcept;
+
+    Hall* north;
+    Hall* south;
+    Hall* east;
+    Hall* west;
 
     char GetChar();
     bool IsStart = false;
