@@ -11,7 +11,7 @@ class Room {
 public:
     Room();
     ~Room();
-    explicit Room(const int Id);
+    Room(const int Id, const Coordinate c);
     Room(const Room& r);
     Room(Room&& r);
 
@@ -22,6 +22,8 @@ public:
     Hall* south;
     Hall* east;
     Hall* west;
+
+    const Coordinate coords;
 
     char GetChar();
     bool IsStart = false;

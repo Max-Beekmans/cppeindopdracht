@@ -6,14 +6,19 @@
 
 Room::Room() {
     this->_Id = -1;
+    this->north = nullptr;
+    this->south = nullptr;
+    this->east = nullptr;
+    this->west = nullptr;
 }
 
 Room::~Room() {
     //no memory to free yet
 }
 
-Room::Room(const int Id) {
+Room::Room(const int Id, const Coordinate c) {
     this->_Id = Id;
+    this->coords = c;
 }
 
 Room::Room(const Room &r) {
