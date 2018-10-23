@@ -16,8 +16,9 @@ namespace nostd {
     class Array {
     private:
         //short-string optimization for array
-        static const int short_max = 10;
+        static const int short_max = 15;
         int count;
+        int elements;
         T* ptr;
         // discriminated union (count <= short_max)
         union {
@@ -65,7 +66,7 @@ namespace nostd {
 
     public:
         //Construct
-        Array() : count{0}, ptr{ss}, space{0} {}
+        Array() : count{0}, ptr{ss}, space{0}, elements{0} {}
         ~Array() { if (short_max < count) delete [] ptr; }
 
         explicit Array(int length) {
@@ -151,7 +152,7 @@ namespace nostd {
                     --space;
                 }
             }
-            ptr[count++] = obj;
+            ptr[elements++] = obj;
             //ptr[++count] = '\0';
             //return *this;
         }

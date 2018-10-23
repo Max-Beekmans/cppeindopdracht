@@ -13,6 +13,7 @@ Dungeon::Dungeon(const int width, const int height) : _width(width), _height(hei
     for(int i = 0; i < width; ++i) {
         this->_dungeon[i] = new Room[height];
     }
+    this->_roomCount = 0;
 }
 
 void Dungeon::GenerateDungeon() {
@@ -20,7 +21,7 @@ void Dungeon::GenerateDungeon() {
     int max = (_width * _height) / 2;
     int count = 0;
     this->_rooms = nostd::Array<Room>(max);
-    this->_halls = new Hall[max * 2];
+    this->_halls = nostd::Array<Hall>(max*2);
 
     //if start == nullptr, find random start
     if (this->_begin == nullptr) {
@@ -33,12 +34,18 @@ void Dungeon::GenerateDungeon() {
         this->_begin->IsVisited = true;
     }
     //add begin to rooms
-    this->_rooms[count] = *this->_begin;
+    this->_rooms.addBack(*this->_begin);
 
     for (int i = 0; i < max; i++) {
+        if (!_rooms[count].IsFilledRoom) {
+            break;
+        }
         Room current = _rooms[count];
         Coordinate c{current.coords};
         Coordinate d{current.coords.x, current.coords.y};
+        current.IsVisited = true;
+        current.IsFilledRoom = true;
+
         //loop through possible edges
         //north
         if (current.coords.x != 0 && current.north != nullptr) {
@@ -54,8 +61,12 @@ void Dungeon::GenerateDungeon() {
                     north_room = this->_dungeon[c.x][c.y];
                 } else {
                     north_room = *new Room(_roomCount++, c);
-                    _rooms[++count] = north_room;
+                    _rooms.addBack(north_room);
                 }
+                north_room.IsFilledRoom = true;
+                _dungeon[c.x][c.y] = north_room;
+                //for debug
+                north_room.IsVisited = true;
                 Coordinate enda = Coordinate{current.coords};
                 Coordinate endb = Coordinate{north_room.coords};
                 current.north = new Hall(enda, endb);
@@ -76,8 +87,12 @@ void Dungeon::GenerateDungeon() {
                     south_room = this->_dungeon[c.x][c.y];
                 } else {
                     south_room = *new Room(_roomCount++, c);
-                    _rooms[++count] = south_room;
+                    _rooms.addBack(south_room);
                 }
+                south_room.IsFilledRoom = true;
+                _dungeon[c.x][c.y] = south_room;
+                //for debug
+                south_room.IsVisited = true;
                 Coordinate enda = Coordinate{current.coords};
                 Coordinate endb = Coordinate{south_room.coords};
                 current.south = new Hall(enda, endb);
@@ -98,8 +113,12 @@ void Dungeon::GenerateDungeon() {
                     east_room = this->_dungeon[c.x][c.y];
                 } else {
                     east_room = *new Room(_roomCount++, c);
-                    _rooms[++count] = east_room;
+                    _rooms.addBack(east_room);
                 }
+                east_room.IsFilledRoom = true;
+                _dungeon[c.x][c.y] = east_room;
+                //for debug
+                east_room.IsVisited = true;
                 Coordinate enda = Coordinate{current.coords};
                 Coordinate endb = Coordinate{east_room.coords};
                 current.east = new Hall(enda, endb);
@@ -120,8 +139,12 @@ void Dungeon::GenerateDungeon() {
                     west_room = this->_dungeon[c.x][c.y];
                 } else {
                     west_room = *new Room(_roomCount++, c);
-                    _rooms[++count] = west_room;
+                    _rooms.addBack(west_room);
                 }
+                west_room.IsFilledRoom = true;
+                _dungeon[c.x][c.y] = west_room;
+                //for debug
+                west_room.IsVisited = true;
                 Coordinate enda = Coordinate{current.coords};
                 Coordinate endb = Coordinate{west_room.coords};
                 current.west = new Hall(enda, endb);
@@ -135,7 +158,6 @@ void Dungeon::PrintDungeon() {
     for (int i = 0; i < _width; ++i) {
         for (int j = 0; j < _height; ++j) {
             std::cout << this->_dungeon[i][j].GetChar();
-
         }
         std::cout << std::endl;
     }

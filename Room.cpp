@@ -75,6 +75,8 @@ void Room::copy_from(const Room& r) {
     this->IsStairDown = r.IsStairDown;
     this->IsVisited = r.IsVisited;
     this->coords = r.coords;
+
+    this->IsFilledRoom = r.IsFilledRoom;
 }
 
 //move operation used in constructor and operator
@@ -86,6 +88,8 @@ void Room::move_from(Room& r) {
     this->IsStairDown = r.IsStairDown;
     this->IsVisited = r.IsVisited;
     this->coords = r.coords;
+
+    this->IsFilledRoom = r.IsFilledRoom;
 }
 
 
