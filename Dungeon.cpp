@@ -50,7 +50,7 @@ void Dungeon::GenerateDungeon() {
         if (current.coords.x != 0 && current.north == nullptr) {
             int rand = r.getRand(0, 100);
             //Make edge if coin toss is true
-            if (rand > 50) {
+            if (rand > 25) {
                 //new north coordinate
                 Coordinate c{current.coords.x, current.coords.y - 1};
                 Room north_room;
@@ -62,12 +62,12 @@ void Dungeon::GenerateDungeon() {
                     north_room = *new Room(_roomCount++, c);
                     north_room.IsFilledRoom = true;
                     north_room.IsVisited = true;
-                    _rooms.addBack(north_room);
                 }
+                Hall* h = new Hall(current.coords, north_room.coords);
+                current.north = h;
+                north_room.south = h;
+                _rooms.addBack(north_room);
                 _dungeon[c.x][c.y] = north_room;
-                Coordinate enda = Coordinate{current.coords};
-                Coordinate endb = Coordinate{north_room.coords};
-                current.north = new Hall(enda, endb);
             }
         }
 
@@ -75,7 +75,7 @@ void Dungeon::GenerateDungeon() {
         if (current.coords.y != _height - 1 && current.south == nullptr) {
             int rand = r.getRand(0, 100);
             //Make edge if coin toss is true
-            if (rand > 50) {
+            if (rand > 25) {
                 //new north coordinate
                 Coordinate c{current.coords.x, current.coords.y + 1};
                 Room south_room;
@@ -87,12 +87,12 @@ void Dungeon::GenerateDungeon() {
                     south_room = *new Room(_roomCount++, c);
                     south_room.IsFilledRoom = true;
                     south_room.IsVisited = true;
-                    _rooms.addBack(south_room);
                 }
+                Hall* h = new Hall(current.coords, south_room.coords);
+                current.south = h;
+                south_room.north = h;
+                _rooms.addBack(south_room);
                 _dungeon[c.x][c.y] = south_room;
-                Coordinate enda = Coordinate{current.coords};
-                Coordinate endb = Coordinate{south_room.coords};
-                current.south = new Hall(enda, endb);
             }
         }
 
@@ -100,7 +100,7 @@ void Dungeon::GenerateDungeon() {
         if (current.coords.x != _width - 1 && current.east == nullptr) {
             int rand = r.getRand(0, 100);
             //Make edge if coin toss is true
-            if (rand > 50) {
+            if (rand > 25) {
                 //new north coordinate
                 Coordinate c{current.coords.x + 1, current.coords.y};
                 Room east_room;
@@ -112,12 +112,12 @@ void Dungeon::GenerateDungeon() {
                     east_room = *new Room(_roomCount++, c);
                     east_room.IsFilledRoom = true;
                     east_room.IsVisited = true;
-                    _rooms.addBack(east_room);
                 }
+                Hall* h = new Hall(current.coords, east_room.coords);
+                current.east = h;
+                east_room.west = h;
+                _rooms.addBack(east_room);
                 _dungeon[c.x][c.y] = east_room;
-                Coordinate enda = Coordinate{current.coords};
-                Coordinate endb = Coordinate{east_room.coords};
-                current.east = new Hall(enda, endb);
             }
         }
 
@@ -125,7 +125,7 @@ void Dungeon::GenerateDungeon() {
         if (current.coords.x != 0 && current.west == nullptr) {
             int rand = r.getRand(0, 100);
             //Make edge if coin toss is true
-            if (rand > 50) {
+            if (rand > 25) {
                 //new north coordinate
                 Coordinate c{current.coords.x - 1, current.coords.y};
                 Room west_room;
@@ -137,12 +137,12 @@ void Dungeon::GenerateDungeon() {
                     west_room = *new Room(_roomCount++, c);
                     west_room.IsFilledRoom = true;
                     west_room.IsVisited = true;
-                    _rooms.addBack(west_room);
                 }
+                Hall* h = new Hall(current.coords, west_room.coords);
+                current.west = h;
+                west_room.east = h;
+                _rooms.addBack(west_room);
                 _dungeon[c.x][c.y] = west_room;
-                Coordinate enda = Coordinate{current.coords};
-                Coordinate endb = Coordinate{west_room.coords};
-                current.west = new Hall(enda, endb);
             }
         }
         _dungeon[c.x][c.y] = current;

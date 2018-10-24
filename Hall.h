@@ -16,11 +16,11 @@ public:
         endb = new Coordinate(x2, y2);
     }
     ~Hall() {
-        delete enda;
-        delete endb;
+//        delete enda;
+//        delete endb;
     }
 
-    //We same the coordinates of the adjacent rooms const
+    //We save the coordinates of the adjacent rooms const
     const Coordinate* enda;
     const Coordinate* endb;
 private:

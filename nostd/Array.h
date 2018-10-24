@@ -71,6 +71,7 @@ namespace nostd {
 
         explicit Array(int length) {
             count = length;
+            elements = 0;
             if (short_max < count) {
                 ptr = new T[count + 1];
                 space = count;
@@ -136,6 +137,8 @@ namespace nostd {
 
         //regular/fastest add operation
         void addBack(T obj) {
+            //maybe replace count here for elements?
+            //count is always set to the desired size of the array
             if (count == short_max) {
                 //double alloc (+2 for terminating 0)
                 int n = count + count + 2;
