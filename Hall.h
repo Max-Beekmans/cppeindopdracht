@@ -11,10 +11,10 @@ class Hall {
 public:
     Hall() : enda(nullptr), endb(nullptr) {}
     Hall(const Coordinate& enda, const Coordinate& endb) : enda(&enda), endb(&endb) {}
-    Hall(const int x1, const int y1, const int x2, const int y2) {
-        enda = new Coordinate(x1, y1);
-        endb = new Coordinate(x2, y2);
-    }
+//    Hall(const int x1, const int y1, const int x2, const int y2) {
+//        enda = new Coordinate(x1, y1);
+//        endb = new Coordinate(x2, y2);
+//    }
     ~Hall() {
 //        delete enda;
 //        delete endb;

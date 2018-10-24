@@ -13,10 +13,10 @@ Room::Room() {
 }
 
 Room::~Room() {
-    delete north;
-    delete south;
-    delete west;
-    delete east;
+//    delete north;
+//    delete south;
+//    delete west;
+//    delete east;
 }
 
 Room::Room(const int Id, const Coordinate c) : _Id(Id), coords(c) {
