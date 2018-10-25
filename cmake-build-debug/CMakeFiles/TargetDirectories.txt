@@ -1,0 +1,3 @@
+/cygdrive/d/School/CPP/cppeindopdracht/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/cygdrive/d/School/CPP/cppeindopdracht/cmake-build-debug/CMakeFiles/eindopdracht.dir
+/cygdrive/d/School/CPP/cppeindopdracht/cmake-build-debug/CMakeFiles/edit_cache.dir

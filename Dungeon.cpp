@@ -3,10 +3,14 @@
 //
 
 #include <iostream>
+#include <fstream>
 #include "Dungeon.h"
 #include "Hall.h"
 #include "Room.h"
+#include "Monster.h"
 #include "nostd/Random.h"
+#include "nostd/String.h"
+#include "nostd/Array.h"
 
 Dungeon::Dungeon(const int width, const int height) : _width(width), _height(height) {
     this->_dungeon = new Room*[width];
@@ -14,9 +18,54 @@ Dungeon::Dungeon(const int width, const int height) : _width(width), _height(hei
         this->_dungeon[i] = new Room[height];
     }
     this->_roomCount = 0;
+    this->_monsters = nostd::Array<Monster>(50);
+    this->GetMonsters();
+}
+
+void Dungeon::GetMonsters() {
+    std::ifstream fileStream;
+    char line[14][512];
+    //todo: excetion handling
+    fileStream.open("readables/monster.txt");
+    int i = 0;
+    nostd::Array<nostd::String> strings = nostd::Array<nostd::String>(6);
+    while(fileStream.getline(line[i], sizeof line[i])){
+        if(line[i][0] == '['){
+            int c = 0;
+            int j = 0;
+            bool reading = true;
+            while(reading)
+            {
+                switch(line[i][j]) {
+                    case ';':
+                        c++;
+                        break;
+                    case ']':
+                        reading = false;
+                        break;
+                    default:
+                        strings[c] += line[i][j];
+                        break;
+                }
+                j++;
+            }
+        }
+
+        nostd::String name = strings[0];
+        nostd::String level = strings[1];
+        int attackChance = static_cast<int>(strings[2].c_str()[0]);
+        int attackAmount = static_cast<int>(strings[2].c_str()[2]);
+        int minDamage= static_cast<int>(strings[3].c_str()[0]);
+        int maxDamage= static_cast<int>(strings[3].c_str()[2]);
+        int defenceChance= static_cast<int>(strings[4].c_str()[2]);
+        int maxHP= static_cast<int>(strings[5].c_str()[2]);
+
+        _monsters[i] = Monster(name, level, attackChance, attackAmount, minDamage, maxDamage, defenceChance, maxHP);
+    }
 }
 
 void Dungeon::GenerateDungeon() {
+    Monster m = _monsters[0];
     nostd::Random r{};
     int max = (_width * _height) / 2;
     int count = 0;
