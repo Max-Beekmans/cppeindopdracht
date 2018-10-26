@@ -7,6 +7,8 @@
 
 int main() {
     Dungeon dungeon = Dungeon(5, 5);
+
+    std::cout << "Generated Dungeon" << std::endl;
     dungeon.GenerateDungeon();
     dungeon.PrintDungeon();
     return 0;

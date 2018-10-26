@@ -57,7 +57,6 @@ void Dungeon::GenerateDungeon() {
                 //new north coordinate
                 Coordinate c{current.coords.x, current.coords.y - 1};
                 Room north_room;
-                //change to abstraction where not everything is default room
                 //If room north already exist lay connection with the existing node.
                 if (this->_dungeon[c.x][c.y].IsFilledRoom) {
                     north_room = this->_dungeon[c.x][c.y];
@@ -82,7 +81,6 @@ void Dungeon::GenerateDungeon() {
                 //new north coordinate
                 Coordinate c{current.coords.x, current.coords.y + 1};
                 Room south_room;
-                //change to abstraction where not everything is default room
                 //If room north already exist lay connection with the existing node.
                 if (this->_dungeon[c.x][c.y].IsFilledRoom) {
                     south_room = this->_dungeon[c.x][c.y];
@@ -107,7 +105,6 @@ void Dungeon::GenerateDungeon() {
                 //new north coordinate
                 Coordinate c{current.coords.x + 1, current.coords.y};
                 Room east_room;
-                //change to abstraction where not everything is default room
                 //If room north already exist lay connection with the existing node.
                 if (this->_dungeon[c.x][c.y].IsFilledRoom) {
                     east_room = this->_dungeon[c.x][c.y];
@@ -132,7 +129,6 @@ void Dungeon::GenerateDungeon() {
                 //new north coordinate
                 Coordinate c{current.coords.x - 1, current.coords.y};
                 Room west_room;
-                //change to abstraction where not everything is default room
                 //If room north already exist lay connection with the existing node.
                 if (this->_dungeon[c.x][c.y].IsFilledRoom) {
                     west_room = this->_dungeon[c.x][c.y];
@@ -177,27 +173,4 @@ void Dungeon::PrintDungeon() {
         }
         std::cout << std::endl;
     }
-
-    std::cout << "done" << std::endl;
-
-//    for (int i = 0; i < _width; ++i) {
-//        nostd::Array<Hall> print_halls{_width};
-//        for (int j = 0; j < _height; ++j) {
-//            std::cout << this->_dungeon[i][j].GetChar();
-//            if (this->_dungeon[i][j].east != nullptr) {
-//                std::cout << this->_dungeon[i][j].east->getChar();
-//            } else {
-//                std::cout << ' ';
-//            }
-//
-//            if (this->_dungeon[i][j].south != nullptr) {
-//                print_halls.addBack(*this->_dungeon[i][j].south);
-//            }
-//        }
-//        std::cout << std::endl;
-//        for (Hall& h : print_halls) {
-//            std::cout << h.getChar();
-//        }
-//        std::cout << std::endl;
-//    }
 }

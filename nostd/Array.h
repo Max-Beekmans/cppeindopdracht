@@ -160,15 +160,11 @@ namespace nostd {
                 }
             }
             ptr[elements++] = obj;
-            //ptr[++count] = '\0';
-            //return *this;
         }
 
         //exceptional add operation (for room shuffle)
         //TODO Shuffle Rooms, Add last element to front! ez extra credit
-        void addFront(T obj) {
-
-        }
+        void addFront(T obj) { }
 
         //helper nonmember functions
         T* begin() {
