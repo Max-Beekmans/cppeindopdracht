@@ -137,6 +137,10 @@ namespace nostd {
 
         //regular/fastest add operation
         void addBack(T obj) {
+            if (count < elements) {
+                count = elements;
+            }
+
             //maybe replace count here for elements?
             //count is always set to the desired size of the array
             if (count == short_max) {

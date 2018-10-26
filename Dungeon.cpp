@@ -14,6 +14,7 @@ Dungeon::Dungeon(const int width, const int height) : _width(width), _height(hei
         this->_dungeon[i] = new Room[height];
     }
     this->_roomCount = 0;
+    this->PrintDungeon();
 }
 
 void Dungeon::GenerateDungeon() {
@@ -37,6 +38,8 @@ void Dungeon::GenerateDungeon() {
     this->_rooms.addBack(*this->_begin);
 
     for (int i = 0; i < max; i++) {
+        //this boolean should be set for all 'build' rooms.
+        // We don't want to visit default constructable rooms
         if (!_rooms[count].IsFilledRoom) {
             break;
         }
@@ -63,7 +66,7 @@ void Dungeon::GenerateDungeon() {
                     north_room.IsFilledRoom = true;
                     north_room.IsVisited = true;
                 }
-                Hall* h = new Hall(current.coords, north_room.coords);
+                Hall* h = new Hall(current.coords, north_room.coords, 1);
                 current.north = h;
                 north_room.south = h;
                 _rooms.addBack(north_room);
@@ -88,7 +91,7 @@ void Dungeon::GenerateDungeon() {
                     south_room.IsFilledRoom = true;
                     south_room.IsVisited = true;
                 }
-                Hall* h = new Hall(current.coords, south_room.coords);
+                Hall* h = new Hall(current.coords, south_room.coords, 1);
                 current.south = h;
                 south_room.north = h;
                 _rooms.addBack(south_room);
@@ -113,7 +116,7 @@ void Dungeon::GenerateDungeon() {
                     east_room.IsFilledRoom = true;
                     east_room.IsVisited = true;
                 }
-                Hall* h = new Hall(current.coords, east_room.coords);
+                Hall* h = new Hall(current.coords, east_room.coords, 0);
                 current.east = h;
                 east_room.west = h;
                 _rooms.addBack(east_room);
@@ -138,7 +141,7 @@ void Dungeon::GenerateDungeon() {
                     west_room.IsFilledRoom = true;
                     west_room.IsVisited = true;
                 }
-                Hall* h = new Hall(current.coords, west_room.coords);
+                Hall* h = new Hall(current.coords, west_room.coords, 0);
                 current.west = h;
                 west_room.east = h;
                 _rooms.addBack(west_room);
@@ -150,10 +153,51 @@ void Dungeon::GenerateDungeon() {
 }
 
 void Dungeon::PrintDungeon() {
-    for (int i = 0; i < _width; ++i) {
-        for (int j = 0; j < _height; ++j) {
-            std::cout << this->_dungeon[i][j].GetChar();
+    for (int i = 0; i < _height; ++i) {
+        nostd::Array<Hall> print_halls{_width};
+        for (int j = 0; j < _width ; ++j) {
+            Room r = this->_dungeon[j][i];
+            std::cout << r.GetChar();
+            if (r.east != nullptr) {
+                std::cout << r.GetChar();
+            } else {
+                std::cout << ' ';
+            }
+
+            if (r.south != nullptr) {
+                print_halls.addBack(*r.south);
+            } else {
+                print_halls.addBack(Hall{});
+            }
+        }
+        std::cout << std::endl;
+        for (Hall& h : print_halls) {
+            std::cout << h.getChar();
+            std::cout << ' ';
         }
         std::cout << std::endl;
     }
+
+    std::cout << "done" << std::endl;
+
+//    for (int i = 0; i < _width; ++i) {
+//        nostd::Array<Hall> print_halls{_width};
+//        for (int j = 0; j < _height; ++j) {
+//            std::cout << this->_dungeon[i][j].GetChar();
+//            if (this->_dungeon[i][j].east != nullptr) {
+//                std::cout << this->_dungeon[i][j].east->getChar();
+//            } else {
+//                std::cout << ' ';
+//            }
+//
+//            if (this->_dungeon[i][j].south != nullptr) {
+//                print_halls.addBack(*this->_dungeon[i][j].south);
+//            }
+//        }
+//        std::cout << std::endl;
+//        for (Hall& h : print_halls) {
+//            std::cout << h.getChar();
+//        }
+//        std::cout << std::endl;
+//    }
 }

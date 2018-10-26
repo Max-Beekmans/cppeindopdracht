@@ -38,6 +38,7 @@ Room::Room(Room &&r) {
 //1. this room is unvisited (default is also '.')
 //2. this room is the entrance to the dungeon
 //3. this room is the final boss room
+//4. this room is a stair
 char Room::GetChar() {
     if (!IsVisited) {
         return '.';
