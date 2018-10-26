@@ -159,7 +159,7 @@ void Dungeon::PrintDungeon() {
             Room r = this->_dungeon[j][i];
             std::cout << r.GetChar();
             if (r.east != nullptr) {
-                std::cout << r.GetChar();
+                std::cout << r.east->GetChar();
             } else {
                 std::cout << ' ';
             }
@@ -172,7 +172,7 @@ void Dungeon::PrintDungeon() {
         }
         std::cout << std::endl;
         for (Hall& h : print_halls) {
-            std::cout << h.getChar();
+            std::cout << h.GetChar();
             std::cout << ' ';
         }
         std::cout << std::endl;

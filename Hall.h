@@ -30,7 +30,7 @@ public:
         return *this;
     }
 
-    const char getChar() {
+    const char GetChar() {
         if (_visible && _orientation > -1) {
             //horizontal
             if (_orientation == 0) {

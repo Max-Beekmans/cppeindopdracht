@@ -26,8 +26,8 @@ public:
         return *this;
     }
 
-    int x = 0;
-    int y = 0;
+    int x;
+    int y;
 };
 
 #endif //EINDOPDRACHT_COORDINATE_H
