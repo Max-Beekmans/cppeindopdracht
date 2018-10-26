@@ -11,10 +11,13 @@
 
 class Monster {
 public:
+    Monster();
     Monster(const nostd::String name, const nostd::String level, const int attackChance, const int attackAmount, const int minDamage, const int maxDamage, const int defenceChance, const int maxHP);
     ~Monster();
-    const nostd::String name;
-    const nostd::String level;
+    Monster(const Monster& copy);
+    Monster(Monster&& move);
+    nostd::String name;
+    nostd::String level;
     int Attack();
     bool Block();
     //copy
@@ -22,13 +25,12 @@ public:
     //move
     Monster& operator=(Monster&& move) noexcept;
 private:
-    nostd::Random _random{};
-    const int _attackChance;
-    const int _attackAmount;
-    const int _minDamage;
-    const int _maxDamage;
-    const int _defenceChance;
-    const int _maxHP;
+    int _attackChance;
+    int _attackAmount;
+    int _minDamage;
+    int _maxDamage;
+    int _defenceChance;
+    int _maxHP;
     int _currentHP;
     void copy_from(const Monster& copy);
     void move_from(Monster& move);

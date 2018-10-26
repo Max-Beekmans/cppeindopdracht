@@ -28,8 +28,9 @@ void Dungeon::GetMonsters() {
     //todo: excetion handling
     fileStream.open("readables/monster.txt");
     int i = 0;
-    nostd::Array<nostd::String> strings = nostd::Array<nostd::String>(6);
+    nostd::Array<nostd::String> strings(6);
     while(fileStream.getline(line[i], sizeof line[i])){
+        char* l = line[i];
         if(line[i][0] == '['){
             int c = 0;
             int j = 0;

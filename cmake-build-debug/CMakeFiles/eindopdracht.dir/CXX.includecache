@@ -42,12 +42,6 @@ Monster.h
 Coordinate.h
 /cygdrive/d/School/CPP/cppeindopdracht/Coordinate.h
 
-/cygdrive/d/School/CPP/cppeindopdracht/Monster.cpp
-Monster.h
-/cygdrive/d/School/CPP/cppeindopdracht/Monster.h
-nostd/Random.h
-/cygdrive/d/School/CPP/cppeindopdracht/nostd/Random.h
-
 /cygdrive/d/School/CPP/cppeindopdracht/Monster.h
 nostd/String.h
 /cygdrive/d/School/CPP/cppeindopdracht/nostd/String.h
@@ -57,18 +51,6 @@ nostd/Random.h
 /cygdrive/d/School/CPP/cppeindopdracht/Room.h
 Hall.h
 /cygdrive/d/School/CPP/cppeindopdracht/Hall.h
-
-/cygdrive/d/School/CPP/cppeindopdracht/main.cpp
-iostream
--
-nostd/String.h
-/cygdrive/d/School/CPP/cppeindopdracht/nostd/String.h
-nostd/Array.h
-/cygdrive/d/School/CPP/cppeindopdracht/nostd/Array.h
-nostd/Random.h
-/cygdrive/d/School/CPP/cppeindopdracht/nostd/Random.h
-Dungeon.h
-/cygdrive/d/School/CPP/cppeindopdracht/Dungeon.h
 
 /cygdrive/d/School/CPP/cppeindopdracht/nostd/Array.h
 stdexcept
