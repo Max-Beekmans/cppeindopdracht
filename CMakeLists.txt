@@ -3,4 +3,4 @@ project(eindopdracht)
 
 set(CMAKE_CXX_STANDARD 11)
 
-add_executable(eindopdracht main.cpp nostd/Random.h nostd/String.cpp nostd/String.h nostd/Array.h Dungeon.cpp Dungeon.h Room.cpp Room.h Hall.h Coordinate.h Monster.cpp Monster.h)
+add_executable(eindopdracht main.cpp nostd/Random.h nostd/String.cpp nostd/String.h nostd/Array.h Dungeon.cpp Dungeon.h Room.cpp Room.h Hall.h Coordinate.h Monster.cpp Monster.h monsters.txt)

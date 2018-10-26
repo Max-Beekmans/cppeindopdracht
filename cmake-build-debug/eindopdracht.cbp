@@ -107,6 +107,9 @@
 		<Unit filename="/cygdrive/d/School/CPP/cppeindopdracht/main.cpp">
 			<Option target="eindopdracht"/>
 		</Unit>
+		<Unit filename="/cygdrive/d/School/CPP/cppeindopdracht/monsters.txt">
+			<Option target="eindopdracht"/>
+		</Unit>
 		<Unit filename="/cygdrive/d/School/CPP/cppeindopdracht/nostd/Array.h">
 			<Option target="eindopdracht"/>
 		</Unit>

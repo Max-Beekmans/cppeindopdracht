@@ -31,7 +31,7 @@ public:
     bool IsStairUp = false;
     bool IsStairDown = false;
     bool IsVisited = false;
-    //even dots that aren't visitable rooms are still rooms but just with this bool on false.
+    //even dots that aren't visitable rooms are still rooms but defaultConstructed just with this bool on false.
     //this makes it allot easier to represent a Room**
     bool IsFilledRoom = false;
 private:

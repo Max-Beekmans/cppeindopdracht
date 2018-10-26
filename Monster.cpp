@@ -5,7 +5,7 @@
 #include "Monster.h"
 #include "nostd/Random.h"
 
-Monster::Monster() : name(), level(), _attackChance(-1), _attackAmount(-1), _minDamage(-1), _maxDamage(-1), _defenceChance(-1), _maxHP(-1), _currentHP(-1) {}
+Monster::Monster() : _attackChance(-1), _attackAmount(-1), _minDamage(-1), _maxDamage(-1), _defenceChance(-1), _maxHP(-1), _currentHP(-1) {}
 
 Monster::Monster(const nostd::String name, const nostd::String level, const int attackChance, const int attackAmount, const int minDamage, const int maxDamage, const int defenceChance, const int maxHP)
     : name(name), level(level), _attackChance(attackChance), _attackAmount(attackAmount), _minDamage(minDamage), _maxDamage(maxDamage), _defenceChance(defenceChance), _maxHP(maxHP), _currentHP(maxHP) {
@@ -46,27 +46,27 @@ Monster& Monster::operator=(Monster&& move) noexcept{
 }
 
 void Monster::copy_from(const Monster& copy) {
-    name = copy.name;
-    level = copy.level;
-    _attackChance = copy._attackChance;
-    _attackAmount = copy._attackAmount;
-    _minDamage = copy._minDamage;
-    _maxDamage = copy._maxDamage;
-    _defenceChance = copy._defenceChance;
-    _maxHP = copy._maxHP;
-    _currentHP = copy._currentHP;
+    this->name = copy.name;
+    this->level = copy.level;
+    this->_attackChance = copy._attackChance;
+    this->_attackAmount = copy._attackAmount;
+    this->_minDamage = copy._minDamage;
+    this->_maxDamage = copy._maxDamage;
+    this->_defenceChance = copy._defenceChance;
+    this->_maxHP = copy._maxHP;
+    this->_currentHP = copy._currentHP;
 }
 
 void Monster::move_from(Monster &move) {
-    name = move.name;
-    level = move.level;
-    _attackChance = move._attackChance;
-    _attackAmount = move._attackAmount;
-    _minDamage = move._minDamage;
-    _maxDamage = move._maxDamage;
-    _defenceChance = move._defenceChance;
-    _maxHP = move._maxHP;
-    _currentHP = move._currentHP;
+    this->name = move.name;
+    this->level = move.level;
+    this->_attackChance = move._attackChance;
+    this->_attackAmount = move._attackAmount;
+    this->_minDamage = move._minDamage;
+    this->_maxDamage = move._maxDamage;
+    this->_defenceChance = move._defenceChance;
+    this->_maxHP = move._maxHP;
+    this-> _currentHP = move._currentHP;
 }
 
 Monster::Monster(const Monster &copy) {

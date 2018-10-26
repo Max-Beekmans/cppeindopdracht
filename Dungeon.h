@@ -17,9 +17,6 @@ public:
     void GenerateDungeon();
     void PrintDungeon();
 private:
-    //direction 1 north, 2 east, 3 south, 4 west
-    //rest is return nullptr
-    //Hall* GenerateHall(const Room& current, int direction);
     Room** _dungeon;
     Room* _begin = nullptr;
     nostd::Array<Room> _rooms;

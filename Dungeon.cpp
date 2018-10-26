@@ -18,22 +18,23 @@ Dungeon::Dungeon(const int width, const int height) : _width(width), _height(hei
         this->_dungeon[i] = new Room[height];
     }
     this->_roomCount = 0;
-    this->_monsters = nostd::Array<Monster>(50);
+    this->_monsters = nostd::Array<Monster>(10);
     this->GetMonsters();
 }
 
 void Dungeon::GetMonsters() {
     std::ifstream fileStream;
     char line[14][512];
-    //todo: excetion handling
-    fileStream.open("readables/monster.txt");
+    //todo: exception handling
+    fileStream.open("D:/School/CPP/cppeindopdracht/monsters.txt");
+    bool isopen = fileStream.is_open();
     int i = 0;
-    nostd::Array<nostd::String> strings(6);
-    while(fileStream.getline(line[i], sizeof line[i])){
-        char* l = line[i];
+    while(!fileStream.eof()){
+        fileStream.getline(line[i], sizeof(line[i]));
         if(line[i][0] == '['){
+            nostd::Array<nostd::String> strings(6);
             int c = 0;
-            int j = 0;
+            int j = 1;
             bool reading = true;
             while(reading)
             {
@@ -45,24 +46,30 @@ void Dungeon::GetMonsters() {
                         reading = false;
                         break;
                     default:
-                        strings[c] += line[i][j];
+                        nostd::String temp = strings[c];
+                        temp += line[i][j];
+                        strings[c] = temp;
                         break;
                 }
                 j++;
             }
+
+            nostd::String name = strings[0];
+            nostd::String level = strings[1];
+
+            int attackChance = static_cast<int>(strings[2].c_str()[0]);
+            int attackAmount = static_cast<int>(strings[2].c_str()[2]);
+            int minDamage= static_cast<int>(strings[3].c_str()[0]);
+            int maxDamage= static_cast<int>(strings[3].c_str()[2]);
+            int defenceChance= static_cast<int>(strings[4].c_str()[2]);
+            int maxHP= static_cast<int>(strings[5].c_str()[2]);
+
+            _monsters[i] = Monster(name, level, attackChance, attackAmount, minDamage, maxDamage, defenceChance, maxHP);
+            i++;
         }
-
-        nostd::String name = strings[0];
-        nostd::String level = strings[1];
-        int attackChance = static_cast<int>(strings[2].c_str()[0]);
-        int attackAmount = static_cast<int>(strings[2].c_str()[2]);
-        int minDamage= static_cast<int>(strings[3].c_str()[0]);
-        int maxDamage= static_cast<int>(strings[3].c_str()[2]);
-        int defenceChance= static_cast<int>(strings[4].c_str()[2]);
-        int maxHP= static_cast<int>(strings[5].c_str()[2]);
-
-        _monsters[i] = Monster(name, level, attackChance, attackAmount, minDamage, maxDamage, defenceChance, maxHP);
     }
+    fileStream.close();
+    this->PrintDungeon();
 }
 
 void Dungeon::GenerateDungeon() {
@@ -87,6 +94,8 @@ void Dungeon::GenerateDungeon() {
     this->_rooms.addBack(*this->_begin);
 
     for (int i = 0; i < max; i++) {
+        //this boolean should be set for all 'build' rooms.
+        // We don't want to visit default constructable rooms
         if (!_rooms[count].IsFilledRoom) {
             break;
         }
@@ -104,7 +113,6 @@ void Dungeon::GenerateDungeon() {
                 //new north coordinate
                 Coordinate c{current.coords.x, current.coords.y - 1};
                 Room north_room;
-                //change to abstraction where not everything is default room
                 //If room north already exist lay connection with the existing node.
                 if (this->_dungeon[c.x][c.y].IsFilledRoom) {
                     north_room = this->_dungeon[c.x][c.y];
@@ -113,7 +121,7 @@ void Dungeon::GenerateDungeon() {
                     north_room.IsFilledRoom = true;
                     north_room.IsVisited = true;
                 }
-                Hall* h = new Hall(current.coords, north_room.coords);
+                Hall* h = new Hall(current.coords, north_room.coords, 1);
                 current.north = h;
                 north_room.south = h;
                 _rooms.addBack(north_room);
@@ -129,7 +137,6 @@ void Dungeon::GenerateDungeon() {
                 //new north coordinate
                 Coordinate c{current.coords.x, current.coords.y + 1};
                 Room south_room;
-                //change to abstraction where not everything is default room
                 //If room north already exist lay connection with the existing node.
                 if (this->_dungeon[c.x][c.y].IsFilledRoom) {
                     south_room = this->_dungeon[c.x][c.y];
@@ -138,7 +145,7 @@ void Dungeon::GenerateDungeon() {
                     south_room.IsFilledRoom = true;
                     south_room.IsVisited = true;
                 }
-                Hall* h = new Hall(current.coords, south_room.coords);
+                Hall* h = new Hall(current.coords, south_room.coords, 1);
                 current.south = h;
                 south_room.north = h;
                 _rooms.addBack(south_room);
@@ -154,7 +161,6 @@ void Dungeon::GenerateDungeon() {
                 //new north coordinate
                 Coordinate c{current.coords.x + 1, current.coords.y};
                 Room east_room;
-                //change to abstraction where not everything is default room
                 //If room north already exist lay connection with the existing node.
                 if (this->_dungeon[c.x][c.y].IsFilledRoom) {
                     east_room = this->_dungeon[c.x][c.y];
@@ -163,7 +169,7 @@ void Dungeon::GenerateDungeon() {
                     east_room.IsFilledRoom = true;
                     east_room.IsVisited = true;
                 }
-                Hall* h = new Hall(current.coords, east_room.coords);
+                Hall* h = new Hall(current.coords, east_room.coords, 0);
                 current.east = h;
                 east_room.west = h;
                 _rooms.addBack(east_room);
@@ -179,7 +185,6 @@ void Dungeon::GenerateDungeon() {
                 //new north coordinate
                 Coordinate c{current.coords.x - 1, current.coords.y};
                 Room west_room;
-                //change to abstraction where not everything is default room
                 //If room north already exist lay connection with the existing node.
                 if (this->_dungeon[c.x][c.y].IsFilledRoom) {
                     west_room = this->_dungeon[c.x][c.y];
@@ -188,7 +193,7 @@ void Dungeon::GenerateDungeon() {
                     west_room.IsFilledRoom = true;
                     west_room.IsVisited = true;
                 }
-                Hall* h = new Hall(current.coords, west_room.coords);
+                Hall* h = new Hall(current.coords, west_room.coords, 0);
                 current.west = h;
                 west_room.east = h;
                 _rooms.addBack(west_room);
@@ -200,9 +205,27 @@ void Dungeon::GenerateDungeon() {
 }
 
 void Dungeon::PrintDungeon() {
-    for (int i = 0; i < _width; ++i) {
-        for (int j = 0; j < _height; ++j) {
-            std::cout << this->_dungeon[i][j].GetChar();
+    for (int i = 0; i < _height; ++i) {
+        nostd::Array<Hall> print_halls{_width};
+        for (int j = 0; j < _width ; ++j) {
+            Room r = this->_dungeon[j][i];
+            std::cout << r.GetChar();
+            if (r.east != nullptr) {
+                std::cout << r.east->GetChar();
+            } else {
+                std::cout << ' ';
+            }
+
+            if (r.south != nullptr) {
+                print_halls.addBack(*r.south);
+            } else {
+                print_halls.addBack(Hall{});
+            }
+        }
+        std::cout << std::endl;
+        for (Hall& h : print_halls) {
+            std::cout << h.GetChar();
+            std::cout << ' ';
         }
         std::cout << std::endl;
     }

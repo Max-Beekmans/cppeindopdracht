@@ -7,8 +7,9 @@
 
 namespace nostd {
 
-    String::String() : count{0}, ptr(ss) {
-        ss[0] = 0;
+    String::String() : count(0), ptr(ss) {
+        ss[0] = '\0';
+        space = 0;
     }
 
     String::~String() {
@@ -39,7 +40,7 @@ namespace nostd {
 
     String& String::operator=(const String& copy) {
         if (this == &copy) return *this;
-        char* p = (short_max < count) ? ptr : nullptr;
+        char* p = (short_max < count) ? ptr : 0;
         copy_from(copy);
         delete[] p;
         return *this;
@@ -75,7 +76,7 @@ namespace nostd {
             }
         }
         ptr[count] = c;
-        ptr[++count] = '\0';
+        ptr[++count] = 0;
         return *this;
     }
 

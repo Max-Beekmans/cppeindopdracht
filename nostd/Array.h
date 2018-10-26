@@ -76,6 +76,7 @@ namespace nostd {
                 ptr = new T[count + 1];
                 space = count;
             } else {
+                ss[short_max + 1];
                 ptr = ss;
                 space = 0;
             }
@@ -137,6 +138,10 @@ namespace nostd {
 
         //regular/fastest add operation
         void addBack(T obj) {
+            if (count < elements) {
+                count = elements;
+            }
+
             //maybe replace count here for elements?
             //count is always set to the desired size of the array
             if (count == short_max) {
@@ -156,15 +161,11 @@ namespace nostd {
                 }
             }
             ptr[elements++] = obj;
-            //ptr[++count] = '\0';
-            //return *this;
         }
 
         //exceptional add operation (for room shuffle)
         //TODO Shuffle Rooms, Add last element to front! ez extra credit
-        void addFront(T obj) {
-
-        }
+        void addFront(T obj) { }
 
         //helper nonmember functions
         T* begin() {
