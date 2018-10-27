@@ -76,7 +76,6 @@ namespace nostd {
                 ptr = new T[count + 1];
                 space = count;
             } else {
-                ss[short_max + 1];
                 ptr = ss;
                 space = 0;
             }

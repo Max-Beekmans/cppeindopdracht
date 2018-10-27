@@ -18,7 +18,7 @@ Dungeon::Dungeon(const int width, const int height) : _width(width), _height(hei
         this->_dungeon[i] = new Room[height];
     }
     this->_roomCount = 0;
-    this->_monsters = nostd::Array<Monster>(10);
+    this->_monsters = nostd::Array<Monster>{10};
     this->GetMonsters();
 }
 
@@ -32,7 +32,7 @@ void Dungeon::GetMonsters() {
     while(!fileStream.eof()){
         fileStream.getline(line[i], sizeof(line[i]));
         if(line[i][0] == '['){
-            nostd::Array<nostd::String> strings(6);
+            nostd::Array<nostd::String> strings{6};
             int c = 0;
             int j = 1;
             bool reading = true;
