@@ -5,7 +5,7 @@
 #include "Monster.h"
 #include "nostd/Random.h"
 
-Monster::Monster() : _attackChance(-1), _attackAmount(-1), _minDamage(-1), _maxDamage(-1), _defenceChance(-1), _maxHP(-1), _currentHP(-1) {}
+Monster::Monster() : name{}, level{}, _attackChance(-1), _attackAmount(-1), _minDamage(-1), _maxDamage(-1), _defenceChance(-1), _maxHP(-1), _currentHP(-1) {}
 
 Monster::Monster(const nostd::String name, const nostd::String level, const int attackChance, const int attackAmount, const int minDamage, const int maxDamage, const int defenceChance, const int maxHP)
     : name(name), level(level), _attackChance(attackChance), _attackAmount(attackAmount), _minDamage(minDamage), _maxDamage(maxDamage), _defenceChance(defenceChance), _maxHP(maxHP), _currentHP(maxHP) {

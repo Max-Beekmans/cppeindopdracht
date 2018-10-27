@@ -44,8 +44,8 @@ namespace nostd {
 
     private:
         static const int short_max = 15;
-        int count;
-        char* ptr;
+        int count = 0;
+        char* ptr = nullptr;
         // discriminated union (count <= short_max)
         union {
             // unused space;

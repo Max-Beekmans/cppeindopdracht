@@ -58,7 +58,6 @@ namespace nostd {
                 ptr = arr.ptr;
                 space = arr.space;
                 arr.ptr = arr.ss;
-//                arr.ss = [];
             }
             count = arr.count;
             arr.count = 0;
@@ -66,7 +65,12 @@ namespace nostd {
 
     public:
         //Construct
-        Array() : count{0}, ptr{ss}, space{0}, elements{0} {}
+        Array() : count{0}, ptr{ss}, space{0}, elements{0} {
+            for(int i = 0; i < short_max + 1; ++i) {
+                //ensure default constructor call on create
+                ss[i] = T();
+            }
+        }
         ~Array() { if (short_max < count) delete [] ptr; }
 
         explicit Array(int length) {

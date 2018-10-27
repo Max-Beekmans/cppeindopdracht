@@ -7,9 +7,10 @@
 
 namespace nostd {
 
-    String::String() : count(0), ptr(ss) {
+    String::String() {
+        count = 0;
         ss[0] = '\0';
-        space = 0;
+        ptr = ss;
     }
 
     String::~String() {
@@ -18,11 +19,13 @@ namespace nostd {
         }
     }
 
-    String::String(const char* val)
-            :count{static_cast<int>(strlen(val))},
-             ptr{(count <= short_max) ? ss : new char[count + 1]},
-             space{0} {
-        strcpy(ptr, val);
+    String::String(const char* val) : space{0} {
+        //scuffed replacement for strlen() since it kept erroring
+        //performance wise it's equally fast.
+        this->count = 0;
+        while (val[this->count] != '\0') this->count++;
+        this->ptr = (count <= short_max) ? ss : new char[this->count + 1];
+        strcpy(this->ptr, val);
     }
 
     String::String(const String& copy) {
@@ -40,9 +43,8 @@ namespace nostd {
 
     String& String::operator=(const String& copy) {
         if (this == &copy) return *this;
-        char* p = (short_max < count) ? ptr : 0;
+//        if (short_max < count) delete [] ptr;
         copy_from(copy);
-        delete[] p;
         return *this;
     }
 
@@ -55,6 +57,7 @@ namespace nostd {
     }
 
     String& String::operator+=(char c) {
+        if(ptr == nullptr) ptr = ss;
         if (count == short_max) {
             //double the alloc (+2 for terminating 0)
             int n = count + count + 2;
@@ -75,8 +78,8 @@ namespace nostd {
                 --space;
             }
         }
-        ptr[count] = c;
-        ptr[++count] = 0;
+        this->ptr[count] = c;
+        this->ptr[++count] = 0;
         return *this;
     }
 
@@ -124,7 +127,8 @@ namespace nostd {
 
     void String::copy_from(const String& copy) {
         if (copy.count <= short_max) {
-            memcpy(this, &copy, sizeof(copy));
+            memcpy(this->ss, &copy.ss, sizeof(copy.ss));
+            count = copy.count;
             ptr = ss;
         } else {
             ptr = this->expand(copy.ptr, copy.count + 1);
@@ -135,7 +139,8 @@ namespace nostd {
 
     void String::move_from(String &move) {
         if (move.count <= short_max) {
-            memcpy(this, &move, sizeof(move));
+            memcpy(this->ss, &move.ss, sizeof(move.ss));
+            count = move.count;
             ptr = ss;
         } else {
             ptr = move.ptr;
@@ -146,6 +151,7 @@ namespace nostd {
             move.count = 0;
         }
     }
+
     //helper nonmember functions
     char* begin(String& x) {
         return x.c_str();
@@ -191,7 +197,8 @@ namespace nostd {
         return !(a==b);
     }
 
-    String operator""_s(const char* p, size_t) {
+    //string is trivial
+    String operator"" _s(const char* p, size_t) {
         return String{p};
     }
 }

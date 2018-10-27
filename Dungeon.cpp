@@ -2,6 +2,7 @@
 // Created by MaxBe on 10/22/2018.
 //
 
+#include <stdlib.h>
 #include <iostream>
 #include <fstream>
 #include "Dungeon.h"
@@ -46,23 +47,21 @@ void Dungeon::GetMonsters() {
                         reading = false;
                         break;
                     default:
-                        nostd::String temp = strings[c];
-                        temp += line[i][j];
-                        strings[c] = temp;
+                        strings.at(c) += line[i][j];
                         break;
                 }
                 j++;
             }
-
-            nostd::String name = strings[0];
-            nostd::String level = strings[1];
-
-            int attackChance = static_cast<int>(strings[2].c_str()[0]);
-            int attackAmount = static_cast<int>(strings[2].c_str()[2]);
-            int minDamage= static_cast<int>(strings[3].c_str()[0]);
-            int maxDamage= static_cast<int>(strings[3].c_str()[2]);
-            int defenceChance= static_cast<int>(strings[4].c_str()[2]);
-            int maxHP= static_cast<int>(strings[5].c_str()[2]);
+            int attackChance = std::atoi(strings[2].c_str());
+            //make into atoi
+            //int attackChance = static_cast<int>(strings[2][0]);
+            int attackAmount = static_cast<int>(strings[2][2]);
+            int minDamage = static_cast<int>(strings[3][0]);
+            int maxDamage = static_cast<int>(strings[3][2]);
+            int defenceChance = static_cast<int>(strings[4][2]);
+            int maxHP = static_cast<int>(strings[5][2]);
+            nostd::String name = strings.at(1);
+            nostd::String level = strings.at(2);
 
             _monsters[i] = Monster(name, level, attackChance, attackAmount, minDamage, maxDamage, defenceChance, maxHP);
             i++;
