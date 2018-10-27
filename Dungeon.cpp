@@ -53,7 +53,7 @@ void Dungeon::GenerateDungeon() {
         if (current.coords.x != 0 && current.north == nullptr) {
             int rand = r.getRand(0, 100);
             //Make edge if coin toss is true
-            if (rand > 25) {
+            if (rand > 20) {
                 //new north coordinate
                 Coordinate c{current.coords.x, current.coords.y - 1};
                 Room north_room;
@@ -77,7 +77,7 @@ void Dungeon::GenerateDungeon() {
         if (current.coords.y != _height - 1 && current.south == nullptr) {
             int rand = r.getRand(0, 100);
             //Make edge if coin toss is true
-            if (rand > 25) {
+            if (rand > 20) {
                 //new north coordinate
                 Coordinate c{current.coords.x, current.coords.y + 1};
                 Room south_room;
@@ -163,7 +163,8 @@ void Dungeon::PrintDungeon() {
             if (r.south != nullptr) {
                 print_halls.addBack(*r.south);
             } else {
-                print_halls.addBack(Hall{});
+                Hall h;
+                print_halls.addBack(h);
             }
         }
         std::cout << std::endl;

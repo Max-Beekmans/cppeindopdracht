@@ -172,7 +172,7 @@ namespace nostd {
         }
 
         T* end() {
-            return ptr + count;
+            return ptr + elements;
         }
     };
 }

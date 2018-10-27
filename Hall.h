@@ -10,7 +10,7 @@
 class Hall {
 public:
     Hall() : enda(nullptr), endb(nullptr), _visible(false), _orientation(-1) {}
-    Hall(const Coordinate& enda, const Coordinate& endb, int orientation) : enda(&enda), endb(&endb), _orientation(orientation) {}
+    Hall(const Coordinate& enda, const Coordinate& endb, int orientation) : enda(&enda), endb(&endb), _orientation(orientation), _visible(true) {}
     Hall(const Hall& copy) { copy_from(copy); }
     Hall(Hall&& move) noexcept { move_from(move); }
     ~Hall() {
