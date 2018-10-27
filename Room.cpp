@@ -6,6 +6,7 @@
 
 Room::Room() {
     this->_Id = -1;
+    this->coords = {};
     this->north = nullptr;
     this->south = nullptr;
     this->east = nullptr;

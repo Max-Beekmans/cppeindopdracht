@@ -68,7 +68,7 @@ namespace nostd {
         Array() : count{0}, ptr{ss}, space{0}, elements{0} {
             for(int i = 0; i < short_max + 1; ++i) {
                 //ensure default constructor call on create
-                ss[i] = T();
+                ss[i] = {};
             }
         }
         ~Array() { if (short_max < count) delete [] ptr; }

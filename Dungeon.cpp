@@ -68,13 +68,12 @@ void Dungeon::GetMonsters() {
         }
     }
     fileStream.close();
-    this->PrintDungeon();
 }
 
 void Dungeon::GenerateDungeon() {
     Monster m = _monsters[0];
     nostd::Random r{};
-    int max = (_width * _height) / 2;
+    int max = (_width * _height);
     int count = 0;
     this->_rooms = nostd::Array<Room>(max);
     this->_halls = nostd::Array<Hall>(max*2);
@@ -209,13 +208,13 @@ void Dungeon::PrintDungeon() {
         for (int j = 0; j < _width ; ++j) {
             Room r = this->_dungeon[j][i];
             std::cout << r.GetChar();
-            if (r.east != nullptr) {
+            if (r.IsFilledRoom && r.east != nullptr) {
                 std::cout << r.east->GetChar();
             } else {
                 std::cout << ' ';
             }
 
-            if (r.south != nullptr) {
+            if (r.IsFilledRoom && r.south != nullptr) {
                 print_halls.addBack(*r.south);
             } else {
                 Hall h;
