@@ -6,9 +6,8 @@
 #include "Game.h"
 
 int main() {
-    Game* game = new Game();
-
-    game->Start();
+    Game g {};
+    g.Start();
 
     return 0;
 }
