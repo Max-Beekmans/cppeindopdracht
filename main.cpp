@@ -3,13 +3,12 @@
 #include "nostd/String.h"
 #include "nostd/Array.h"
 #include "nostd/Random.h"
-#include "Dungeon.h"
+#include "Game.h"
 
 int main() {
-    Dungeon dungeon = Dungeon(5, 5);
+    Game* game = new Game();
 
-    std::cout << "Generated Dungeon" << std::endl;
-    dungeon.GenerateDungeon();
-    dungeon.PrintDungeon();
+    game->Start();
+
     return 0;
 }
