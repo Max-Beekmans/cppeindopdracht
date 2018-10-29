@@ -1,3 +1,5 @@
+#include <utility>
+
 //
 // Created by MaxBe on 10/26/2018.
 //
@@ -11,7 +13,7 @@ Hero::Hero() : _level(0), _hp(0), _exp(0), _attack_chance(0), _def_chance(0), It
 
 //hier komt de segfault
 Hero::Hero(nostd::String name) {
-    this->name = name;
+    this->name = std::move(name);
     this->_level = 1;
     this->_hp = 10;
     this->_exp = 0;
@@ -39,6 +41,7 @@ int Hero::Attack() {
 }
 
 void Hero::Move(char dir) {
+    dir = static_cast<char>(toupper(dir));
     switch (dir) {
         case 'N':
             location = Coordinate(location.x, location.y - 1);
@@ -58,8 +61,7 @@ void Hero::Move(char dir) {
 }
 
 void Hero::PickUpItem(Item item) {
-    Item_bag[_item_count] = item;
-    _item_count++;
+    Item_bag.addBack(item);
     std::cout << "You picked up " << item.name << "." << std::endl;
 }
 
