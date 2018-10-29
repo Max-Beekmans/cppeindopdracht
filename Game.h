@@ -6,18 +6,28 @@
 #define EINDOPDRACHT_GAME_H
 
 #include "Dungeon.h"
+#include "nostd/Array.h"
+#include "nostd/String.h"
 
 class Game {
 public:
     Game();
     ~Game();
+    void PrintMap();
+
     void Update();
     void Start();
     void Stop();
-    void CreateDungeon(const int width, const int height);
 private:
-    bool _running;
-    Dungeon* _dungeon;
+    //TODO move user input to IO class
+    int GetInt();
+    nostd::String GetString();
+
+    //TODO move prints to IO class
+    void ClearConsole();
+    void PrintDivider();
+    Dungeon _dungeon_layers[5];
+    int _current_layer = 0;
 };
 
 

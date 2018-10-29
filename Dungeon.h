@@ -12,19 +12,31 @@
 
 class Dungeon {
 public:
-    Dungeon(const int width, const int height);
+    Dungeon();
+    explicit Dungeon(const int width, const int height, const int level);
+    ~Dungeon();
+    Dungeon(const Dungeon& copy);
+    Dungeon(Dungeon&& move) noexcept;
+
+    Dungeon& operator=(const Dungeon& copy);
+    Dungeon& operator=(Dungeon&& move) noexcept;
+
     void GetMonsters();
     void GenerateDungeon();
     void PrintDungeon();
 private:
+    Hall* GenerateEdge(Coordinate c, Room* current, Room* r);
+    void copy_from(const Dungeon& copy);
+    void move_from(Dungeon& move);
     Room** _dungeon;
     Room* _begin = nullptr;
-    nostd::Array<Room> _rooms;
+    nostd::Array<Room*> _rooms;
     nostd::Array<Hall> _halls;
     nostd::Array<Monster> _monsters;
-    const int _width;
-    const int _height;
+    int _width;
+    int _height;
     int _roomCount;
+    int _level;
 };
 
 
