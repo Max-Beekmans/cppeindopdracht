@@ -29,7 +29,7 @@ Dungeon::Dungeon(const int width, const int height, const int level)
 //    }
 
     this->GenerateDungeon();
-    this->PrintDungeon();
+    //this->PrintDungeon();
 
 //    this->_dungeon = new Room**[width];
 //    for (int i = 0; i < width; ++i) {
@@ -148,12 +148,17 @@ void Dungeon::GenerateDungeon() {
 
         //loop through possible edges
         //north
-        if (current->coords.x != 0 && current->north == nullptr && _roomCount <= max) {
+        if (current->coords.x != 0 && _roomCount <= max) {
             int rand = r.getRand(0, 100);
             if (rand > 20) {
                 Coordinate c{current->coords.x, current->coords.y - 1};
-                Room* north_room = new Room(_roomCount++, c);
-                Hall* h = new Hall(current->coords, c, 1);
+                Room* north_room;
+                if (this->_dungeon[c.x][c.y].IsFilledRoom) {
+                    north_room = &this->_dungeon[c.x][c.y];
+                } else {
+                    north_room = new Room(_roomCount++, c);
+                }
+                Hall h = Hall{current->coords, c, 1};
                 current->north = h;
                 north_room->south = h;
                 this->_rooms.addBack(north_room);
@@ -162,12 +167,17 @@ void Dungeon::GenerateDungeon() {
         }
 
         //south
-        if (current->coords.y != _height - 1 && current->south == nullptr && _roomCount <= max) {
+        if (current->coords.y != _height - 1 && _roomCount <= max) {
             int rand = r.getRand(0, 100);
             if (rand > 20) {
                 Coordinate c{current->coords.x, current->coords.y + 1};
-                Room* south_room = new Room(_roomCount++, c);
-                Hall* h = new Hall(current->coords, c, 1);
+                Room* south_room;
+                if (this->_dungeon[c.x][c.y].IsFilledRoom) {
+                    south_room = &this->_dungeon[c.x][c.y];
+                } else {
+                    south_room = new Room(_roomCount++, c);
+                }
+                Hall h = Hall{current->coords, c, 1};
                 current->south = h;
                 south_room->north = h;
                 this->_rooms.addBack(south_room);
@@ -176,12 +186,17 @@ void Dungeon::GenerateDungeon() {
         }
 
         //east
-        if (current->coords.x != _width - 1 && current->east == nullptr && _roomCount <= max) {
+        if (current->coords.x != _width - 1 && _roomCount <= max) {
             int rand = r.getRand(0, 100);
             if (rand > 25) {
                 Coordinate c{current->coords.x + 1, current->coords.y};
-                Room* east_room = new Room(_roomCount++, c);;
-                Hall* h = new Hall(current->coords, c, 0);
+                Room* east_room;
+                if (this->_dungeon[c.x][c.y].IsFilledRoom) {
+                    east_room = &this->_dungeon[c.x][c.y];
+                } else {
+                    east_room = new Room(_roomCount++, c);
+                }
+                Hall h = Hall{current->coords, c, 0};
                 current->east = h;
                 east_room->west = h;
                 this->_rooms.addBack(east_room);
@@ -190,14 +205,17 @@ void Dungeon::GenerateDungeon() {
         }
 
         //west
-        if (current->coords.x != 0 && current->west == nullptr && _roomCount <= max) {
+        if (current->coords.x != 0 && _roomCount <= max) {
             int rand = r.getRand(0, 100);
-            //Make edge if coin toss is true
             if (rand > 25) {
-                //new north coordinate
                 Coordinate c{current->coords.x - 1, current->coords.y};
-                Room* west_room = new Room(_roomCount++, c);
-                Hall* h = new Hall(current->coords, c, 0);
+                Room* west_room;
+                if (this->_dungeon[c.x][c.y].IsFilledRoom) {
+                    west_room = &this->_dungeon[c.x][c.y];
+                } else {
+                    west_room = new Room(_roomCount++, c);
+                }
+                Hall h = Hall{current->coords, c, 0};
                 current->west = h;
                 west_room->east = h;
                 this->_rooms.addBack(west_room);
@@ -214,14 +232,14 @@ void Dungeon::PrintDungeon() {
         for (int j = 0; j < _width; ++j) {
             Room r = this->_dungeon[j][i];
             std::cout << r.GetChar();
-            if (r.IsFilledRoom && r.east != nullptr) {
-                std::cout << r.east->GetChar();
+            if (r.IsFilledRoom) {
+                std::cout << r.east.GetChar();
             } else {
                 std::cout << ' ';
             }
 
-            if (r.IsFilledRoom && r.south != nullptr) {
-                print_halls.addBack(*r.south);
+            if (r.IsFilledRoom) {
+                print_halls.addBack(r.south);
             } else {
                 Hall h;
                 print_halls.addBack(h);
