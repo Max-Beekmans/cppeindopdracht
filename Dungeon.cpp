@@ -270,7 +270,7 @@ void Dungeon::SetStairs(const int layer) {
 
     //Don't generate stair up for top room
     if (layer < 5) {
-        while (!_dungeon[x][y].IsFilledRoom || !_dungeon[x][y].IsStart || !_dungeon[x][y].IsEndBoss || _dungeon[x][y].IsStairDown) {
+        while (!_dungeon[x][y].IsFilledRoom || _dungeon[x][y].IsStart || _dungeon[x][y].IsEndBoss || _dungeon[x][y].IsStairDown) {
             x = r.getRand(0, _width);
             y = r.getRand(0, _height);
         }
