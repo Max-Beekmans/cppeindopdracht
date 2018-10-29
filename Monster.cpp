@@ -30,7 +30,10 @@ int Monster::Attack() {
 
 int Monster::Block(int damage) {
     nostd::Random r{};
-    return r.getRand(0, 100) <= this->_defenceChance ? 0 : damage;
+    if(r.getRand(0, 100) <= this->_defenceChance) return 0;
+
+    currentHP -= damage;
+    return damage;
 }
 
 Monster& Monster::operator=(const Monster& copy) {

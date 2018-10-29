@@ -10,6 +10,7 @@
 #include "Item.h"
 #include "Coordinate.h"
 #include "Monster.h"
+#include "nostd/IOHandler.h"
 
 class Hero {
 public:
@@ -23,8 +24,10 @@ public:
     int Block(int damage);
     // takes 'N'for North, 'S' for South, 'W' for West and 'E' for East.
     void Move(char dir);
+    void UseSkillPoints();
     void PickUpItem(Item item);
     Coordinate location;
+    int current_hp;
 private:
     void LevelUp();
     int _level;
@@ -34,6 +37,7 @@ private:
     int _attack_chance;
     int _def_chance;
     int _item_count;
+    nostd::IOHandler _io;
 };
 
 
