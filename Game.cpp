@@ -6,32 +6,62 @@
 #include <iostream>
 
 Game::Game() {
-    _running = false;
-    _dungeon = nullptr;
+    _current_layer = 0;
 }
 
 Game::~Game() {
 
 }
 
-void Game::Update() {
-    while(_running) {
-        std::cout << "Generated Dungeon";
-        _dungeon->PrintDungeon();
-    }
-}
+void Game::Update() {}
 
 void Game::Start() {
-    _running = true;
-    this->CreateDungeon(5, 5);
-    this->Update();
+    std::cout << "Welcome to 'Draken & Kerkers'" << std::endl;
+    std::cout << "Please give a width for the dungeon" << std::endl;
+    const int width = GetInt();
+    std::cout << "Please give a height for the dungeon" << std::endl;
+    const int height = GetInt();
+
+    //temp I'll make this prettier to the point where you only need to call what is given in the game constructor
+    //TODO make copy and move for dungeon D:
+    Dungeon d {width, height, _current_layer};
+    _dungeon_layers[_current_layer] = d;
+    _dungeon_layers[_current_layer].GenerateDungeon();
+    this->PrintMap();
 }
 
 void Game::Stop() {
-    _running = false;
+    //clean up global memory or anything not being freed with going out of scope.
 }
 
-void Game::CreateDungeon(int width, int height){
-    _dungeon = new Dungeon(width, height);
-    _dungeon->GenerateDungeon();
+//prints current dungeon layer once
+void Game::PrintMap() {
+    _dungeon_layers[_current_layer].PrintDungeon();
+}
+
+//if invalid x = -1 else x = int user input
+int Game::GetInt() {
+    int x = -1;
+    std::cin >> x;
+    return x;
+}
+
+//Get char* from user input, copies that into string and returns that
+nostd::String Game::GetString() {
+    char* str = nullptr;
+    std::cin >> str;
+    return nostd::String {str};
+}
+
+//Print 10 empty lines to the console
+void Game::ClearConsole() {
+    for (int i = 0; i < 10; ++i) {
+        std::cout << '\n';
+    }
+    std::cout << std::endl;
+}
+
+//Print sipmle underscore divider
+void Game::PrintDivider() {
+    std::cout << std::endl << "_____________________________________________" << std::endl;
 }
