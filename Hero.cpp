@@ -8,13 +8,15 @@
 #include "Hero.h"
 #include "nostd/String.h"
 #include "nostd/Random.h"
+#include "nostd/IOHandler.h"
 
-Hero::Hero() : _level(0), _hp(0), _exp(0), _attack_chance(0), _def_chance(0), Item_bag(nostd::Array<Item>(0)), _skill_points(0), _item_count(0) {}
+Hero::Hero() : _level(0), _hp(0), current_hp(0), _exp(0), _attack_chance(0), _def_chance(0), Item_bag(nostd::Array<Item>(0)), _skill_points(0), _item_count(0) {}
 
 Hero::Hero(nostd::String name) {
     this->name = std::move(name);
     this->_level = 1;
     this->_hp = 10;
+    this->current_hp = this->_hp;
     this->_exp = 0;
     this->_attack_chance = 40;
     this->_def_chance = 30;
@@ -22,6 +24,7 @@ Hero::Hero(nostd::String name) {
     this->_skill_points = 0;
     this->location = Coordinate();
     this->_item_count = 0;
+    this->_io = nostd::IOHandler();
 }
 
 Hero::~Hero() {
@@ -66,7 +69,10 @@ void Hero::PickUpItem(Item item) {
 
 int Hero::Block(int damage) {
     nostd::Random r{};
-    return r.getRand(0, 100) <= this->_def_chance ? 0 : damage;
+    if(r.getRand(0, 100) <= this->_def_chance) return 0;
+
+    current_hp -= damage;
+    return damage;
 }
 
 void Hero::AddExp(int exp) {
@@ -81,5 +87,19 @@ void Hero::LevelUp() {
         _level++;
         _skill_points += 10;
         std::cout << "Congratulations, you are now level" << _level << std::endl;
-        std::cout << "You now have " << _skill_points << " skillpoints." << std::endl;
+        std::cout << "You now have " << _skill_points << " unused skillpoints." << std::endl;
+}
+
+void Hero::UseSkillPoints() {
+    std::cout << "On what skill would you like to use your skillpoints?" << std::endl;
+    nostd::String skill = _io.GetString();
+    std::cout << "How many skillpoints would you like to use? You have " << _skill_points << "right now." << std::endl;
+    int points = _io.GetInt();
+
+    if(skill.c_str() == "attack") {
+
+    } else if(skill.c_str() == "defence") {
+
+    }
+
 }

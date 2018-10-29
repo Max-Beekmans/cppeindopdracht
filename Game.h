@@ -9,6 +9,7 @@
 #include "Hero.h"
 #include "nostd/Array.h"
 #include "nostd/String.h"
+#include "nostd/IOHandler.h"
 
 class Game {
 public:
@@ -33,7 +34,7 @@ private:
     Dungeon _dungeon_layers[5];
     int _current_layer = 0;
     Hero _hero;
-
+    nostd::IOHandler _io;
 };
 
 
