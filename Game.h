@@ -20,7 +20,7 @@ public:
     void Update();
     void Start();
     void Stop();
-    void Flee();
+    void Run();
 private:
     //TODO move user input to IO class
     int GetInt();

@@ -43,14 +43,30 @@ void Game::Start() {
 void Game::StartFight() {
     //pseudocode nog
     Monster m = _dungeon_layers[_current_layer].GetRoom(_hero.location.x, _hero.location.y).Monster;
-    while (m.currentHP > 0) {
+    bool fighting = true;
+    while (fighting) {
+        if(m.currentHP <= 0){
+            fighting = false;
+        }
+        std::cout << "You encounter " << m.name << "." << std::endl;
+        std::cout << m.name << " has " << m.currentHP << " hitpoints." << std::endl;
+        nostd::String input = this->GetString();
+        if(input.c_str() == "attack") {
 
+            //Hero's turn
+            int hDamage = m.Block(_hero.Attack());
+            m.currentHP -= hDamage;
+            std::cout << "You did " << hDamage << "damage." << std::endl;
+            std::cout << m.name << " has " << m.currentHP << " hitpoints left." << std::endl;
 
+            //Monster's turn
+            int mDamage = _hero.Block(m.Attack());
+            _hero.
+
+        } else if(input.c_str() == "run") {{
+            fighting = false;
+        }}
     }
-}
-
-void Game::Flee() {
-
 }
 
 void Game::Stop() {
