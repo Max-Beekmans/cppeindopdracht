@@ -13,7 +13,7 @@
 #include "nostd/String.h"
 #include "nostd/Array.h"
 
-Dungeon::Dungeon() : _width(-1), _height(-1), _roomCount(-1), _begin(nullptr), _level(-1) {}
+Dungeon::Dungeon() : _width(-1), _height(-1), _roomCount(-1), _level(-1) {}
 
 Dungeon::Dungeon(const int width, const int height, const int level)
         : _width(width), _height(height), _level(level), _roomCount(0) {
@@ -31,11 +31,7 @@ Dungeon::Dungeon(const int width, const int height, const int level)
     this->GetMonsters();
 }
 
-//clean up dungeon matrix. Rest of the vars are stack allocations
-Dungeon::~Dungeon() {
-    //not sure about _begin
-    delete _begin;
-}
+Dungeon::~Dungeon() = default;
 
 Dungeon::Dungeon(const Dungeon &copy) : _width(copy._width), _height(copy._height) {
     copy_from(copy);
@@ -111,18 +107,14 @@ void Dungeon::GenerateDungeon() {
     this->_rooms = nostd::Array<Room*>(max);
     this->_halls = nostd::Array<Hall>(max * 2);
 
-    //if start == nullptr, find random start
-    if (this->_begin == nullptr) {
-        int x = r.getRand(0, _width - 1);
-        int y = r.getRand(0, _height - 1);
-        Coordinate c{x, y};
-        this->_begin = new Room(_roomCount++, c);
-        this->_begin->IsStart = true;
-        this->_begin->IsFilledRoom = true;
-        this->_begin->IsVisited = true;
-    }
+    int x = r.getRand(0, _width - 1);
+    int y = r.getRand(0, _height - 1);
+    Coordinate begin_cor{x, y};
+    Room* begin = new Room(_roomCount++, begin_cor);
+    this->begin = begin_cor;
+
     //add begin to rooms
-    this->_rooms.addBack(this->_begin);
+    this->_rooms.addBack(begin);
 
     while (_roomCount < max) {
         //this boolean should be set for all 'build' rooms.
@@ -275,15 +267,17 @@ void Dungeon::SetStairs(const int layer) {
             y = r.getRand(0, _height);
         }
         _dungeon[x][y].IsStairUp = true;
+        this->stair_up = Coordinate{x, y};
     }
 
     //Don't generate stair down for bottom room
     if (layer > 0) {
-        while (_dungeon[x][y].IsFilledRoom || _dungeon[x][y].IsStart || _dungeon[x][y].IsEndBoss || _dungeon[x][y].IsStairUp) {
+        while (!_dungeon[x][y].IsFilledRoom || _dungeon[x][y].IsStart || _dungeon[x][y].IsEndBoss || _dungeon[x][y].IsStairUp) {
             x = r.getRand(0, _width);
             y = r.getRand(0, _height);
         }
         _dungeon[x][y].IsStairDown = true;
+        this->stair_down = Coordinate{x, y};
     }
 }
 

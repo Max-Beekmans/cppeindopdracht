@@ -6,6 +6,7 @@
 #define EINDOPDRACHT_ROOM_H
 
 #include "Hall.h"
+#include "nostd/String.h"
 
 class Room {
 public:
@@ -18,14 +19,21 @@ public:
     Room& operator=(const Room& copy);
     Room& operator=(Room&& move) noexcept;
 
+    char GetChar();
+    nostd::String GetDescription();
+
     Hall north;
     Hall south;
     Hall east;
     Hall west;
-
     Coordinate coords;
+    //Yes this can be way prettier...
+    //0 = Small, 1 = Medium or 2 = large
+    int size = 0;
+    //0 = empty, 1 = 4 chair and a table, 2 = bed
+    int layout = 0;
+    bool IsClean = false;
 
-    char GetChar();
     bool IsStart = false;
     bool IsEndBoss = false;
     bool IsStairUp = false;

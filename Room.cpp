@@ -3,10 +3,14 @@
 //
 
 #include "Room.h"
+#include "nostd/Random.h"
 
 Room::Room() {
     this->_Id = -1;
     this->coords = {};
+    this->layout = -1;
+    this->IsClean = false;
+    this->size = -1;
     this->IsStart = false;
     this->IsEndBoss = false;
     this->IsStairUp = false;
@@ -18,6 +22,16 @@ Room::Room() {
 Room::~Room() {}
 
 Room::Room(const int Id, const Coordinate c) : _Id(Id), coords(c) {
+    nostd::Random r;
+    this->layout = r.getRand(0, 2);
+    this->size = r.getRand(0, 2);
+    int coin = r.getRand(0, 1);
+    if (coin == 0) {
+        this->IsClean = true;
+    } else {
+        this->IsClean = false;
+    }
+
     this->IsStart = false;
     this->IsEndBoss = false;
     this->IsStairUp = false;
@@ -105,6 +119,11 @@ void Room::move_from(Room& r) {
     this->east = r.east;
     this->south = r.south;
     this->west = r.west;
+}
+
+nostd::String Room::GetDescription() {
+    //TODO make some wholesome description from layout, size and IsClean
+    return nostd::String();
 }
 
 
