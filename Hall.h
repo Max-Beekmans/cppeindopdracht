@@ -31,7 +31,7 @@ public:
     }
 
     const char GetChar() {
-        if (_visible && _orientation > -1) {
+        if (_visible || _orientation > -1) {
             //horizontal
             if (_orientation == 0) {
                 return '-';

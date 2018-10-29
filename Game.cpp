@@ -24,9 +24,7 @@ void Game::Start() {
 
     //temp I'll make this prettier to the point where you only need to call what is given in the game constructor
     //TODO make copy and move for dungeon D:
-    Dungeon d {width, height, _current_layer};
-    _dungeon_layers[_current_layer] = d;
-    _dungeon_layers[_current_layer].GenerateDungeon();
+    _dungeon_layers[_current_layer] = *new Dungeon {width, height, _current_layer};
     this->PrintMap();
 }
 

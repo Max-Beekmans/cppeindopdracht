@@ -8,6 +8,6 @@
 int main() {
     Game g {};
     g.Start();
-
+    g.Stop();
     return 0;
 }
