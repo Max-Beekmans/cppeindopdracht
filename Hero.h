@@ -11,11 +11,12 @@
 
 class Hero {
 public:
+    Hero();
     Hero(nostd::String name);
     ~Hero();
     nostd::Array<Item> Item_bag;
     nostd::String name;
-    void AddExp();
+    void AddExp(int exp);
     int Attack();
     bool Block();
 private:

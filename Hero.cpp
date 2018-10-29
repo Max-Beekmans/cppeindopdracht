@@ -4,7 +4,11 @@
 
 #include "Hero.h"
 #include "nostd/String.h"
+#include "nostd/Random.h"
 
+Hero::Hero() : name{}, _level(0), _hp(0), _exp(0), _attack_chance(0), _def_chance(0), Item_bag(nostd::Array<Item>(0)), _skill_points(0) {}
+
+//hier komt de segfault
 Hero::Hero(nostd::String name) {
     this->name = name;
     this->_level = 1;
@@ -17,14 +21,6 @@ Hero::Hero(nostd::String name) {
 }
 
 Hero::~Hero() {
-    delete name;
-    delete _level;
-    delete _hp;
-    delete _exp;
-    delete _attack_chance;
-    delete _def_chance;
-    delete[] Item_bag;
-    delete _skill_points;
 }
 
 int Hero::Attack() {
@@ -39,9 +35,9 @@ int Hero::Attack() {
     return totalDamage;
 }
 
-bool Monster::Block() {
+bool Hero::Block() {
     nostd::Random r{};
-    return r.getRand(0, 100) <= this->_defence_chance;
+    return r.getRand(0, 100) <= this->_def_chance;
 }
 
 void Hero::AddExp(int exp) {
