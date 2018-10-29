@@ -116,6 +116,10 @@ void Dungeon::GenerateDungeon() {
         this->begin = begin_cor;
     }
 
+    if(this->_level == 0) {
+        this->end = begin_cor;
+    }
+
     //add begin to rooms
     this->_rooms.addBack(begin);
 

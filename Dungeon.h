@@ -27,6 +27,7 @@ public:
     Room GetRoom(const int x, const int y);
 
     Coordinate begin;
+    Coordinate end;
     Coordinate stair_up;
     Coordinate stair_down;
 private:
