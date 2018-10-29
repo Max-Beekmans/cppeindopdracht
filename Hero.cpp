@@ -6,10 +6,10 @@
 #include "nostd/String.h"
 #include "nostd/Random.h"
 
-Hero::Hero() : name{}, _level(0), _hp(0), _exp(0), _attack_chance(0), _def_chance(0), Item_bag(nostd::Array<Item>(0)), _skill_points(0) {}
+Hero::Hero() : _level(0), _hp(0), _exp(0), _attack_chance(0), _def_chance(0), Item_bag(nostd::Array<Item>(0)), _skill_points(0) {}
 
 //hier komt de segfault
-Hero::Hero(nostd::String name) {
+Hero::Hero(const nostd::String name) {
     this->name = name;
     this->_level = 1;
     this->_hp = 10;

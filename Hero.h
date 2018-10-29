@@ -12,7 +12,7 @@
 class Hero {
 public:
     Hero();
-    Hero(nostd::String name);
+    Hero(const nostd::String name);
     ~Hero();
     nostd::Array<Item> Item_bag;
     nostd::String name;

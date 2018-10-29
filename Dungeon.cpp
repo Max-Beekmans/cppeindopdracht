@@ -118,7 +118,7 @@ void Dungeon::GetMonsters() {
 void Dungeon::GenerateDungeon() {
     Monster m = _monsters[0];
     nostd::Random r{};
-    int max = (_width * _height) / 2;
+    int max = (_width * _height);
     int count = 0;
     this->_rooms = nostd::Array<Room*>(max);
     this->_halls = nostd::Array<Hall>(max * 2);
@@ -150,7 +150,7 @@ void Dungeon::GenerateDungeon() {
         //north
         if (current->coords.x != 0 && _roomCount <= max) {
             int rand = r.getRand(0, 100);
-            if (rand > 20) {
+            if (rand > 25) {
                 Coordinate c{current->coords.x, current->coords.y - 1};
                 Room* north_room;
                 if (this->_dungeon[c.x][c.y].IsFilledRoom) {
@@ -169,7 +169,7 @@ void Dungeon::GenerateDungeon() {
         //south
         if (current->coords.y != _height - 1 && _roomCount <= max) {
             int rand = r.getRand(0, 100);
-            if (rand > 20) {
+            if (rand > 25) {
                 Coordinate c{current->coords.x, current->coords.y + 1};
                 Room* south_room;
                 if (this->_dungeon[c.x][c.y].IsFilledRoom) {

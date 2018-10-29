@@ -10,6 +10,7 @@
 
 class Item {
 public:
+    Item() = default;
     //Room has items in the form of furniture
     //Room has items in the form of useables
     //Hero carries item array of x

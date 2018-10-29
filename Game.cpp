@@ -21,7 +21,7 @@ void Game::Start() {
     std::cout << "Welcome to 'Draken & Kerkers'" << std::endl;
 
     std::cout << "Please choose a hero name" << std::endl;
-    const nostd::String name = GetString();
+    _hero = Hero{GetString()};
     std::cout << "Please give a width for the dungeon" << std::endl;
     const int width = GetInt();
     std::cout << "Please give a height for the dungeon" << std::endl;
@@ -29,7 +29,6 @@ void Game::Start() {
 
     //temp I'll make this prettier to the point where you only need to call what is given in the game constructor
     //TODO make copy and move for dungeon D:
-    _hero = Hero(name);
 
     this->PrintHeroStats();
     this->PrintDivider();
@@ -49,7 +48,7 @@ void Game::PrintHeroStats() {
 
 }
 
-//prints current dungeon layer once
+//print given dungeon layer
 void Game::PrintMap(const int layer) {
     this->PrintDivider();
     std::cout << "Dungeon Map" << std::endl;
@@ -66,7 +65,7 @@ int Game::GetInt() {
     return x;
 }
 
-//Get char* from user input, copies that into string and returns that
+//Get char* from user input, copies that into str and wraps that into nostd::String
 nostd::String Game::GetString() {
     char* str = new char[80];
     std::cin >> str;

@@ -14,7 +14,7 @@ class Game {
 public:
     Game();
     ~Game();
-    void PrintMap();
+    void PrintMap(const int layer);
     void PrintHeroStats();
 
     void Update();
