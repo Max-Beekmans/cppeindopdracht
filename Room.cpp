@@ -7,24 +7,23 @@
 Room::Room() {
     this->_Id = -1;
     this->coords = {};
-    this->north = nullptr;
-    this->south = nullptr;
-    this->east = nullptr;
-    this->west = nullptr;
+    this->IsStart = false;
+    this->IsEndBoss = false;
+    this->IsStairUp = false;
+    this->IsStairDown = false;
+    this->IsVisited = false;
+    this->IsFilledRoom = false;
 }
 
-Room::~Room() {
-//    delete north;
-//    delete south;
-//    delete west;
-//    delete east;
-}
+Room::~Room() {}
 
 Room::Room(const int Id, const Coordinate c) : _Id(Id), coords(c) {
-    this->north = nullptr;
-    this->south = nullptr;
-    this->east = nullptr;
-    this->west = nullptr;
+    this->IsStart = false;
+    this->IsEndBoss = false;
+    this->IsStairUp = false;
+    this->IsStairDown = false;
+    this->IsVisited = true;
+    this->IsFilledRoom = true;
 }
 
 Room::Room(const Room &r) {
@@ -106,10 +105,6 @@ void Room::move_from(Room& r) {
     this->east = r.east;
     this->south = r.south;
     this->west = r.west;
-    r.north = nullptr;
-    r.east = nullptr;
-    r.south = nullptr;
-    r.west = nullptr;
 }
 
 

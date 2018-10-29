@@ -13,18 +13,24 @@
 #include "nostd/String.h"
 #include "nostd/Array.h"
 
-Dungeon::Dungeon() : _width(-1), _height(-1), _roomCount(-1), _begin(nullptr), _dungeon(nullptr), _level(-1) {}
+Dungeon::Dungeon() : _width(-1), _height(-1), _roomCount(-1), _begin(nullptr), _level(-1) {}
 
 Dungeon::Dungeon(const int width, const int height, const int level)
         : _width(width), _height(height), _level(level), _roomCount(0) {
 
-//    this->_dungeon = (Room***) malloc(_height*_width*sizeof(Room*));
-    this->_dungeon = (Room **) malloc(_height * sizeof(Room *));
-    for (int i = 0; i < _width; ++i) {
-        this->_dungeon[i] = (Room *) malloc(_width * sizeof(Room));
+    this->_dungeon = nostd::Array<Room*>{_height};
+    for (int i = 0; i < _height; ++i) {
+        this->_dungeon[i] = new Room[_width];
     }
+//    this->_dungeon = (Room***) malloc(_height*_width*sizeof(Room*));
+//    this->_dungeon = (Room**) malloc(_height * sizeof(Room*));
+//    for (int i = 0; i < _width; ++i) {
+//        this->_dungeon[i] = (Room*) malloc(_width * sizeof(Room));
+//    }
 
-    this->_dungeon[0][0] = *new Room(0, Coordinate{0, 0});
+    this->GenerateDungeon();
+    //this->PrintDungeon();
+
 //    this->_dungeon = new Room**[width];
 //    for (int i = 0; i < width; ++i) {
 //        this->_dungeon[i] = new Room*[height];
@@ -39,10 +45,6 @@ Dungeon::Dungeon(const int width, const int height, const int level)
 
 //clean up dungeon matrix. Rest of the vars are stack allocations
 Dungeon::~Dungeon() {
-    for (int i = 0; i < _width; ++i) {
-        delete[] _dungeon;
-    }
-    delete _dungeon;
     //not sure about _begin
     delete _begin;
 }
@@ -116,9 +118,9 @@ void Dungeon::GetMonsters() {
 void Dungeon::GenerateDungeon() {
     Monster m = _monsters[0];
     nostd::Random r{};
-    int max = (_width * _height);
+    int max = (_width * _height) / 2;
     int count = 0;
-    this->_rooms = nostd::Array<Room *>(max);
+    this->_rooms = nostd::Array<Room*>(max);
     this->_halls = nostd::Array<Hall>(max * 2);
 
     //if start == nullptr, find random start
@@ -134,27 +136,29 @@ void Dungeon::GenerateDungeon() {
     //add begin to rooms
     this->_rooms.addBack(this->_begin);
 
-    for (int i = 0; i < max; i++) {
+    while (_roomCount < max) {
         //this boolean should be set for all 'build' rooms.
         // We don't want to visit default constructable rooms
-        if (_rooms[count] == NULL || !_rooms[count]->IsFilledRoom) {
+        if (_rooms[count] == nullptr || !_rooms[count]->IsFilledRoom) {
             break;
         }
-        Room *current = _rooms[count++];
-        Coordinate c{current->coords};
+        Room* current = _rooms[count++];
         current->IsVisited = true;
         current->IsFilledRoom = true;
 
         //loop through possible edges
         //north
-        if (current->coords.x != 0 && current->north == nullptr) {
+        if (current->coords.x != 0 && _roomCount <= max) {
             int rand = r.getRand(0, 100);
-            //Make edge if coin toss is true
             if (rand > 20) {
-                //new north coordinate
                 Coordinate c{current->coords.x, current->coords.y - 1};
-                Room *north_room = new Room(_roomCount++, c);
-                Hall *h = GenerateEdge(c, current, north_room);
+                Room* north_room;
+                if (this->_dungeon[c.x][c.y].IsFilledRoom) {
+                    north_room = &this->_dungeon[c.x][c.y];
+                } else {
+                    north_room = new Room(_roomCount++, c);
+                }
+                Hall h = Hall{current->coords, c, 1};
                 current->north = h;
                 north_room->south = h;
                 this->_rooms.addBack(north_room);
@@ -163,14 +167,17 @@ void Dungeon::GenerateDungeon() {
         }
 
         //south
-        if (current->coords.y != _height - 1 && current->south == nullptr) {
+        if (current->coords.y != _height - 1 && _roomCount <= max) {
             int rand = r.getRand(0, 100);
-            //Make edge if coin toss is true
             if (rand > 20) {
-                //new north coordinate
                 Coordinate c{current->coords.x, current->coords.y + 1};
-                Room *south_room = new Room(_roomCount++, c);
-                Hall *h = this->GenerateEdge(c, current, south_room);
+                Room* south_room;
+                if (this->_dungeon[c.x][c.y].IsFilledRoom) {
+                    south_room = &this->_dungeon[c.x][c.y];
+                } else {
+                    south_room = new Room(_roomCount++, c);
+                }
+                Hall h = Hall{current->coords, c, 1};
                 current->south = h;
                 south_room->north = h;
                 this->_rooms.addBack(south_room);
@@ -179,14 +186,17 @@ void Dungeon::GenerateDungeon() {
         }
 
         //east
-        if (current->coords.x != _width - 1 && current->east == nullptr) {
+        if (current->coords.x != _width - 1 && _roomCount <= max) {
             int rand = r.getRand(0, 100);
-            //Make edge if coin toss is true
             if (rand > 25) {
-                //new north coordinate
                 Coordinate c{current->coords.x + 1, current->coords.y};
-                Room *east_room = new Room(_roomCount++, c);;
-                Hall *h = GenerateEdge(c, current, east_room);
+                Room* east_room;
+                if (this->_dungeon[c.x][c.y].IsFilledRoom) {
+                    east_room = &this->_dungeon[c.x][c.y];
+                } else {
+                    east_room = new Room(_roomCount++, c);
+                }
+                Hall h = Hall{current->coords, c, 0};
                 current->east = h;
                 east_room->west = h;
                 this->_rooms.addBack(east_room);
@@ -195,21 +205,24 @@ void Dungeon::GenerateDungeon() {
         }
 
         //west
-        if (current->coords.x != 0 && current->west == nullptr) {
+        if (current->coords.x != 0 && _roomCount <= max) {
             int rand = r.getRand(0, 100);
-            //Make edge if coin toss is true
             if (rand > 25) {
-                //new north coordinate
                 Coordinate c{current->coords.x - 1, current->coords.y};
-                Room *west_room = new Room(_roomCount++, c);
-                Hall *h = GenerateEdge(c, current, west_room);
+                Room* west_room;
+                if (this->_dungeon[c.x][c.y].IsFilledRoom) {
+                    west_room = &this->_dungeon[c.x][c.y];
+                } else {
+                    west_room = new Room(_roomCount++, c);
+                }
+                Hall h = Hall{current->coords, c, 0};
                 current->west = h;
                 west_room->east = h;
                 this->_rooms.addBack(west_room);
                 this->_dungeon[c.x][c.y] = *west_room;
             }
         }
-        _dungeon[c.x][c.y] = *current;
+        _dungeon[current->coords.x][current->coords.y] = *current;
     }
 }
 
@@ -219,14 +232,14 @@ void Dungeon::PrintDungeon() {
         for (int j = 0; j < _width; ++j) {
             Room r = this->_dungeon[j][i];
             std::cout << r.GetChar();
-            if (r.IsFilledRoom && r.east != nullptr) {
-                std::cout << r.east->GetChar();
+            if (r.IsFilledRoom) {
+                std::cout << r.east.GetChar();
             } else {
                 std::cout << ' ';
             }
 
-            if (r.IsFilledRoom && r.south != nullptr) {
-                print_halls.addBack(*r.south);
+            if (r.IsFilledRoom) {
+                print_halls.addBack(r.south);
             } else {
                 Hall h;
                 print_halls.addBack(h);
@@ -246,19 +259,19 @@ void Dungeon::copy_from(const Dungeon &copy) {
 //    this->_dungeon = new Room*[copy._width];
 //    for (int i = 0; i < copy._width; ++i) {
 //        this->_dungeon[i] = new Room[_height];
-    this->_dungeon = (Room **) malloc(copy._height * sizeof(Room *));
-    for (int i = 0; i < copy._width; ++i) {
-        this->_dungeon[i] = (Room *) malloc(copy._width * sizeof(Room));
-    }
-
-    memcpy(this->_dungeon, &copy._dungeon, sizeof(copy._dungeon));
-
-    //traverse and copy
-//    for (int j = 0; j < copy._width; ++j) {
-//        for (int k = 0; k < copy._height; ++k) {
-//            this->_dungeon[j][k] = copy._dungeon[j][k];
-//        }
+//    this->_dungeon = (Room**) malloc(copy._height * sizeof(Room*));
+//    for (int i = 0; i < copy._width; ++i) {
+//        this->_dungeon[i] = (Room*) malloc(copy._width * sizeof(Room));
 //    }
+//    int bytes = sizeof(copy._dungeon);
+//    std::memcpy(this->_dungeon, &copy._dungeon, sizeof(copy._dungeon));
+//    this->_dungeon = *new nostd::Array<Room*>{copy._height};
+//    for (int i = 0; i < copy._height; ++i) {
+//        this->_dungeon[i] = new Room[copy._width];
+//        this->_dungeon[i] = copy._dungeon[i];
+//    }
+
+    this->_dungeon = copy._dungeon;
 
     this->_roomCount = copy._roomCount;
     this->_rooms = copy._rooms;
@@ -269,31 +282,23 @@ void Dungeon::copy_from(const Dungeon &copy) {
 
 void Dungeon::move_from(Dungeon &move) {
     //first make this->dungeon a matrix of default constructed rooms at the size of move
-    this->_dungeon = new Room*[move._width];
-    for (int i = 0; i < move._width; ++i) {
-        this->_dungeon[i] = new Room[_height];
-    }
-    //traverse and move
-    for (int j = 0; j < move._width; ++j) {
-        for (int k = 0; k < move._height; ++k) {
-            this->_dungeon[j][k] = move._dungeon[j][k];
-        }
-        //free this line of move's dungeon
-        delete[] move._dungeon[j];
-    }
-    delete move._dungeon;
-
+//    this->_dungeon = new Room* [move._width];
+//    for (int i = 0; i < move._width; ++i) {
+//        this->_dungeon[i] = new Room[_height];
+//    }
+//    //traverse and move
+//    for (int j = 0; j < move._width; ++j) {
+//        for (int k = 0; k < move._height; ++k) {
+//            this->_dungeon[j][k] = move._dungeon[j][k];
+//        }
+//        //free this line of move's dungeon
+//        delete[] move._dungeon[j];
+//    }
+//    delete move._dungeon;
+    this->_dungeon = move._dungeon;
     this->_roomCount = move._roomCount;
     this->_rooms = move._rooms;
     this->_halls = move._halls;
     this->_width = move._width;
     this->_height = move._height;
 }
-
-Hall *Dungeon::GenerateEdge(Coordinate c, Room *current, Room *r) {
-    r = new Room(_roomCount++, c);
-    r->IsFilledRoom = true;
-    r->IsVisited = true;
-    return new Hall(current->coords, r->coords, 0);
-}
-

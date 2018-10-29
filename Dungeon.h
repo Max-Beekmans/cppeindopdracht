@@ -25,10 +25,9 @@ public:
     void GenerateDungeon();
     void PrintDungeon();
 private:
-    Hall* GenerateEdge(Coordinate c, Room* current, Room* r);
     void copy_from(const Dungeon& copy);
     void move_from(Dungeon& move);
-    Room** _dungeon;
+    nostd::Array<Room*> _dungeon;
     Room* _begin = nullptr;
     nostd::Array<Room*> _rooms;
     nostd::Array<Hall> _halls;

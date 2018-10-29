@@ -18,10 +18,10 @@ public:
     Room& operator=(const Room& copy);
     Room& operator=(Room&& move) noexcept;
 
-    Hall* north;
-    Hall* south;
-    Hall* east;
-    Hall* west;
+    Hall north;
+    Hall south;
+    Hall east;
+    Hall west;
 
     Coordinate coords;
 
