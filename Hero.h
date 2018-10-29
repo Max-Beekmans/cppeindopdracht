@@ -8,17 +8,23 @@
 #include "nostd/Array.h"
 #include "nostd/String.h"
 #include "Item.h"
+#include "Coordinate.h"
+#include "Monster.h"
 
 class Hero {
 public:
     Hero();
-    Hero(const nostd::String name);
+    Hero(nostd::String name);
     ~Hero();
     nostd::Array<Item> Item_bag;
     nostd::String name;
     void AddExp(int exp);
     int Attack();
-    bool Block();
+    int Block(int damage);
+    // takes 'N'for North, 'S' for South, 'W' for West and 'E' for East.
+    void Move(char dir);
+    void PickUpItem(Item item);
+    Coordinate location;
 private:
     void LevelUp();
     int _level;
@@ -27,6 +33,7 @@ private:
     int _skill_points;
     int _attack_chance;
     int _def_chance;
+    int _item_count;
 };
 
 

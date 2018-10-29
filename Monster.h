@@ -19,11 +19,12 @@ public:
     nostd::String name;
     nostd::String level;
     int Attack();
-    bool Block();
+    int Block(int damage);
     //copy
     Monster& operator=(const Monster& copy);
     //move
     Monster& operator=(Monster&& move) noexcept;
+    int currentHP;
 private:
     int _attackChance;
     int _attackAmount;
@@ -31,7 +32,6 @@ private:
     int _maxDamage;
     int _defenceChance;
     int _maxHP;
-    int _currentHP;
     void copy_from(const Monster& copy);
     void move_from(Monster& move);
 };
