@@ -11,12 +11,21 @@
 class Item {
 public:
     Item() = default;
-    //Room has items in the form of furniture
-    //Room has items in the form of useables
-    //Hero carries item array of x
-    //TODO make this class
-    nostd::String name;
+    ~Item() = default;
+    Item(nostd::String stat, nostd::String item_name, int factor, int uses = 1);
+    Item(const Item& copy);
+    Item(Item&& move) noexcept;
+
+    Item& operator=(const Item& copy);
+    Item& operator=(Item&& move) noexcept;
+
+    nostd::String stat; //needs to match Attack, Defend, HP, AC (attack chance), DC (defend chance) or EXP
+    nostd::String name; //name for the item
+    int uses; //default is 1 uses, 0 uses means the item has ran out, -1 = infinite uses
+    int factor; //int amount to influence matching stat.
 private:
+    void copy_from(const Item& copy);
+    void move_from(Item& move);
 };
 
 
