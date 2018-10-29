@@ -111,7 +111,10 @@ void Dungeon::GenerateDungeon() {
     int y = r.getRand(0, _height - 1);
     Coordinate begin_cor{x, y};
     Room* begin = new Room(_roomCount++, begin_cor);
-    this->begin = begin_cor;
+
+    if(this->_level == 4) {
+        this->begin = begin_cor;
+    }
 
     //add begin to rooms
     this->_rooms.addBack(begin);

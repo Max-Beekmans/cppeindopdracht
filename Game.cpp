@@ -33,20 +33,22 @@ void Game::Start() {
     this->PrintHeroStats();
     this->PrintDivider();
 
-    _dungeon_layers[_current_layer] = Dungeon {width, height, _current_layer};
-    _current_layer++;
-    _dungeon_layers[_current_layer] = Dungeon {width, height, _current_layer};
-    this->PrintMap(0);
-    this->PrintMap(1);
+    for (int i = 0; i < 5; ++i) {
+        _dungeon_layers[i] = Dungeon {width, height, i};
+    }
+
+    for (int j = 0; j < 5; ++j) {
+        this->PrintMap(j);
+    }
 }
 
 void Game::StartFight() {
     //pseudocode nog
-    Monster m = _dungeon_layers[_current_layer].GetRoom(_hero.location.x, _hero.location.y).Monster;
-    while (m.currentHP > 0) {
-
-
-    }
+//    Monster m = _dungeon_layers[_current_layer].GetRoom(_hero.location.x, _hero.location.y).Monster;
+//    while (m.currentHP > 0) {
+//
+//
+//    }
 }
 
 void Game::Flee() {

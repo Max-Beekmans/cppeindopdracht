@@ -123,7 +123,43 @@ void Room::move_from(Room& r) {
 
 nostd::String Room::GetDescription() {
     //TODO make some wholesome description from layout, size and IsClean
-    return nostd::String();
+    nostd::String str {"This is a "};
+    switch (this->size) {
+        case 0:
+            str += nostd::String {"small "};
+            break;
+        case 1:
+            str += nostd::String {"moderate "};
+            break;
+        case 2:
+            str += nostd::String {"large "};
+            break;
+        default:
+            break;
+    }
+
+    if(this->IsClean) {
+        str += nostd::String {"clean room."};
+    } else {
+        str += nostd::String {"dirty room."};
+    }
+
+    switch (this->layout) {
+        case 0:
+            //isempty
+            break;
+        case 1:
+            str += nostd::String {" There seems to be a table with 4 chairs in the middle of the room."};
+            break;
+        case 2:
+            str += nostd::String {" You can see a faint image of a bed in the corner of the room."};
+            break;
+        default:
+            //isempty
+            break;
+    }
+
+    return str;
 }
 
 
