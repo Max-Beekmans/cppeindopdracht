@@ -16,11 +16,11 @@ public:
     ~Game();
     void PrintMap(const int layer);
     void PrintHeroStats();
-
+    void StartFight();
     void Update();
     void Start();
     void Stop();
-
+    void Flee();
 private:
     //TODO move user input to IO class
     int GetInt();

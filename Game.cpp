@@ -40,6 +40,19 @@ void Game::Start() {
     this->PrintMap(1);
 }
 
+void Game::StartFight() {
+    //pseudocode nog
+    Monster m = _dungeon_layers[_current_layer].GetRoom(_hero.location.x, _hero.location.y).Monster;
+    while (m.currentHP > 0) {
+
+
+    }
+}
+
+void Game::Flee() {
+
+}
+
 void Game::Stop() {
     //clean up global memory or anything not being freed with going out of scope.
 }

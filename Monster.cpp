@@ -5,10 +5,10 @@
 #include "Monster.h"
 #include "nostd/Random.h"
 
-Monster::Monster() : name{}, level{}, _attackChance(-1), _attackAmount(-1), _minDamage(-1), _maxDamage(-1), _defenceChance(-1), _maxHP(-1), _currentHP(-1) {}
+Monster::Monster() : name{}, level{}, _attackChance(-1), _attackAmount(-1), _minDamage(-1), _maxDamage(-1), _defenceChance(-1), _maxHP(-1), currentHP(-1) {}
 
 Monster::Monster(const nostd::String name, const nostd::String level, const int attackChance, const int attackAmount, const int minDamage, const int maxDamage, const int defenceChance, const int maxHP)
-    : name(name), level(level), _attackChance(attackChance), _attackAmount(attackAmount), _minDamage(minDamage), _maxDamage(maxDamage), _defenceChance(defenceChance), _maxHP(maxHP), _currentHP(maxHP) {
+    : name(name), level(level), _attackChance(attackChance), _attackAmount(attackAmount), _minDamage(minDamage), _maxDamage(maxDamage), _defenceChance(defenceChance), _maxHP(maxHP), currentHP(maxHP) {
 }
 
 Monster::~Monster() {
@@ -28,9 +28,9 @@ int Monster::Attack() {
     return totalDamage;
 }
 
-bool Monster::Block() {
+int Monster::Block(int damage) {
     nostd::Random r{};
-    return r.getRand(0, 100) <= this->_defenceChance;
+    return r.getRand(0, 100) <= this->_defenceChance ? 0 : damage;
 }
 
 Monster& Monster::operator=(const Monster& copy) {
@@ -54,7 +54,7 @@ void Monster::copy_from(const Monster& copy) {
     this->_maxDamage = copy._maxDamage;
     this->_defenceChance = copy._defenceChance;
     this->_maxHP = copy._maxHP;
-    this->_currentHP = copy._currentHP;
+    this->currentHP = copy.currentHP;
 }
 
 void Monster::move_from(Monster &move) {
@@ -66,7 +66,7 @@ void Monster::move_from(Monster &move) {
     this->_maxDamage = move._maxDamage;
     this->_defenceChance = move._defenceChance;
     this->_maxHP = move._maxHP;
-    this-> _currentHP = move._currentHP;
+    this-> currentHP = move.currentHP;
 }
 
 Monster::Monster(const Monster &copy) {
