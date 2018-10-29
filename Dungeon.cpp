@@ -17,24 +17,12 @@ Dungeon::Dungeon() : _width(-1), _height(-1), _roomCount(-1), _begin(nullptr), _
 
 Dungeon::Dungeon(const int width, const int height, const int level)
         : _width(width), _height(height), _level(level), _roomCount(0) {
-
     this->_dungeon = nostd::Array<Room*>{_height};
     for (int i = 0; i < _height; ++i) {
         this->_dungeon[i] = new Room[_width];
     }
-//    this->_dungeon = (Room***) malloc(_height*_width*sizeof(Room*));
-//    this->_dungeon = (Room**) malloc(_height * sizeof(Room*));
-//    for (int i = 0; i < _width; ++i) {
-//        this->_dungeon[i] = (Room*) malloc(_width * sizeof(Room));
-//    }
 
     this->GenerateDungeon();
-    //this->PrintDungeon();
-
-//    this->_dungeon = new Room**[width];
-//    for (int i = 0; i < width; ++i) {
-//        this->_dungeon[i] = new Room*[height];
-//    }
 
     //TODO build up array somewhere different but have dungeon access it instead
     //TODO include this into room builder dungeon doesn't need to know about monsters. the room does
@@ -224,6 +212,7 @@ void Dungeon::GenerateDungeon() {
         }
         _dungeon[current->coords.x][current->coords.y] = *current;
     }
+    this->SetStairs(_level);
 }
 
 void Dungeon::PrintDungeon() {
@@ -255,24 +244,8 @@ void Dungeon::PrintDungeon() {
 }
 
 void Dungeon::copy_from(const Dungeon &copy) {
-    //first make this->dungeon a matrix of default constructed rooms at the size of copy
-//    this->_dungeon = new Room*[copy._width];
-//    for (int i = 0; i < copy._width; ++i) {
-//        this->_dungeon[i] = new Room[_height];
-//    this->_dungeon = (Room**) malloc(copy._height * sizeof(Room*));
-//    for (int i = 0; i < copy._width; ++i) {
-//        this->_dungeon[i] = (Room*) malloc(copy._width * sizeof(Room));
-//    }
-//    int bytes = sizeof(copy._dungeon);
-//    std::memcpy(this->_dungeon, &copy._dungeon, sizeof(copy._dungeon));
-//    this->_dungeon = *new nostd::Array<Room*>{copy._height};
-//    for (int i = 0; i < copy._height; ++i) {
-//        this->_dungeon[i] = new Room[copy._width];
-//        this->_dungeon[i] = copy._dungeon[i];
-//    }
-
     this->_dungeon = copy._dungeon;
-
+    this->_level = copy._level;
     this->_roomCount = copy._roomCount;
     this->_rooms = copy._rooms;
     this->_halls = copy._halls;
@@ -281,24 +254,43 @@ void Dungeon::copy_from(const Dungeon &copy) {
 }
 
 void Dungeon::move_from(Dungeon &move) {
-    //first make this->dungeon a matrix of default constructed rooms at the size of move
-//    this->_dungeon = new Room* [move._width];
-//    for (int i = 0; i < move._width; ++i) {
-//        this->_dungeon[i] = new Room[_height];
-//    }
-//    //traverse and move
-//    for (int j = 0; j < move._width; ++j) {
-//        for (int k = 0; k < move._height; ++k) {
-//            this->_dungeon[j][k] = move._dungeon[j][k];
-//        }
-//        //free this line of move's dungeon
-//        delete[] move._dungeon[j];
-//    }
-//    delete move._dungeon;
     this->_dungeon = move._dungeon;
+    this->_level = move._level;
     this->_roomCount = move._roomCount;
     this->_rooms = move._rooms;
     this->_halls = move._halls;
     this->_width = move._width;
     this->_height = move._height;
+}
+
+void Dungeon::SetStairs(const int layer) {
+    nostd::Random r{};
+    int x = r.getRand(0, _width);
+    int y = r.getRand(0, _height);
+
+    //Don't generate stair up for top room
+    if (layer < 5) {
+        while (!_dungeon[x][y].IsFilledRoom || _dungeon[x][y].IsStart || _dungeon[x][y].IsEndBoss || _dungeon[x][y].IsStairDown) {
+            x = r.getRand(0, _width);
+            y = r.getRand(0, _height);
+        }
+        _dungeon[x][y].IsStairUp = true;
+    }
+
+    //Don't generate stair down for bottom room
+    if (layer > 0) {
+        while (_dungeon[x][y].IsFilledRoom || _dungeon[x][y].IsStart || _dungeon[x][y].IsEndBoss || _dungeon[x][y].IsStairUp) {
+            x = r.getRand(0, _width);
+            y = r.getRand(0, _height);
+        }
+        _dungeon[x][y].IsStairDown = true;
+    }
+}
+
+Room Dungeon::GetRoom(const int x, const int y) {
+    if (x > _width || x < 0 || y > _height || y < 0) {
+        throw std::out_of_range("x or y out of range");
+    }
+    Room r = this->_dungeon[x][y];
+    return r;
 }

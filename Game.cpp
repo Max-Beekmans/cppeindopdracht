@@ -33,9 +33,9 @@ void Game::Start() {
     this->PrintHeroStats();
     this->PrintDivider();
 
-    _dungeon_layers[_current_layer] = *new Dungeon {width, height, _current_layer};
+    _dungeon_layers[_current_layer] = Dungeon {width, height, _current_layer};
     _current_layer++;
-    _dungeon_layers[_current_layer] = *new Dungeon {width, height, _current_layer};
+    _dungeon_layers[_current_layer] = Dungeon {width, height, _current_layer};
     this->PrintMap(0);
     this->PrintMap(1);
 }

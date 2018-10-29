@@ -24,9 +24,12 @@ public:
     void GetMonsters();
     void GenerateDungeon();
     void PrintDungeon();
+    Room GetRoom(const int x, const int y);
 private:
     void copy_from(const Dungeon& copy);
     void move_from(Dungeon& move);
+    void SetStairs(const int layer);
+
     nostd::Array<Room*> _dungeon;
     Room* _begin = nullptr;
     nostd::Array<Room*> _rooms;
