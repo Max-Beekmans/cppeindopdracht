@@ -31,7 +31,7 @@ int Monster::Attack() {
 bool Monster::Block() {
     nostd::Random r{};
     return r.getRand(0, 100) <= this->_defenceChance;
-};
+}
 
 Monster& Monster::operator=(const Monster& copy) {
     if (this == &copy) return *this;

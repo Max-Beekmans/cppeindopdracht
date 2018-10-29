@@ -11,14 +11,21 @@
 
 class Hero {
 public:
+    Hero(nostd::String name);
+    ~Hero();
     nostd::Array<Item> Item_bag;
     nostd::String name;
-    int _level;
-    int hp;
-    int exp;
-    int attack_chance;
-    int def_chance;
+    void AddExp();
+    int Attack();
+    bool Block();
 private:
+    void LevelUp();
+    int _level;
+    int _hp;
+    int _exp;
+    int _skill_points;
+    int _attack_chance;
+    int _def_chance;
 };
 
 

@@ -16,8 +16,8 @@ Game::~Game() {
 
 void Game::Update() {
     while(_running) {
+        std::cout << "Generated Dungeon";
         _dungeon->PrintDungeon();
-        std::cout.flush();
     }
 }
 
