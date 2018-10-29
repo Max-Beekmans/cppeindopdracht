@@ -9,5 +9,7 @@ int main() {
     Game g {};
     g.Start();
     g.Stop();
+    char c[65];
+    std::cin >> c;
     return 0;
 }
