@@ -152,6 +152,29 @@ namespace nostd {
         }
     }
 
+    const size_t String::Find(const char c) {
+        char* pch;
+        pch = strchr(this->ptr, c);
+        size_t found = pch-this->ptr+1;
+        return found;
+    }
+
+    nostd::String* String::Split(const char delim) {
+        const size_t index = this->Find(delim);
+        nostd::String* res = new nostd::String[2];
+        res[0] = nostd::String{};
+        res[1] = nostd::String{};
+        for (int i = 0; i < index - 1; ++i) {
+            res[0] += this->at(i);
+        }
+
+        for (int j = (int) index; j < this->size(); ++j) {
+            res[1] += this->at(j);
+        }
+
+        return res;
+    }
+
     //helper nonmember functions
     char* begin(String& x) {
         return x.c_str();

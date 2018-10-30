@@ -41,19 +41,12 @@ void Game::Start() {
     _io.PrintLine(_hero.layer);
     _io.Print("current coords: ");
     _io.Print(_hero.location.x);
-    _io.Print(" , ");
-    _io.Print(_hero.location.y);
+    _io.Print(",");
+    _io.PrintLine(_hero.location.y);
 
     Room current = _dungeon_layers[_hero.layer].GetRoom(_hero.location);
 
-    this->PrintDivider();
-
     this->EnterRoom(current);
-    //doturn end
-
-//    for (int j = 0; j < 5; ++j) {
-//        this->PrintMap(j);
-//  }
 }
 
 void Game::EnterRoom(Room room) {
@@ -70,8 +63,7 @@ void Game::GetInput(Room room) {
         Monster* m = new Monster{nostd::String("Rat"), nostd::String("1"), 20, 1, 1, 2, 20, 1};
         Item* i = room.TakeItem();
         std::cout << "What do you want to do?" << std::endl;
-        std::cout << "[ " << (m != nullptr ? "fight | " : "") << "run | rest | items | map | stats | skill | "
-                  << (i != nullptr ? "take | " : "") << "quit ]" << std::endl;
+        std::cout << "[ " << (m != nullptr ? "fight | " : "") << "run | rest | items | map | stats | skill | " << (i != nullptr ? "take | " : "") << "quit ]" << std::endl;
         nostd::String input = _io.GetString();
 
 
