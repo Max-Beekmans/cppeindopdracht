@@ -22,11 +22,6 @@ Dungeon::Dungeon(const int width, const int height, const int level)
         this->_dungeon[i] = new Room[_width];
     }
 
-    //TODO build up array somewhere different but have dungeon access it instead
-    //TODO include this into room builder dungeon doesn't need to know about monsters. the room does
-    //dungeon can copy from the monster array
-    this->_monsters = nostd::Array<Monster>{10};
-    this->GetMonsters();
     this->GenerateDungeon();
 }
 
@@ -50,68 +45,6 @@ Dungeon &Dungeon::operator=(Dungeon &&move) noexcept {
     if (this == &move) return *this;
     move_from(move);
     return *this;
-}
-
-void Dungeon::GetMonsters() {
-    std::ifstream fileStream;
-    char line[14][512];
-    //todo: exception handling
-    fileStream.open("monsters.txt");
-    bool isopen = fileStream.is_open();
-    int i = 0;
-    while (!fileStream.eof()) {
-        fileStream.getline(line[i], sizeof(line[i]));
-        if (line[i][0] == '[') {
-            nostd::String strings[6];
-            //nostd::Array<nostd::String> strings{6};
-            int c = 0;
-            int j = 1;
-            bool reading = true;
-            while (reading) {
-                switch (line[i][j]) {
-                    case ';':
-                        c++;
-                        break;
-                    case ']':
-                        reading = false;
-                        break;
-                    default:
-                        strings[c] += line[i][j];
-                        break;
-                }
-                j++;
-            }
-
-            char* first = nullptr;
-            char* second = nullptr;
-
-            nostd::String name = strings[0];
-            nostd::String level = strings[1];
-
-            nostd::String* ac_res = strings[2].Split('x');
-            first = ac_res[0].c_str();
-            second = ac_res[1].c_str();
-
-            int attackChance = std::atoi(first);
-            int attackAmount = std::atoi(second);
-
-            nostd::String* minmax_res = strings[3].Split('-');
-            first = minmax_res[0].c_str();
-            second = minmax_res[1].c_str();
-
-            int minDamage = std::atoi(first);
-            int maxDamage = std::atoi(second);
-
-            first = strings[4].c_str();
-            second = strings[5].c_str();
-            int defenceChance = std::atoi(first);
-            int maxHP = std::atoi(second);
-
-            _monsters[i] = Monster(name, level, attackChance, attackAmount, minDamage, maxDamage, defenceChance, maxHP);
-            i++;
-        }
-    }
-    fileStream.close();
 }
 
 void Dungeon::GenerateDungeon() {

@@ -21,7 +21,6 @@ public:
     Dungeon& operator=(const Dungeon& copy);
     Dungeon& operator=(Dungeon&& move) noexcept;
 
-    void GetMonsters();
     void GenerateDungeon();
     void PrintDungeon();
     Room GetRoom(const int x, const int y);
@@ -38,7 +37,7 @@ private:
     nostd::Array<Room*> _dungeon;
     nostd::Array<Room*> _rooms;
     nostd::Array<Hall> _halls;
-    nostd::Array<Monster> _monsters;
+
     int _width;
     int _height;
     int _roomCount;
