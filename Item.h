@@ -12,13 +12,16 @@ class Item {
 public:
     Item() = default;
     ~Item() = default;
-    Item(nostd::String stat, nostd::String item_name, int factor, int uses = 1);
+    Item(nostd::String stat, nostd::String item_name, nostd::String on_use, int factor, int uses = 1);
     Item(const Item& copy);
     Item(Item&& move) noexcept;
 
     Item& operator=(const Item& copy);
     Item& operator=(Item&& move) noexcept;
 
+    nostd::String ConsumeItem();
+
+    nostd::String use; //return this when item gets consumed once
     nostd::String stat; //needs to match Attack, Defend, HP, AC (attack chance), DC (defend chance) or EXP
     nostd::String name; //name for the item
     int uses; //default is 1 uses, 0 uses means the item has ran out, -1 = infinite uses

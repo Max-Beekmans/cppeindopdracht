@@ -3,10 +3,9 @@
 namespace nostd {
 
     String IOHandler::GetString() {
-        char str[64];
+        char* str = new char[80];
         std::cin >> str;
-        String mstr = {str};
-        return mstr;
+        return nostd::String {str};
     }
 
     int IOHandler::GetInt() {
@@ -14,7 +13,6 @@ namespace nostd {
         std::cin >> x;
         return x;
     }
-
 
     void IOHandler::ClearConsole() {
         for (int i = 0; i < 10; ++i) {

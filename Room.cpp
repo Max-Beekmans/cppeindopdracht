@@ -38,6 +38,42 @@ Room::Room(const int Id, const Coordinate c) : _Id(Id), coords(c) {
     this->IsStairDown = false;
     this->IsVisited = true;
     this->IsFilledRoom = true;
+
+    int rand = r.getRand(0, 100);
+
+    if (rand < 20) {
+        this->_item = nullptr;
+    }
+
+    if (rand > 20 && rand < 40) {
+        nostd::String stat {"attack"};
+        nostd::String name {"Old sword"};
+        nostd::String use {"*Swoosh*"};
+
+        this->_item = new Item{stat, name, use, 5, 1};
+    }
+
+    if (rand > 40 && rand < 60) {
+        nostd::String stat {"defend"};
+        nostd::String name {"Steel greaves"};
+        nostd::String use {"*metal on metal sound*"};
+        this->_item = new Item{stat, name, use, 3, 350};
+    }
+
+    if (rand > 60 && rand < 80) {
+        nostd::String stat {"HP"};
+        nostd::String name {"Swordfish"};
+        nostd::String use {"Nom Nom Nom"};
+        this->_item = new Item{stat, name, use, 14};
+    }
+
+    if (rand > 80 && rand < 100) {
+        nostd::String stat {"EXP"};
+        nostd::String name {"Golden lamp"};
+        nostd::String use {"*You rub the lamp*, An exp genie appears"};
+        this->_item = new Item{stat, name, use, 250};
+    }
+
 }
 
 Room::Room(const Room &r) {
@@ -160,6 +196,15 @@ nostd::String Room::GetDescription() {
     }
 
     return str;
+}
+
+//this wil transfer ownership of the item
+//ROOM WILL NOT CLEAR THIS PTR
+Item* Room::TakeItem() {
+    if (_item != nullptr) {
+        return _item;
+    }
+    return nullptr;
 }
 
 

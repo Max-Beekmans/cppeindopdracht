@@ -9,14 +9,12 @@
 
 class Hall {
 public:
-    Hall() : enda(nullptr), endb(nullptr), _visible(false), _orientation(-1) {}
-    Hall(const Coordinate& enda, const Coordinate& endb, int orientation) : enda(&enda), endb(&endb), _orientation(orientation), _visible(true) {}
+    Hall() = default;
+    ~Hall() = default;
+    Hall(const Coordinate enda, const Coordinate endb, int orientation) : enda(enda), endb(endb), _orientation(orientation), _visible(true) {}
     Hall(const Hall& copy) { copy_from(copy); }
     Hall(Hall&& move) noexcept { move_from(move); }
-    ~Hall() {
-//        delete enda;
-//        delete endb;
-    }
+
 
     Hall& operator=(const Hall& copy) {
         if (this == &copy) return *this;
@@ -32,7 +30,6 @@ public:
 
     const char GetChar() {
         if (_visible || _orientation > -1) {
-            //horizontal
             if (_orientation == 0) {
                 return '-';
             } else if (_orientation == 1) {
@@ -43,8 +40,8 @@ public:
     }
 
     //We save the coordinates of the adjacent rooms const
-    const Coordinate* enda;
-    const Coordinate* endb;
+    Coordinate enda;
+    Coordinate endb;
 private:
     void copy_from(const Hall& copy) {
         this->enda = copy.enda;
