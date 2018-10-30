@@ -12,7 +12,7 @@
 
 Hero::Hero() : _level(0), _hp(0), current_hp(0), _exp(0), _attack_chance(0), _def_chance(0), Item_bag(nostd::Array<Item>(0)), _skill_points(0), _item_count(0) {}
 
-Hero::Hero(nostd::String name) {
+Hero::Hero(nostd::String name, Coordinate start) {
     this->name = std::move(name);
     this->_level = 1;
     this->_hp = 10;
@@ -22,8 +22,9 @@ Hero::Hero(nostd::String name) {
     this->_def_chance = 30;
     this->Item_bag = nostd::Array<Item>(5);
     this->_skill_points = 0;
-    this->location = Coordinate();
+    this->location = start;
     this->_item_count = 0;
+    this->layer = 0;
     this->_io = nostd::IOHandler();
 }
 

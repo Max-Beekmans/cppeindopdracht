@@ -295,3 +295,11 @@ Room Dungeon::GetRoom(const int x, const int y) {
     Room r = this->_dungeon[x][y];
     return r;
 }
+
+Room Dungeon::GetRoom(Coordinate c) {
+    if (c.x > _width || c.x < 0 || c.y > _height || c.y < 0) {
+        throw std::out_of_range("x or y out of range");
+    }
+    Room r = this->_dungeon[c.x][c.y];
+    return r;
+}

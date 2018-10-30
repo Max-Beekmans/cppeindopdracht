@@ -23,25 +23,39 @@ void Game::Start() {
     std::cout << "Welcome to 'Draken & Kerkers'" << std::endl;
 
     std::cout << "Please choose a hero name" << std::endl;
-    _hero = Hero{_io.GetString()};
+    nostd::String hero_name = _io.GetString();
     std::cout << "Please give a width for the dungeon" << std::endl;
     const int width = _io.GetInt();
     std::cout << "Please give a height for the dungeon" << std::endl;
     const int height = _io.GetInt();
 
-    //temp I'll make this prettier to the point where you only need to call what is given in the game constructor
-    //TODO make copy and move for dungeon D:
-
-    this->PrintHeroStats();
-    this->PrintDivider();
-
     for (int i = 0; i < 5; ++i) {
         _dungeon_layers[i] = Dungeon {width, height, i};
     }
 
-    for (int j = 0; j < 5; ++j) {
-        this->PrintMap(j);
-    }
+    _hero = Hero{hero_name, _dungeon_layers[4].begin};
+
+    //doturn
+    //if opponent
+    //  fight()
+    _io.Print("current layer ");
+    _io.PrintLine(_hero.layer);
+    _io.Print("current coords: ");
+    _io.Print(_hero.location.x);
+    _io.Print(" , ");
+    _io.Print(_hero.location.y);
+
+    Room current = _dungeon_layers[_hero.layer].GetRoom(_hero.location);
+    _io.Print(current.GetDescription());
+
+    //doturn end
+
+    this->PrintHeroStats();
+    this->PrintDivider();
+
+//    for (int j = 0; j < 5; ++j) {
+//        this->PrintMap(j);
+//    }
 }
 
 void Game::StartFight() {
@@ -104,7 +118,6 @@ void Game::Stop() {
 }
 
 void Game::PrintHeroStats() {
-
 }
 
 //print given dungeon layer

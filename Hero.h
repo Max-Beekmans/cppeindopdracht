@@ -15,7 +15,7 @@
 class Hero {
 public:
     Hero();
-    Hero(nostd::String name);
+    Hero(nostd::String name, Coordinate start);
     ~Hero();
     nostd::Array<Item> Item_bag;
     nostd::String name;
@@ -27,6 +27,7 @@ public:
     void UseSkillPoints();
     void PickUpItem(Item item);
     Coordinate location;
+    int layer;
     int current_hp;
 private:
     void LevelUp();

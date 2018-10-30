@@ -25,7 +25,7 @@ public:
     void GenerateDungeon();
     void PrintDungeon();
     Room GetRoom(const int x, const int y);
-
+    Room GetRoom(Coordinate c);
     Coordinate begin;
     Coordinate end;
     Coordinate stair_up;
