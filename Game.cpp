@@ -46,10 +46,10 @@ void Game::Start() {
 
     Room current = _dungeon_layers[_hero.layer].GetRoom(_hero.location);
 
+    this->PrintDivider();
+
     this->EnterRoom(current);
     //doturn end
-
-    this->PrintDivider();
 
 //    for (int j = 0; j < 5; ++j) {
 //        this->PrintMap(j);
@@ -58,44 +58,106 @@ void Game::Start() {
 
 void Game::EnterRoom(Room room) {
     _io.Print(room.GetDescription());
-    std::cout << "What do you want to do?" << std::endl;
 
+    this->GetInput(room);
 }
 
-void Game::StartFight() {
-    Room room = _dungeon_layers[_current_layer].GetRoom(_hero.location.x, _hero.location.y);
-    Monster m = room.Monster;
-    bool fighting = true;
-    std::cout << "You encounter " << m.name << "." << std::endl;
-    std::cout << m.name << " has " << m.currentHP << " hitpoints." << std::endl;
-    while (fighting) {
-        if(m.currentHP <= 0){
-            if(m.level.c_str() != "BAAS") {
-                _hero.AddExp(m.level.c_str() - "0");
-            } else {
-                _hero.AddExp(12);
-            }
-
-            fighting = false;
-        }
-
-        std::cout << "What would you like to do?" << std::endl;
-        std::cout << "[ attack | run ]" << std::endl;
+void Game::GetInput(Room room) {
+    bool done = false;
+    while(!done) {
+        //Monster* m = room.Monster
+        //hardcoded
+        Monster* m = new Monster{nostd::String("Rat"), nostd::String("1"), 20, 1, 1, 2, 20, 1};
+        Item* i = room.TakeItem();
+        std::cout << "What do you want to do?" << std::endl;
+        std::cout << "[ " << (m != nullptr ? "fight | " : "") << "run | rest | items | map | stats | skill | "
+                  << (i != nullptr ? "take | " : "") << "quit ]" << std::endl;
         nostd::String input = _io.GetString();
 
-        if(input.c_str() == "attack") {
 
-            //Hero's turn
-            int hDamage = m.Block(_hero.Attack());
-            std::cout << "You did " << hDamage << "damage." << std::endl;
-            std::cout << m.name << " has " << m.currentHP << " hitpoints left." << std::endl;
-
-            //Monster's turn
-            int mDamage = _hero.Block(m.Attack());
-            std::cout << "You received " << hDamage << "damage." << std::endl;
-            std::cout << "You have " << m.currentHP << " hitpoints left." << std::endl;
-        } else if(input.c_str() == "run") {
+        if (input.c_str() == "fight") {
+            if (m != nullptr) {
+                this->StartFight(m);
+            } else {
+                std::cout << "There is no one to fight." << std::endl;
+            }
+        } else if (input.c_str() == "run") {
             this->Run();
+            done = true;
+        } else if (input.c_str() == "rest") {
+            _hero.Rest();
+        } else if (input.c_str() == "items") {
+            _hero.PrintBag();
+        } else if (input.c_str() == "map") {
+            this->PrintMap(_hero.layer);
+        } else if (input.c_str() == "stats") {
+            _hero.PrintStats();
+        } else if(input.c_str() == "skill") {
+            _hero.UseSkillPoints();
+        }
+        else if (input.c_str() == "take") {
+            if (i != nullptr) {
+                _hero.PickUpItem(i);
+            } else {
+                std::cout << "There was nothing to take." << std::endl;
+            }
+        } else if (input.c_str() == "quit") {
+            this->Stop();
+            done = true;
+        }
+    }
+}
+
+void Game::StartFight(Monster* m) {
+    if(m != nullptr) {
+        bool fighting = true;
+        std::cout << "You encounter " << m->name << "." << std::endl;
+        std::cout << m->name << " has " << m->currentHP << " hitpoints." << std::endl;
+        while (fighting) {
+            if(m->currentHP <= 0){
+                if(m->level.c_str() != "BAAS") {
+                    _hero.AddExp(m->level.c_str() - "0");
+                } else {
+                    _hero.AddExp(12);
+                }
+
+                fighting = false;
+            }
+
+            std::cout << "What would you like to do?" << std::endl;
+            std::cout << "[ attack | run | item ]" << std::endl;
+            nostd::String input = _io.GetString();
+
+            if(input.c_str() == "attack") {
+
+                //Hero's turn
+                int hDamage = m->Block(_hero.Attack());
+                std::cout << "You did " << hDamage << "damage." << std::endl;
+                std::cout << m->name << " has " << m->currentHP << " hitpoints left." << std::endl;
+
+                //Monster's turn
+                int mDamage = _hero.Block(m->Attack());
+                std::cout << "You received " << hDamage << "damage." << std::endl;
+                std::cout << "You have " << m->currentHP << " hitpoints left." << std::endl;
+            } else if(input.c_str() == "run") {
+                this->Run();
+                fighting = false;
+            } else if(input.c_str() == "item") {
+                for(int i = 0; i < _hero.Item_bag.size(); i++) {
+                    std::cout << "[" << i << "] " << _hero.Item_bag.at(i).name;
+                }
+                std::cout << "What item do you want to use? (enter number)" << std::endl;
+                int index = _io.GetInt();
+
+                if(index <_hero.Item_bag.size() - 1) {
+                    if(_hero.Item_bag.at(index).uses > 0) {
+                        _hero.UseItem(_hero.Item_bag.at(index));
+                        _hero.Item_bag.at(index).uses--;
+                    } else {
+                        std::cout << "That item has no uses left";
+                    }
+                }
+            }
         }
     }
 }
@@ -115,10 +177,13 @@ void Game::Run() {
     } else {
         this->Run();
     }
+
+    EnterRoom(_dungeon_layers[_hero.layer].GetRoom(_hero.location));
 }
 
 void Game::Stop() {
     //clean up global memory or anything not being freed with going out of scope.
+
 }
 
 //print given dungeon layer

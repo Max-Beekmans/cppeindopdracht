@@ -54,7 +54,7 @@ Room::Room(const int Id, const Coordinate c) : _Id(Id), coords(c) {
     }
 
     if (rand > 40 && rand < 60) {
-        nostd::String stat {"defend"};
+        nostd::String stat {"defence"};
         nostd::String name {"Steel greaves"};
         nostd::String use {"*metal on metal sound*"};
         this->_item = new Item{stat, name, use, 3, 350};

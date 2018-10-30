@@ -24,10 +24,12 @@ public:
     int Block(int damage);
     // takes 'N'for North, 'S' for South, 'W' for West and 'E' for East.
     void Move(char dir);
+    void Rest();
     void UseSkillPoints();
-    void PickUpItem(Item item);
+    void PickUpItem(Item* item);
     void PrintBag();
     void PrintStats();
+    void UseItem(Item item);
     Coordinate location;
     int layer;
     int current_hp;

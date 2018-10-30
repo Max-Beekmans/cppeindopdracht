@@ -63,9 +63,22 @@ void Hero::Move(char dir) {
     }
 }
 
-void Hero::PickUpItem(Item item) {
-    Item_bag.addBack(item);
-    std::cout << "You picked up " << item.name << "." << std::endl;
+void Hero::UseItem(Item item) {
+    std::cout << item.use;
+    if(item.stat.c_str() == "attack") {
+        _attack_chance += item.factor;
+        if(_attack_chance > 100) _attack_chance = 100;
+    } else if(item.stat.c_str() == "defence") {
+        _def_chance += item.factor;
+        if(_def_chance > 100) _def_chance = 100;
+    }
+}
+
+void Hero::PickUpItem(Item* item) {
+    if(item != nullptr) {
+        Item_bag.addBack(*item);
+        std::cout << "You picked up " << item->name << "." << std::endl;
+    }
 }
 
 int Hero::Block(int damage) {
@@ -74,6 +87,10 @@ int Hero::Block(int damage) {
 
     current_hp -= damage;
     return damage;
+}
+
+void Hero::Rest() {
+    this->current_hp = _hp;
 }
 
 void Hero::AddExp(int exp) {
@@ -116,10 +133,25 @@ void Hero::UseSkillPoints() {
     std::cout << "How many skillpoints would you like to use? You have " << _skill_points << "right now." << std::endl;
     int points = _io.GetInt();
 
-    if(skill.c_str() == "attack") {
-
-    } else if(skill.c_str() == "defence") {
-
+    if(points < _skill_points) {
+        if(skill.c_str() == "attack") {
+            if(_attack_chance < 100) {
+                _attack_chance += points;
+                _skill_points -= points;
+                std::cout << "Your attack is now: " << _attack_chance;
+            } else {
+                std::cout << "The attack stat is already at its maximum value(100).";
+            }
+        } else if(skill.c_str() == "defence") {
+            if(_def_chance < 100) {
+                _def_chance += points;
+                _skill_points -= points;
+                std::cout << "Your defence is now: " << _def_chance;
+            } else {
+                std::cout << "The defence stat is already at its maximum value(100).";
+            }
+        }
+    } else {
+        std::cout << "You dont have enough skillpoints.";
     }
-
 }

@@ -17,8 +17,8 @@ public:
     Game();
     ~Game();
     void PrintMap(const int layer);
-    void PrintHeroStats();
-    void StartFight();
+    void GetInput(Room room);
+    void StartFight(Monster* m);
     void Start();
     void Stop();
     void Run();
