@@ -71,6 +71,11 @@ void Hero::UseItem(Item item) {
     } else if(item.stat.c_str() == "defence") {
         _def_chance += item.factor;
         if(_def_chance > 100) _def_chance = 100;
+    } else if(item.stat.c_str() == "HP") {
+        current_hp += item.factor;
+        if(current_hp > _hp) current_hp = _hp;
+    } else if(item.stat.c_str() == "EXP") {
+        AddExp(item.factor);
     }
 }
 
@@ -95,7 +100,7 @@ void Hero::Rest() {
 
 void Hero::AddExp(int exp) {
     this->_exp += _exp;
-    if(this->_exp == this->_level * 3) {
+    if(this->_exp == this->_level * 3 && this->_level < 10) {
         this->LevelUp();
     }
     std::cout << "You received " << exp << " experience." << std::endl;
