@@ -42,12 +42,12 @@ void Game::Start() {
     _io.PrintLine(_hero.layer);
     _io.Print("current coords: ");
     _io.Print(_hero.location.x);
-    _io.Print(" , ");
-    _io.Print(_hero.location.y);
+    _io.Print(",");
+    _io.PrintLine(_hero.location.y);
 
     Room current = _dungeon_layers[_hero.layer].GetRoom(_hero.location);
-    _io.Print(current.GetDescription());
-
+    _io.PrintLine(current.GetDescription());
+    _io.PrintLine("What it is you want to do?");
     //doturn end
 
     this->PrintHeroStats();

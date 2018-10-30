@@ -41,7 +41,9 @@ namespace nostd {
         const char* c_str() const;
         char& at(const int n);
         char at(int n) const;
-
+        //find character and return it's index
+        const size_t Find(const char c);
+        nostd::String* Split(const char delim);
     private:
         static const int short_max = 15;
         int count = 0;

@@ -22,13 +22,12 @@ Dungeon::Dungeon(const int width, const int height, const int level)
         this->_dungeon[i] = new Room[_width];
     }
 
-    this->GenerateDungeon();
-
     //TODO build up array somewhere different but have dungeon access it instead
     //TODO include this into room builder dungeon doesn't need to know about monsters. the room does
     //dungeon can copy from the monster array
     this->_monsters = nostd::Array<Monster>{10};
     this->GetMonsters();
+    this->GenerateDungeon();
 }
 
 Dungeon::~Dungeon() = default;
@@ -63,7 +62,8 @@ void Dungeon::GetMonsters() {
     while (!fileStream.eof()) {
         fileStream.getline(line[i], sizeof(line[i]));
         if (line[i][0] == '[') {
-            nostd::Array<nostd::String> strings{6};
+            nostd::String strings[6];
+            //nostd::Array<nostd::String> strings{6};
             int c = 0;
             int j = 1;
             bool reading = true;
@@ -76,21 +76,36 @@ void Dungeon::GetMonsters() {
                         reading = false;
                         break;
                     default:
-                        strings.at(c) += line[i][j];
+                        strings[c] += line[i][j];
                         break;
                 }
                 j++;
             }
-            int attackChance = std::atoi(strings[2].c_str());
-            //make into atoi
-            //int attackChance = static_cast<int>(strings[2][0]);
-            int attackAmount = static_cast<int>(strings[2][2]);
-            int minDamage = static_cast<int>(strings[3][0]);
-            int maxDamage = static_cast<int>(strings[3][2]);
-            int defenceChance = static_cast<int>(strings[4][2]);
-            int maxHP = static_cast<int>(strings[5][2]);
-            nostd::String name = strings.at(1);
-            nostd::String level = strings.at(2);
+
+            char* first = nullptr;
+            char* second = nullptr;
+
+            nostd::String name = strings[0];
+            nostd::String level = strings[1];
+
+            nostd::String* ac_res = strings[2].Split('x');
+            first = ac_res[0].c_str();
+            second = ac_res[1].c_str();
+
+            int attackChance = std::atoi(first);
+            int attackAmount = std::atoi(second);
+
+            nostd::String* minmax_res = strings[3].Split('-');
+            first = minmax_res[0].c_str();
+            second = minmax_res[1].c_str();
+
+            int minDamage = std::atoi(first);
+            int maxDamage = std::atoi(second);
+
+            first = strings[4].c_str();
+            second = strings[5].c_str();
+            int defenceChance = std::atoi(first);
+            int maxHP = std::atoi(second);
 
             _monsters[i] = Monster(name, level, attackChance, attackAmount, minDamage, maxDamage, defenceChance, maxHP);
             i++;
@@ -250,6 +265,8 @@ void Dungeon::copy_from(const Dungeon &copy) {
     this->_halls = copy._halls;
     this->_width = copy._width;
     this->_height = copy._height;
+    this->begin = copy.begin;
+    this->end = copy.end;
 }
 
 void Dungeon::move_from(Dungeon &move) {
@@ -260,6 +277,8 @@ void Dungeon::move_from(Dungeon &move) {
     this->_halls = move._halls;
     this->_width = move._width;
     this->_height = move._height;
+    this->begin = move.begin;
+    this->end = move.end;
 }
 
 void Dungeon::SetStairs(const int layer) {
