@@ -26,6 +26,8 @@ public:
     void Move(char dir);
     void UseSkillPoints();
     void PickUpItem(Item item);
+    void PrintBag();
+    void PrintStats();
     Coordinate location;
     int layer;
     int current_hp;

@@ -91,6 +91,25 @@ void Hero::LevelUp() {
         std::cout << "You now have " << _skill_points << " unused skillpoints." << std::endl;
 }
 
+void Hero::PrintBag() {
+    std::cout << "Contents of your bag: " << std::endl;
+    for(int i = 0; i < Item_bag.size(); i++) {
+        std::cout << Item_bag.at(i).name << ", which grants " << Item_bag.at(i).stat << std::endl;
+    }
+}
+
+void Hero::PrintStats() {
+    std::cout << "Your Hero stats: " << std::endl;
+    std::cout << "Name: " << name << std::endl;
+    std::cout << "Level: " << _level << std::endl;
+    std::cout << "Hitpoints: " << current_hp << "/" << _hp << std::endl;
+    std::cout << "Name: " << name << std::endl;
+    std::cout << "Experience: " << _exp << std::endl;
+    std::cout << "Skillpoints: " << _skill_points << std::endl;
+    std::cout << "Attack Chance: " << _attack_chance << std::endl;
+    std::cout << "Block Chance: " << _def_chance << std::endl;
+}
+
 void Hero::UseSkillPoints() {
     std::cout << "On what skill would you like to use your skillpoints?" << std::endl;
     nostd::String skill = _io.GetString();

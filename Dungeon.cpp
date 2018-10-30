@@ -100,7 +100,6 @@ void Dungeon::GetMonsters() {
 }
 
 void Dungeon::GenerateDungeon() {
-    Monster m = _monsters[0];
     nostd::Random r{};
     int max = (_width * _height);
     int count = 0;

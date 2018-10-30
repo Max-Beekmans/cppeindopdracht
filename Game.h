@@ -10,6 +10,7 @@
 #include "nostd/Array.h"
 #include "nostd/String.h"
 #include "nostd/IOHandler.h"
+#include "Room.h"
 
 class Game {
 public:
@@ -18,10 +19,10 @@ public:
     void PrintMap(const int layer);
     void PrintHeroStats();
     void StartFight();
-    void Update();
     void Start();
     void Stop();
     void Run();
+    void EnterRoom(Room room);
 private:
     //TODO move user input to IO class
     int GetInt();

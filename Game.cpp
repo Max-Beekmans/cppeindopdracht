@@ -6,6 +6,7 @@
 #include <iostream>
 #include "nostd/String.h"
 #include "nostd/IOHandler.h"
+#include "Room.h"
 
 Game::Game() {
     _current_layer = 0;
@@ -16,8 +17,6 @@ Game::Game() {
 Game::~Game() {
 
 }
-
-void Game::Update() {}
 
 void Game::Start() {
     std::cout << "Welcome to 'Draken & Kerkers'" << std::endl;
@@ -46,22 +45,26 @@ void Game::Start() {
     _io.Print(_hero.location.y);
 
     Room current = _dungeon_layers[_hero.layer].GetRoom(_hero.location);
-    _io.Print(current.GetDescription());
 
+    this->EnterRoom(current);
     //doturn end
 
-    this->PrintHeroStats();
     this->PrintDivider();
 
 //    for (int j = 0; j < 5; ++j) {
 //        this->PrintMap(j);
-//    }
+//  }
+}
+
+void Game::EnterRoom(Room room) {
+    _io.Print(room.GetDescription());
+    std::cout << "What do you want to do?" << std::endl;
+
 }
 
 void Game::StartFight() {
-    //pseudocode nog
-
-    /*Monster m = _dungeon_layers[_current_layer].GetRoom(_hero.location.x, _hero.location.y).Monster;
+    Room room = _dungeon_layers[_current_layer].GetRoom(_hero.location.x, _hero.location.y);
+    Monster m = room.Monster;
     bool fighting = true;
     std::cout << "You encounter " << m.name << "." << std::endl;
     std::cout << m.name << " has " << m.currentHP << " hitpoints." << std::endl;
@@ -77,6 +80,7 @@ void Game::StartFight() {
         }
 
         std::cout << "What would you like to do?" << std::endl;
+        std::cout << "[ attack | run ]" << std::endl;
         nostd::String input = _io.GetString();
 
         if(input.c_str() == "attack") {
@@ -93,7 +97,7 @@ void Game::StartFight() {
         } else if(input.c_str() == "run") {
             this->Run();
         }
-    }*/
+    }
 }
 
 void Game::Run() {
@@ -115,9 +119,6 @@ void Game::Run() {
 
 void Game::Stop() {
     //clean up global memory or anything not being freed with going out of scope.
-}
-
-void Game::PrintHeroStats() {
 }
 
 //print given dungeon layer
