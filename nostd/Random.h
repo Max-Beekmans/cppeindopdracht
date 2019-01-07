@@ -5,7 +5,6 @@
 #ifndef EINDOPDRACHT_RANDOM_H
 #define EINDOPDRACHT_RANDOM_H
 
-
 #include <random>
 
 namespace nostd {
