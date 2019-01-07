@@ -2,6 +2,9 @@ cmake_minimum_required(VERSION 3.12)
 project(eindopdracht)
 
 set(CMAKE_CXX_STANDARD 11)
-configure_file(readables/monsters.txt monsters.txt COPYONLY)
+configure_file(readables/afstanden_tussen_steden.csv afstanden_tussen_steden.csv COPYONLY)
+configure_file(readables/goederen_hoeveelheid.csv goederen_hoeveelheid.csv COPYONLY)
+configure_file(readables/goederen_prijzen.csv goederen_prijzen.csv COPYONLY)
+configure_file(readables/schepen.csv schepen.csv COPYONLY)
 
-add_executable(eindopdracht main.cpp nostd/Random.h nostd/String.cpp nostd/String.h nostd/Array.h nostd/IOHandler.cpp nostd/IOHandler.h Dungeon.cpp Dungeon.h Room.cpp Room.h Hall.h Coordinate.h Hero.h Hero.cpp Monster.cpp Monster.h Game.cpp Game.h Item.cpp Item.h)
+add_executable(eindopdracht main.cpp nostd/Random.h nostd/String.cpp nostd/String.h nostd/Array.h nostd/IOHandler.cpp nostd/IOHandler.h)
