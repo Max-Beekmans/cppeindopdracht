@@ -18,8 +18,8 @@ namespace nostd {
         }
 
         nostd::String GetString() {
-            char* str;
-            std::cin >> str;
+            char str[512];
+            std::cin.getline(str, sizeof(str));
             return nostd::String {str};
         }
 
