@@ -152,27 +152,38 @@ namespace nostd {
         }
     }
 
-    const size_t String::Find(const char c) {
-        char* pch;
-        pch = strchr(this->ptr, c);
-        size_t found = pch-this->ptr+1;
+    const int String::Find(const char c) {
+        char* pch = strchr(this->ptr, c);
+        if(pch == nullptr) {
+            return -1;
+        }
+        int found = pch-this->ptr;
         return found;
     }
 
+    //return value is heap memory that needs to be cleaned up outside of this class!
+    //returns nullptr if delim can't be found
     nostd::String* String::Split(const char delim) {
-        const size_t index = this->Find(delim);
-        nostd::String* res = new nostd::String[2];
+        const int index = this->Find(delim);
+        if (index < 0) {
+            return nullptr;
+        }
+        auto* res = new nostd::String[2];
         res[0] = nostd::String{};
         res[1] = nostd::String{};
-        for (int i = 0; i < index - 1; ++i) {
+        for (int i = 0; i <= index - 1; ++i) {
             res[0] += this->at(i);
         }
 
-        for (int j = (int) index; j < this->size(); ++j) {
+        for (int j = index + 1; j < this->size(); ++j) {
             res[1] += this->at(j);
         }
 
         return res;
+    }
+
+    nostd::Array<nostd::String> String::Tokenize(const char delim) {
+        return Array<String>();
     }
 
     //helper nonmember functions

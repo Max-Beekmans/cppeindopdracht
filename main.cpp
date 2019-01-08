@@ -23,6 +23,15 @@ int main() {
         nostd::String s = fr.GetLine();
         if(s[0] != '#') {
             io.PrintLine(s);
+            nostd::String* arr = s.Split(';');
+            while(arr != nullptr) {
+                io.Print("Before delim: ");
+                io.PrintLine(arr[0]);
+                io.Print("After delim: ");
+                io.PrintLine(arr[1]);
+                s = arr[1];
+                arr = s.Split(';');
+            }
         }
     }
 
