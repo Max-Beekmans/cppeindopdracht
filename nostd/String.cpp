@@ -4,8 +4,6 @@
 
 #include <cstring>
 #include "String.h"
-//TODO remove
-#include "IOHandler.h"
 
 namespace nostd {
 
@@ -191,18 +189,12 @@ namespace nostd {
     nostd::Array<nostd::String> String::Tokenize(const char delim) {
         nostd::String* arr = this->Split(';');
         nostd::Array<nostd::String> token_arr;
-        nostd::IOHandler io{};
         while(arr != nullptr) {
             token_arr.addBack(arr[0]);
-            //TODO delete this
-            io.PrintLine(arr[0]);
             *this = arr[1];
             arr = this->Split(';');
         }
-        //TODO delete this too
-        for (int i = 0; i < token_arr.size(); ++i) {
-            io.PrintLine(token_arr[i]);
-        }
+
         return token_arr;
     }
 

@@ -14,19 +14,17 @@ int main() {
     int x = range.GetRandom();
     std::cout << x << std::endl;
     nostd::IOHandler io {};
-    io.PrintLine("I like trains");
-    nostd::String input = io.GetString();
-    io.PrintLine(input);
-    FileReader fr{"afstanden_tussen_steden.csv"};
 
+    FileReader fr{"goederen_hoeveelheid.csv"};
     while(!fr.EndOfFile()) {
         nostd::String s = fr.GetLine();
         if(s[0] != '#') {
             io.PrintLine(s);
-            nostd::Array<nostd::String> token_arr {s.Tokenize(';')};
-            for(int i = 0; i < token_arr.size(); i++) {
+            nostd::Array<nostd::String> token_arr{s.Tokenize(';')};
+            for(int i = 0; i <= token_arr.size(); i++) {
                 io.PrintLine(token_arr[i]);
             }
+            io.GetString();
 //            nostd::String* arr = s.Split(';');
 //            while(arr != nullptr) {
 //                io.Print("Before delim: ");

@@ -15,71 +15,14 @@ namespace nostd {
     //implementatation is seperated into .cxx file
     template <typename T>
     class Array {
-    private:
-        //short-string optimization for array
-        static const int short_max = 15;
-        int count;
-        T* ptr;
-        // discriminated union (count <= short_max)
-        union {
-            // unused space;
-            int space;
-            T ss[short_max];
-        };
-
-        void check(int n) const {
-            if (n < 0 || count <= n)
-                throw std::out_of_range("nostd::Array::at()");
-        }
-
-        T* expand(const T* ptr, int n) {
-            T* temp = new T[n];
-            //TODO delete this
-            for (int i = 0; i < this->size(); ++i) {
-                std::cout <<  "before memcpy " << ptr[i] << std::endl;
-            }
-            memcpy(temp, ptr, sizeof(ptr));
-            return temp;
-        }
-
-        void copy_from(const Array<T>& arr) {
-            if (arr.count <= short_max) {
-                memcpy(this, &arr, sizeof(arr));
-                ptr = ss;
-            } else {
-                ptr = this->expand(arr.ptr, arr.count + 1);
-                space = 0;
-            }
-            count = arr.count;
-        }
-
-        void move_from(Array<T>& arr) {
-            if (arr.count <= short_max) {
-                memcpy(this, &arr, sizeof(arr));
-                ptr = ss;
-            } else {
-                ptr = arr.ptr;
-                space = arr.space;
-                arr.ptr = arr.ss;
-            }
-            count = arr.count;
-            arr.count = 0;
-        }
-
     public:
-        //Construct
-        Array() : count{0}, ptr{ss}, space{0} { }
-        ~Array() { if (short_max < count) delete [] ptr; }
+        //default construct
+        Array() : count{0}, ptr{new T[count]}, space{0} { }
 
         explicit Array(int length) {
             count = length;
-            if (short_max < count) {
-                ptr = new T[count + 1];
-                space = count;
-            } else {
-                ptr = ss;
-                space = 0;
-            }
+            ptr = new T[count + 1];
+            space = count;
         }
 
         Array(const Array& arr) {
@@ -90,13 +33,15 @@ namespace nostd {
             move_from(arr);
         }
 
+        ~Array() { delete[] ptr; }
+
         //Operators
         T& operator[](int n) { return ptr[n]; }
         T operator[](int n) const { return ptr[n]; }
 
         Array<T>& operator=(const Array<T>& arr) {
             if (this == &arr) return *this;
-            T* p = (short_max < count) ? ptr : nullptr;
+            T* p = ptr;
             copy_from(arr);
             delete[] p;
             return *this;
@@ -104,7 +49,7 @@ namespace nostd {
 
         Array<T>& operator=(Array<T>&& arr) noexcept {
             if (this == &arr) return *this;
-            if (count > short_max) delete [] ptr;
+            delete[] ptr;
             move_from(arr);
             return *this;
         }
@@ -122,9 +67,6 @@ namespace nostd {
         }
 
         int capacity() const {
-            if (count <= short_max) {
-                return count;
-            }
             return count + space;
         }
 
@@ -138,36 +80,15 @@ namespace nostd {
 
         //regular/fastest add operation
         void addBack(T obj) {
-
-            //maybe replace count here for elements?
-            //count is always set to the desired size of the array
-            if (count == short_max) {
+            if (space == 0) {
                 int n = count + count + 1;
-                T* p = expand(ptr, n);
-                ptr = p;
+                ptr = expand(ptr, n);
                 space = n - count - 1;
-            } else if (short_max < count) {
-                if (space == 0) {
-                    int n = count + count + 1;
-                    T *p = expand(ptr, n);
-                    delete[] ptr;
-                    ptr = p;
-                    space = n - count - 1;
-                } else {
-                    --space;
-                }
+            } else {
+                --space;
             }
             ptr[count++] = obj;
-            //TODO delete this
-            for (int j = 0; j < this->size(); ++j) {
-                std::cout << "after add back " <<  ptr[j] << std::endl;
-            }
         }
-
-        //exceptional add operation (for room shuffle)
-        //TODO Shuffle Rooms, Add last element to front! ez extra credit
-        //Deprecated?
-        //void addFront(T obj) { }
 
         //helper nonmember functions
         T* begin() {
@@ -176,6 +97,39 @@ namespace nostd {
 
         T* end() {
             return ptr + count;
+        }
+
+    private:
+        int count;
+        T* ptr;
+        int space;
+
+        void check(int n) const {
+            if (n < 0 || count <= n)
+                throw std::out_of_range("nostd::Array::at()");
+        }
+
+        T* expand(const T* ptr, int n) {
+            T* temp = new T[n];
+            for (int i = 0; i < this->size(); ++i) {
+                temp[i] = ptr[i];
+            }
+            delete[] ptr;
+            return temp;
+        }
+
+        void copy_from(const Array<T>& arr) {
+            ptr = this->expand(arr.ptr, arr.count);
+            count = arr.count;
+        }
+
+        void move_from(Array<T>& arr) {
+            ptr = arr.ptr;
+            space = arr.space;
+            count = arr.count;
+            delete[] arr.ptr;
+            arr.count = 0;
+            arr.space = 0;
         }
     };
 }
