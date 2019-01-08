@@ -7,6 +7,7 @@
 
 #include <stdexcept>
 #include <cstring>
+#include <iostream>
 
 namespace nostd {
     //Generic array object using pointer semantics and providing short string optimization
@@ -18,14 +19,12 @@ namespace nostd {
         //short-string optimization for array
         static const int short_max = 15;
         int count;
-        int elements;
         T* ptr;
         // discriminated union (count <= short_max)
         union {
             // unused space;
             int space;
-            // +1 for terminating char
-            T ss[short_max + 1];
+            T ss[short_max];
         };
 
         void check(int n) const {
@@ -35,7 +34,11 @@ namespace nostd {
 
         T* expand(const T* ptr, int n) {
             T* temp = new T[n];
-            memcpy(temp, ptr, n);
+            //TODO delete this
+            for (int i = 0; i < this->size(); ++i) {
+                std::cout <<  "before memcpy " << ptr[i] << std::endl;
+            }
+            memcpy(temp, ptr, sizeof(ptr));
             return temp;
         }
 
@@ -65,12 +68,11 @@ namespace nostd {
 
     public:
         //Construct
-        Array() : count{0}, ptr{ss}, space{0}, elements{0} { }
+        Array() : count{0}, ptr{ss}, space{0} { }
         ~Array() { if (short_max < count) delete [] ptr; }
 
         explicit Array(int length) {
             count = length;
-            elements = 0;
             if (short_max < count) {
                 ptr = new T[count + 1];
                 space = count;
@@ -136,34 +138,36 @@ namespace nostd {
 
         //regular/fastest add operation
         void addBack(T obj) {
-            if (count < elements) {
-                count = elements;
-            }
 
             //maybe replace count here for elements?
             //count is always set to the desired size of the array
             if (count == short_max) {
-                //double alloc (+2 for terminating 0)
-                int n = count + count + 2;
-                ptr = expand(ptr, n);
-                space = n - count - 2;
+                int n = count + count + 1;
+                T* p = expand(ptr, n);
+                ptr = p;
+                space = n - count - 1;
             } else if (short_max < count) {
                 if (space == 0) {
-                    int n = count + count + 2;
+                    int n = count + count + 1;
                     T *p = expand(ptr, n);
                     delete[] ptr;
                     ptr = p;
-                    space = n - count - 2;
+                    space = n - count - 1;
                 } else {
                     --space;
                 }
             }
-            ptr[elements++] = obj;
+            ptr[count++] = obj;
+            //TODO delete this
+            for (int j = 0; j < this->size(); ++j) {
+                std::cout << "after add back " <<  ptr[j] << std::endl;
+            }
         }
 
         //exceptional add operation (for room shuffle)
         //TODO Shuffle Rooms, Add last element to front! ez extra credit
-        void addFront(T obj) { }
+        //Deprecated?
+        //void addFront(T obj) { }
 
         //helper nonmember functions
         T* begin() {
@@ -171,7 +175,7 @@ namespace nostd {
         }
 
         T* end() {
-            return ptr + elements;
+            return ptr + count;
         }
     };
 }

@@ -23,15 +23,19 @@ int main() {
         nostd::String s = fr.GetLine();
         if(s[0] != '#') {
             io.PrintLine(s);
-            nostd::String* arr = s.Split(';');
-            while(arr != nullptr) {
-                io.Print("Before delim: ");
-                io.PrintLine(arr[0]);
-                io.Print("After delim: ");
-                io.PrintLine(arr[1]);
-                s = arr[1];
-                arr = s.Split(';');
+            nostd::Array<nostd::String> token_arr {s.Tokenize(';')};
+            for(int i = 0; i < token_arr.size(); i++) {
+                io.PrintLine(token_arr[i]);
             }
+//            nostd::String* arr = s.Split(';');
+//            while(arr != nullptr) {
+//                io.Print("Before delim: ");
+//                io.PrintLine(arr[0]);
+//                io.Print("After delim: ");
+//                io.PrintLine(arr[1]);
+//                s = arr[1];
+//                arr = s.Split(';');
+//            }
         }
     }
 

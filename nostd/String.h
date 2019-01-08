@@ -26,6 +26,7 @@ namespace nostd {
         char operator[](int n) const { return ptr[n]; }
         //ostream
         friend std::ostream &operator<<(std::ostream &os, String &string);
+        friend std::ostream &operator<<(std::ostream &os, const String &string);
         //copy
         String& operator=(const String& copy);
         //move
