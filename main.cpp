@@ -17,8 +17,14 @@ int main() {
     io.PrintLine("I like trains");
     nostd::String input = io.GetString();
     io.PrintLine(input);
-    FileReader fr{};
-    nostd::String s = fr.GetLine();
-    io.PrintLine(s);
+    FileReader fr{"afstanden_tussen_steden.csv"};
+
+    while(!fr.EndOfFile()) {
+        nostd::String s = fr.GetLine();
+        if(s[0] != '#') {
+            io.PrintLine(s);
+        }
+    }
+
     return 0;
 }

@@ -11,16 +11,17 @@
 
 class FileReader {
 public:
-    FileReader() = default;
-    ~FileReader() = default;
+    explicit FileReader(const char* filename);
+    ~FileReader();
 
-    nostd::String GetLine() {
-        char buffer[512];
-        std::ifstream file_stream{"schepen.csv"};
-        file_stream.getline(buffer, sizeof(buffer));
-        return nostd::String{buffer};
-    }
+    /* GetLine from current loaded file */
+    const nostd::String GetLine();
 
+    /* Check if eof flag is set */
+    const bool EndOfFile();
+
+private:
+    std::ifstream _file_stream;
 };
 
 
