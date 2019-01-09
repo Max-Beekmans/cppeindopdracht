@@ -47,7 +47,7 @@ namespace nostd {
         //If the character can't be found returns -1
         const int Find(const char c);
         nostd::String* Split(const char delim);
-        nostd::Array<nostd::String> Tokenize(const char delim);
+        nostd::Array<nostd::String> Tokenize(const char delim) const;
     private:
         static const int short_max = 15;
         int count = 0;

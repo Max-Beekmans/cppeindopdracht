@@ -7,5 +7,5 @@ configure_file(readables/goederen_hoeveelheid.csv goederen_hoeveelheid.csv COPYO
 configure_file(readables/goederen_prijzen.csv goederen_prijzen.csv COPYONLY)
 configure_file(readables/schepen.csv schepen.csv COPYONLY)
 
-add_executable(eindopdracht main.cpp nostd/Random.h nostd/String.cpp nostd/String.h nostd/Array.h FileReader.cpp FileReader.h nostd/IOHandler.h Ship.h Cannon.h nostd/Range.h Cargo.h)
+add_executable(eindopdracht main.cpp nostd/Random.h nostd/String.cpp nostd/String.h nostd/Array.h FileReader.cpp FileReader.h nostd/IOHandler.h Ship.h Cannon.h nostd/Range.h Cargo.h Game.cpp Game.h Player.cpp Player.h Port.cpp Port.h PortFactory.cpp PortFactory.h exceptions/PortNotFoundException.h)
 

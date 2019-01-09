@@ -1,21 +1,25 @@
 #ifndef EINDOPDRACHT_CARGO_H
 #define EINDOPDRACHT_CARGO_H
 
-#include "nostd/Range.h"
+#include "nostd/String.h"
 
 class Cargo {
 public:
-    Cargo(const int minCost, const int maxCost, const int minAmount, const int maxAmount) : _cost{minCost, maxCost}, _amount{minAmount, maxAmount} {};
+    Cargo(const nostd::String _cargo_name, const int cost, const int amount) : _cargo_name{_cargo_name} ,_cost{cost}, _amount{amount} {};
     ~Cargo() = default;
+    const nostd::String GetCargoName() {
+        return _cargo_name;
+    }
     const int GetCost() {
-        return _cost.GetRandom();
+        return _cost;
     }
     const int GetAmount() {
-        return _amount.GetRandom();
+        return _amount;
     }
 private:
-    nostd::Range _cost;
-    nostd::Range _amount;
+    const nostd::String _cargo_name;
+    const int _cost;
+    const int _amount;
 };
 
 #endif //EINDOPDRACHT_CARGO_H
