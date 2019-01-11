@@ -1,9 +1,9 @@
 #ifndef EINDOPDRACHT_FIGHTINGSTATE_H
 #define EINDOPDRACHT_FIGHTINGSTATE_H
 
-#include "nostd/BaseState.h"
+#include "BaseState.h"
 
-class FightingState : public nostd::BaseState {
+class FightingState : public BaseState {
 public:
     FightingState() = default;
     void Init() override;

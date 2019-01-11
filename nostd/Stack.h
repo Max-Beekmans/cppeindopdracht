@@ -16,8 +16,6 @@ namespace nostd {
 
         void Push(T obj) {
             if(top == MAX-1) {
-                //TODO: remove cout after testing
-                std::cout<<std::endl<< "Stack is full";
                 return;
             }
             top++;

@@ -1,7 +1,5 @@
 #include "StateManager.h"
 
-namespace nostd {
-
 StateManager::StateManager() { this->_stateStack = {}; }
 
 /*clears all states of game*/
@@ -39,4 +37,3 @@ bool StateManager::IsEmpty() const {
 StateManager::~StateManager(){
     PopAll();
 }
-} //nostd

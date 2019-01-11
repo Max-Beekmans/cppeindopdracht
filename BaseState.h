@@ -1,10 +1,8 @@
 #ifndef EINDOPDRACHT_BASESTATE_H
 #define EINDOPDRACHT_BASESTATE_H
 
-#include "StateEnum.h"
-#include "IOHandler.h"
-
-namespace nostd{
+#include "nostd/StateEnum.h"
+#include "nostd/IOHandler.h"
 
 class BaseState {
 public:
@@ -17,7 +15,5 @@ public:
 private:
     nostd::IOHandler io;
 };
-
-} //nostd
 
 #endif //EINDOPDRACHT_BASESTATE_H

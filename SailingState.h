@@ -1,9 +1,9 @@
 #ifndef EINDOPDRACHT_SAILINGSTATE_H
 #define EINDOPDRACHT_SAILINGSTATE_H
 
-#include "nostd/BaseState.h"
+#include "BaseState.h"
 
-class SailingState : public nostd::BaseState {
+class SailingState : public BaseState {
 public:
     SailingState() = default;
     void Init() override;

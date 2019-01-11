@@ -10,12 +10,12 @@
 #include "Ship.h"
 #include "nostd/IOHandler.h"
 #include "Game.h"
-#include "nostd/StateManager.h"
+#include "StateManager.h"
 #include "DockedState.h"
 #include "SailingState.h"
 #include "FightingState.h"
 #include "nostd/Stack.h"
-#include "nostd/BaseState.h"
+#include "BaseState.h"
 //#include "FileReader.h"
 
 int main(int argc, char* argv[]) {
@@ -78,21 +78,6 @@ int main(int argc, char* argv[]) {
 
     io.PrintLine(cargo_arr.size());
     io.PrintLine(cargo_arr_cpy.size());
-
-    /*nostd::StateManager stateManager;
-    stateManager.PushState(new DockedState());
-    io.PrintLine(stateManager.CurrentState()->GetName());
-    stateManager.PushState(new SailingState());
-    io.PrintLine(stateManager.CurrentState()->GetName());*/
-
-    nostd::Stack<nostd::BaseState*> s;
-    s.Push(new DockedState());
-    s.Push(new SailingState());
-    s.Push(new FightingState());
-
-    io.PrintLine(s.Pop()->GetName() == StateEnum::Fighting ? "Fighting" : "iets");
-    io.PrintLine(s.Pop()->GetName() == StateEnum::Sailing ? "Sailing" : "iets");
-    io.PrintLine(s.Pop()->GetName() == StateEnum::Docked ? "Docked" : "iets");
 
 
 ////    nostd::String port_name{"Roatan"};
