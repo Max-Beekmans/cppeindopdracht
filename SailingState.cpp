@@ -8,15 +8,7 @@ void SailingState::Update() {
 
 }
 
-void SailingState::Pause() {
-
-}
-
-void SailingState::Resume() {
-
-}
-
-void SailingState::Cleanup() {
+SailingState::~SailingState() {
 
 }
 
