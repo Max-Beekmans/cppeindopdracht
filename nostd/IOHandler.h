@@ -7,6 +7,16 @@
 namespace nostd {
     class IOHandler {
     public:
+//        template<class T>
+////        friend std::ostream &operator<<(std::ostream &os, T &obj) {
+////            return os << obj;
+////        }
+//
+//        template<class T>
+//        friend std::ostream &operator<<(std::ostream &os, const T &obj) {
+//            return os << obj;
+//        }
+
         template<class T>
         void Print(T obj) {
             std::cout << obj;

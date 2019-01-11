@@ -13,7 +13,7 @@ class FileReader {
 public:
     //Default constructor for filereader.
     //If this method of construction is chosen FileReader.Open(filename) needs to be called
-    FileReader();
+    FileReader() = default;
     explicit FileReader(const char* filename);
     ~FileReader();
 
@@ -26,14 +26,14 @@ public:
     /* Read for specific line that starts with given string */
     /* specifier has to be in the first column */
     /* if the specifier can't be found a nullptr is returned */
-    const nostd::String* GetSpecificLine(nostd::String line_specifier);
+    nostd::String* GetSpecificLine(nostd::String line_specifier);
 
     /* Opens _file_stream with file.
     returns false is already opened or if file can't be found */
     bool Open(const char* filename);
 
     /* Closes _file_stream */
-    void Close();
+    bool Close();
 
 private:
     std::ifstream _file_stream;

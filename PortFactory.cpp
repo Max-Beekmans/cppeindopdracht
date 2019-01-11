@@ -7,16 +7,26 @@
 #include "PortFactory.h"
 #include "exceptions/PortNotFoundException.h"
 
-Port PortFactory::CreatePort(nostd::String port_name) {
-    nostd::Array<Cargo> cargo_arr;
+//TODO remove
+#include "nostd/IOHandler.h"
+
+Port* PortFactory::CreatePort(nostd::String port_name) {
+    nostd::Array<Cargo> cargo_arr{10};
+    nostd::Array<Cannon> cannon_arr{10};
+    nostd::Array<Ship> ship_arr{10};
+
+    cannon_arr.addBack(Cannon{});
+    ship_arr.addBack(Ship{nostd::String{"shipname"}, 0, 0, 0, 0, 0, false});
 
     //Assumed is that both files have the same first_row indicating all possible goods
     _fr.Open("goederen_prijzen.csv");
-    const nostd::String* first_row {_fr.GetSpecificLine(nostd::String{})};
-    const nostd::String* raw_prices_line {_fr.GetSpecificLine(port_name)};
+    nostd::String* first_row {_fr.GetSpecificLine(nostd::String{""})};
+    nostd::String* raw_prices_line {_fr.GetSpecificLine(port_name)};
+
+    //TODO make some exception handling here.
     _fr.Close();
-    _fr.Open("goederen_hoevelheid.csv");
-    const nostd::String* raw_stock_line {_fr.GetSpecificLine(port_name)};
+    _fr.Open("goederen_hoeveelheid.csv");
+    nostd::String* raw_stock_line {_fr.GetSpecificLine(port_name)};
 
     if(first_row == nullptr || raw_prices_line == nullptr || raw_stock_line == nullptr) {
         throw PortNotFoundException("Port name could not be found in file");
@@ -41,5 +51,10 @@ Port PortFactory::CreatePort(nostd::String port_name) {
     delete raw_prices_line;
     delete raw_stock_line;
 
-    return Port();
+    nostd::IOHandler io;
+    for(auto &i : cargo_arr) {
+        io.PrintLine(i.GetCargoName());
+    }
+
+    return new Port(port_name, cargo_arr, cannon_arr, ship_arr);
 }

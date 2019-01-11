@@ -5,6 +5,8 @@
 #ifndef EINDOPDRACHT_ARRAY_H
 #define EINDOPDRACHT_ARRAY_H
 
+#define DEFAULT_SIZE 10
+
 #include <stdexcept>
 #include <cstring>
 #include <iostream>
@@ -17,7 +19,8 @@ namespace nostd {
     class Array {
     public:
         //default construct
-        Array() : count{0}, ptr{new T[count]}, space{0} { }
+        //array is 10 by default
+        Array() : count(0), space(DEFAULT_SIZE), ptr(new T[DEFAULT_SIZE]) {}
 
         explicit Array(int length) {
             count = length;
@@ -25,11 +28,11 @@ namespace nostd {
             space = count;
         }
 
-        Array(const Array& arr) {
+        Array(const Array& arr) : count(0), space(0), ptr(nullptr) {
             copy_from(arr);
         }
 
-        Array(Array&& arr) noexcept {
+        Array(Array&& arr) noexcept : count(0), space(0), ptr(nullptr) {
             move_from(arr);
         }
 
@@ -81,9 +84,9 @@ namespace nostd {
         //regular/fastest add operation
         void addBack(T obj) {
             if (space == 0) {
-                int n = count + count + 1;
+                int n = count + count;
                 ptr = expand(ptr, n);
-                space = n - count - 1;
+                space = n - count;
             } else {
                 --space;
             }
@@ -99,6 +102,14 @@ namespace nostd {
             return ptr + count;
         }
 
+        const T* begin() const {
+            return ptr;
+        }
+
+        const T* end() const {
+            return ptr + count;
+        }
+
     private:
         int count;
         T* ptr;
@@ -111,16 +122,19 @@ namespace nostd {
 
         T* expand(const T* ptr, int n) {
             T* temp = new T[n];
+            //memcpy(temp, ptr, sizeof(temp));
+            int t = this->size();
             for (int i = 0; i < this->size(); ++i) {
                 temp[i] = ptr[i];
             }
-            delete[] ptr;
+            //delete[] ptr;
             return temp;
         }
 
         void copy_from(const Array<T>& arr) {
-            ptr = this->expand(arr.ptr, arr.count);
             count = arr.count;
+            ptr = this->expand(arr.ptr, arr.count);
+            space = 0;
         }
 
         void move_from(Array<T>& arr) {

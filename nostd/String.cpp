@@ -7,11 +7,7 @@
 
 namespace nostd {
 
-    String::String() {
-        count = 0;
-        ss[0] = '\0';
-        ptr = ss;
-    }
+    String::String() noexcept : count(0), space(0), ptr(ss) { ss[0] = '\0'; }
 
     String::~String() {
         if (short_max < count) {
@@ -186,9 +182,12 @@ namespace nostd {
         return res;
     }
 
+    //can't call this function on a const string cause:
+    //a. function is not const
+    //b. assigning new value to the *this ptr
     nostd::Array<nostd::String> String::Tokenize(const char delim) {
         nostd::String* arr = this->Split(';');
-        nostd::Array<nostd::String> token_arr;
+        nostd::Array<nostd::String> token_arr{10};
         while(arr != nullptr) {
             token_arr.addBack(arr[0]);
             *this = arr[1];

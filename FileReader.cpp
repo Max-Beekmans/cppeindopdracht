@@ -26,12 +26,13 @@ const bool FileReader::EndOfFile() {
 
 //NOTE I return a ptr to heap memory here cause I cannot return a null object or nullptr when copying a stack object.
 //In order to copy the stack object I need it to be an object of type nostd::String. I could return an empty string but I prefer this method.
-const nostd::String* FileReader::GetSpecificLine(nostd::String line_specifier) {
+nostd::String* FileReader::GetSpecificLine(nostd::String line_specifier) {
     while(!EndOfFile()) {
         nostd::String* s = new nostd::String{GetLine()};
         nostd::String* ptr = s->Split(';');
+        //line didn't contain ';' delim
         //If the first column matches the line_specifier return current line and exit
-        if(ptr[0] == line_specifier) {
+        if(ptr != nullptr && ptr[0] == line_specifier) {
             return s;
         }
         delete s;
@@ -45,11 +46,13 @@ bool FileReader::Open(const char* filename) {
         return false;
     }
     _file_stream.open(filename);
-    if(_file_stream.good()) {
-        return true;
-    }
+    return _file_stream.good();
 }
 
-void FileReader::Close() {
+bool FileReader::Close() {
+    if(!_file_stream.is_open()) {
+        return false;
+    }
     _file_stream.close();
+    return true;
 }
