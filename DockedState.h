@@ -5,15 +5,14 @@
 
 class DockedState : public BaseState {
 public:
-    DockedState() = default;
+    DockedState(Player* player, StateManager* stateManager);
     ~DockedState();
-    void Init() override;
     void Update() override;
     StateEnum GetName() override {
         return Docked;
     };
-private:
-
+protected:
+    void print_options() override;
 };
 
 #endif //EINDOPDRACHT_DOCKEDSTATE_H
