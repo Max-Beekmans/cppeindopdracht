@@ -5,8 +5,11 @@
 #ifndef EINDOPDRACHT_ARRAY_H
 #define EINDOPDRACHT_ARRAY_H
 
+#define DEFAULT_SIZE 10
+
 #include <stdexcept>
 #include <cstring>
+#include <iostream>
 
 namespace nostd {
     //Generic array object using pointer semantics and providing short string optimization
@@ -14,79 +17,26 @@ namespace nostd {
     //implementatation is seperated into .cxx file
     template <typename T>
     class Array {
-    private:
-        //short-string optimization for array
-        static const int short_max = 15;
-        int count;
-        int elements;
-        T* ptr;
-        // discriminated union (count <= short_max)
-        union {
-            // unused space;
-            int space;
-            // +1 for terminating char
-            T ss[short_max + 1];
-        };
-
-        void check(int n) const {
-            if (n < 0 || count <= n)
-                throw std::out_of_range("nostd::Array::at()");
-        }
-
-        T* expand(const T* ptr, int n) {
-            T* temp = new T[n];
-            memcpy(temp, ptr, n);
-            return temp;
-        }
-
-        void copy_from(const Array<T>& arr) {
-            if (arr.count <= short_max) {
-                memcpy(this, &arr, sizeof(arr));
-                ptr = ss;
-            } else {
-                ptr = this->expand(arr.ptr, arr.count + 1);
-                space = 0;
-            }
-            count = arr.count;
-        }
-
-        void move_from(Array<T>& arr) {
-            if (arr.count <= short_max) {
-                memcpy(this, &arr, sizeof(arr));
-                ptr = ss;
-            } else {
-                ptr = arr.ptr;
-                space = arr.space;
-                arr.ptr = arr.ss;
-            }
-            count = arr.count;
-            arr.count = 0;
-        }
-
     public:
-        //Construct
-        Array() : count{0}, ptr{ss}, space{0}, elements{0} { }
-        ~Array() { if (short_max < count) delete [] ptr; }
+        //default construct
+        //array is 10 by default
+        Array() : count(0), space(DEFAULT_SIZE), ptr(new T[DEFAULT_SIZE]) {}
 
         explicit Array(int length) {
             count = length;
-            elements = 0;
-            if (short_max < count) {
-                ptr = new T[count + 1];
-                space = count;
-            } else {
-                ptr = ss;
-                space = 0;
-            }
+            ptr = new T[count + 1];
+            space = count;
         }
 
-        Array(const Array& arr) {
+        Array(const Array& arr) : count(0), space(0), ptr(nullptr) {
             copy_from(arr);
         }
 
-        Array(Array&& arr) noexcept {
+        Array(Array&& arr) noexcept : count(0), space(0), ptr(nullptr) {
             move_from(arr);
         }
+
+        ~Array() { delete[] ptr; }
 
         //Operators
         T& operator[](int n) { return ptr[n]; }
@@ -94,7 +44,7 @@ namespace nostd {
 
         Array<T>& operator=(const Array<T>& arr) {
             if (this == &arr) return *this;
-            T* p = (short_max < count) ? ptr : nullptr;
+            T* p = ptr;
             copy_from(arr);
             delete[] p;
             return *this;
@@ -102,7 +52,7 @@ namespace nostd {
 
         Array<T>& operator=(Array<T>&& arr) noexcept {
             if (this == &arr) return *this;
-            if (count > short_max) delete [] ptr;
+            delete[] ptr;
             move_from(arr);
             return *this;
         }
@@ -120,9 +70,6 @@ namespace nostd {
         }
 
         int capacity() const {
-            if (count <= short_max) {
-                return count;
-            }
             return count + space;
         }
 
@@ -136,34 +83,15 @@ namespace nostd {
 
         //regular/fastest add operation
         void addBack(T obj) {
-            if (count < elements) {
-                count = elements;
-            }
-
-            //maybe replace count here for elements?
-            //count is always set to the desired size of the array
-            if (count == short_max) {
-                //double alloc (+2 for terminating 0)
-                int n = count + count + 2;
+            if (space == 0) {
+                int n = count + count;
                 ptr = expand(ptr, n);
-                space = n - count - 2;
-            } else if (short_max < count) {
-                if (space == 0) {
-                    int n = count + count + 2;
-                    T *p = expand(ptr, n);
-                    delete[] ptr;
-                    ptr = p;
-                    space = n - count - 2;
-                } else {
-                    --space;
-                }
+                space = n - count;
+            } else {
+                --space;
             }
-            ptr[elements++] = obj;
+            ptr[count++] = obj;
         }
-
-        //exceptional add operation (for room shuffle)
-        //TODO Shuffle Rooms, Add last element to front! ez extra credit
-        void addFront(T obj) { }
 
         //helper nonmember functions
         T* begin() {
@@ -171,7 +99,51 @@ namespace nostd {
         }
 
         T* end() {
-            return ptr + elements;
+            return ptr + count;
+        }
+
+        const T* begin() const {
+            return ptr;
+        }
+
+        const T* end() const {
+            return ptr + count;
+        }
+
+    private:
+        int count;
+        T* ptr;
+        int space;
+
+        void check(int n) const {
+            if (n < 0 || count <= n)
+                throw std::out_of_range("nostd::Array::at()");
+        }
+
+        T* expand(const T* ptr, int n) {
+            T* temp = new T[n];
+            //memcpy(temp, ptr, sizeof(temp));
+            int t = this->size();
+            for (int i = 0; i < this->size(); ++i) {
+                temp[i] = ptr[i];
+            }
+            //delete[] ptr;
+            return temp;
+        }
+
+        void copy_from(const Array<T>& arr) {
+            count = arr.count;
+            ptr = this->expand(arr.ptr, arr.count);
+            space = 0;
+        }
+
+        void move_from(Array<T>& arr) {
+            ptr = arr.ptr;
+            space = arr.space;
+            count = arr.count;
+            delete[] arr.ptr;
+            arr.count = 0;
+            arr.space = 0;
         }
     };
 }

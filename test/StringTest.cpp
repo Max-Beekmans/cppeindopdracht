@@ -1,7 +1,6 @@
 //
 // Created by MaxBe on 10/16/2018.
 //
-
 #include "catch2/catch.hpp"
 #include "../nostd/String.h"
 

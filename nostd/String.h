@@ -6,6 +6,7 @@
 #define EINDOPDRACHT_STRING_H
 
 #include <ostream>
+#include "Array.h"
 
 namespace nostd {
     //Think of this class as merely a wrapper for the annoying char literal or char* stuff
@@ -13,7 +14,7 @@ namespace nostd {
     class String {
     public:
         //Construct ro5
-        String();
+        String() noexcept;
         ~String();
         explicit String(const char* val);
         String(const String& str);
@@ -25,6 +26,7 @@ namespace nostd {
         char operator[](int n) const { return ptr[n]; }
         //ostream
         friend std::ostream &operator<<(std::ostream &os, String &string);
+        friend std::ostream &operator<<(std::ostream &os, const String &string);
         //copy
         String& operator=(const String& copy);
         //move
@@ -41,9 +43,11 @@ namespace nostd {
         const char* c_str() const;
         char& at(const int n);
         char at(int n) const;
-        //find character and return it's index
-        const size_t Find(const char c);
+        //find character and return it's index.
+        //If the character can't be found returns -1
+        const int Find(const char c);
         nostd::String* Split(const char delim);
+        nostd::Array<nostd::String> Tokenize(const char delim);
     private:
         static const int short_max = 15;
         int count = 0;

@@ -7,11 +7,7 @@
 
 namespace nostd {
 
-    String::String() {
-        count = 0;
-        ss[0] = '\0';
-        ptr = ss;
-    }
+    String::String() noexcept : count(0), space(0), ptr(ss) { ss[0] = '\0'; }
 
     String::~String() {
         if (short_max < count) {
@@ -38,6 +34,10 @@ namespace nostd {
 
     //operator overloading methods
     std::ostream &operator<<(std::ostream &os, String &string) {
+        return os << string.c_str();
+    }
+
+    std::ostream& operator<<(std::ostream& os, const String& string) {
         return os << string.c_str();
     }
 
@@ -152,27 +152,49 @@ namespace nostd {
         }
     }
 
-    const size_t String::Find(const char c) {
-        char* pch;
-        pch = strchr(this->ptr, c);
-        size_t found = pch-this->ptr+1;
+    const int String::Find(const char c) {
+        char* pch = strchr(this->ptr, c);
+        if(pch == nullptr) {
+            return -1;
+        }
+        int found = pch-this->ptr;
         return found;
     }
 
+    //return value is heap memory that needs to be cleaned up outside of this class!
+    //returns nullptr if delim can't be found
     nostd::String* String::Split(const char delim) {
-        const size_t index = this->Find(delim);
-        nostd::String* res = new nostd::String[2];
+        const int index = this->Find(delim);
+        if (index < 0) {
+            return nullptr;
+        }
+        auto* res = new nostd::String[2];
         res[0] = nostd::String{};
         res[1] = nostd::String{};
-        for (int i = 0; i < index - 1; ++i) {
+        for (int i = 0; i <= index - 1; ++i) {
             res[0] += this->at(i);
         }
 
-        for (int j = (int) index; j < this->size(); ++j) {
+        for (int j = index + 1; j < this->size(); ++j) {
             res[1] += this->at(j);
         }
 
         return res;
+    }
+
+    //can't call this function on a const string cause:
+    //a. function is not const
+    //b. assigning new value to the *this ptr
+    nostd::Array<nostd::String> String::Tokenize(const char delim) {
+        nostd::String* arr = this->Split(';');
+        nostd::Array<nostd::String> token_arr{10};
+        while(arr != nullptr) {
+            token_arr.addBack(arr[0]);
+            *this = arr[1];
+            arr = this->Split(';');
+        }
+
+        return token_arr;
     }
 
     //helper nonmember functions
