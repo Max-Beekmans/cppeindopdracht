@@ -12,7 +12,7 @@ DockedState::DockedState(Player* player, StateManager* stateManager) {
 }
 
 void DockedState::Update() {
-    io.PrintLine(_player->current_ship.GetType());
+    io.PrintLine(_player->GetShip().GetType());
 }
 
 DockedState::~DockedState() {

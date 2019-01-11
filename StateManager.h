@@ -25,4 +25,5 @@ public:
 private:
     nostd::Stack<BaseState*> _stateStack;
 };
+
 #endif //EINDOPDRACHT_STATEMANAGER_H

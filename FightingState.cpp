@@ -63,7 +63,7 @@ void FightingState::fight() {
 }
 
 void FightingState::shoot(Ship originShip, Ship targetShip) {
-    targetShip.ReceiveDamage(originShip.);
+    //targetShip.ReceiveDamage(originShip);
 }
 
 void FightingState::flee() {

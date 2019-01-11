@@ -10,7 +10,7 @@
 
 class Ship {
 public:
-    Ship() noexcept : _type{}, _cost(0), _space(0), _maxCannons(0), _maxHp(0), _weight(0), _isSmall(false), _currentHp(0) {};
+    Ship() noexcept : _type{}, _cost(0), _space(0), _maxCannons(0), _maxHp(0), _weight(1), _isSmall(false), _currentHp(0) {};
     ~Ship() = default;
 
     Ship(const nostd::String type, const int cost, const int space, const int maxCannons, const int maxHp, const int weight, const bool isSmall)
@@ -69,6 +69,7 @@ private:
     int _cost;
     int _space;
     int _maxCannons;
+    //0 == light, 1 == normal, 2 == heavy
     int _weight;
     bool _isSmall;
 };

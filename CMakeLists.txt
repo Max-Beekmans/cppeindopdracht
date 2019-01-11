@@ -26,8 +26,8 @@ add_executable(eindopdracht
         Player.h
         Port.cpp
         Port.h
-        PortFactory.cpp
-        PortFactory.h
+        Factory/PortFactory.cpp
+        Factory/PortFactory.h
         exceptions/PortNotFoundException.h
         StateManager.h
         StateManager.cpp
@@ -39,5 +39,5 @@ add_executable(eindopdracht
         SailingState.h
         SailingState.cpp
         FightingState.cpp
-        FightingState.h)
+        FightingState.h Factory/Factory.h Factory/ShipFactory.cpp Factory/ShipFactory.h exceptions/OutOfFileException.h)
 

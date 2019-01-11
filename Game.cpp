@@ -3,7 +3,7 @@
 //
 
 #include "Game.h"
-#include "PortFactory.h"
+#include "Factory/PortFactory.h"
 #include "exceptions/PortNotFoundException.h"
 
 Game::Game() {
@@ -17,11 +17,11 @@ Game::~Game() {
 void Game::StartGame() {
     io.PrintLine("Start game");
     PrintIntroduction();
-    PortFactory pf;
+    factory::PortFactory pf;
     try{
         current_port = pf.CreatePort(nostd::String{"Roatan"});
         current_port->PrintValues();
-    } catch (PortNotFoundException &e) {
+    } catch (exceptions::PortNotFoundException &e) {
         io.PrintLine(e.what());
     }
 }

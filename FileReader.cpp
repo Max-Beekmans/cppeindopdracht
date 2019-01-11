@@ -3,6 +3,7 @@
 //
 
 #include "FileReader.h"
+#include "exceptions/OutOfFileException.h"
 
 FileReader::FileReader(const char* filename) {
     _file_stream.open(filename);
@@ -26,7 +27,7 @@ const bool FileReader::EndOfFile() {
 
 //NOTE I return a ptr to heap memory here cause I cannot return a null object or nullptr when copying a stack object.
 //In order to copy the stack object I need it to be an object of type nostd::String. I could return an empty string but I prefer this method.
-nostd::String* FileReader::GetSpecificLine(nostd::String line_specifier) {
+nostd::String* FileReader::GetSpecificLine(const nostd::String line_specifier) {
     while(!EndOfFile()) {
         nostd::String* s = new nostd::String{GetLine()};
         nostd::String* ptr = s->Split(';');
@@ -39,6 +40,18 @@ nostd::String* FileReader::GetSpecificLine(nostd::String line_specifier) {
         delete[] ptr;
     }
     return nullptr;
+}
+
+nostd::String FileReader::GetNthLine(const size_t n) {
+    size_t count = 0;
+    while(!EndOfFile()) {
+        nostd::String s = GetLine();
+        if(count == n) {
+            return s;
+        }
+        count++;
+    }
+    throw exceptions::OutOfFileException("line number N is not in the file.");
 }
 
 bool FileReader::Open(const char* filename) {

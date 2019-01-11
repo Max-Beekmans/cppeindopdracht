@@ -39,6 +39,7 @@ namespace nostd {
         //Methods
         int size() const;
         int capacity() const;
+        bool isEmpty() const;
         char* c_str();
         const char* c_str() const;
         char& at(const int n);

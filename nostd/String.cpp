@@ -198,6 +198,13 @@ namespace nostd {
         return token_arr;
     }
 
+    bool String::isEmpty() const {
+        if(size() <= 0) {
+            return true;
+        }
+        return false;
+    }
+
     //helper nonmember functions
     char* begin(String& x) {
         return x.c_str();

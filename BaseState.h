@@ -6,7 +6,8 @@
 #include "nostd/Array.h"
 #include "nostd/String.h"
 #include "Player.h"
-#include "StateManager.h"
+
+class StateManager;
 
 class BaseState {
 public:
