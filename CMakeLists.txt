@@ -29,5 +29,5 @@ add_executable(eindopdracht
         PortFactory.cpp
         PortFactory.h
         exceptions/PortNotFoundException.h
-        )
+        StateManager.h StateManager.cpp BaseState.h nostd/StateEnum.h nostd/Stack.h DockedState.h DockedState.cpp SailingState.h SailingState.cpp FightingState.cpp FightingState.h)
 
