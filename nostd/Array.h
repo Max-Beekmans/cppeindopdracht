@@ -23,9 +23,9 @@ namespace nostd {
         Array() : count(0), space(DEFAULT_SIZE), ptr(new T[DEFAULT_SIZE]) {}
 
         explicit Array(int length) {
-            count = length;
-            ptr = new T[count + 1];
-            space = count;
+            count = 0;
+            ptr = new T[length];
+            space = length;
         }
 
         Array(const Array& arr) : count(0), space(0), ptr(nullptr) {
@@ -123,7 +123,6 @@ namespace nostd {
         T* expand(const T* ptr, int n) {
             T* temp = new T[n];
             //memcpy(temp, ptr, sizeof(temp));
-            int t = this->size();
             for (int i = 0; i < this->size(); ++i) {
                 temp[i] = ptr[i];
             }

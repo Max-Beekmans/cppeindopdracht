@@ -15,7 +15,7 @@ Port* PortFactory::CreatePort(nostd::String port_name) {
     nostd::Array<Cannon> cannon_arr{10};
     nostd::Array<Ship> ship_arr{10};
 
-    cannon_arr.addBack(Cannon{});
+    cannon_arr.addBack(Cannon{0, 20});
     ship_arr.addBack(Ship{nostd::String{"shipname"}, 0, 0, 0, 0, 0, false});
 
     //Assumed is that both files have the same first_row indicating all possible goods
@@ -54,6 +54,10 @@ Port* PortFactory::CreatePort(nostd::String port_name) {
     nostd::IOHandler io;
     for(auto &i : cargo_arr) {
         io.PrintLine(i.GetCargoName());
+    }
+
+    for(int i = 0; i < cargo_arr.size(); ++i) {
+        io.PrintLine(cargo_arr[i].GetCost());
     }
 
     return new Port(port_name, cargo_arr, cannon_arr, ship_arr);

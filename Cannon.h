@@ -6,6 +6,7 @@
 
 class Cannon {
 public:
+    explicit Cannon(const int weight, const int cost) {}
     Cannon() : _weight(0), _cost(0) {};
     ~Cannon() = default;
 

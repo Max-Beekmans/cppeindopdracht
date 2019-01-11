@@ -186,14 +186,15 @@ namespace nostd {
     //a. function is not const
     //b. assigning new value to the *this ptr
     nostd::Array<nostd::String> String::Tokenize(const char delim) {
-        nostd::String* arr = this->Split(';');
-        nostd::Array<nostd::String> token_arr{10};
+        nostd::String* arr = this->Split(delim);
+        nostd::Array<nostd::String> token_arr;
         while(arr != nullptr) {
             token_arr.addBack(arr[0]);
             *this = arr[1];
             arr = this->Split(';');
         }
 
+        delete[] arr;
         return token_arr;
     }
 
