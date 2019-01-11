@@ -10,6 +10,12 @@
 #include "Ship.h"
 #include "nostd/IOHandler.h"
 #include "Game.h"
+#include "StateManager.h"
+#include "DockedState.h"
+#include "SailingState.h"
+#include "FightingState.h"
+#include "nostd/Stack.h"
+#include "BaseState.h"
 //#include "FileReader.h"
 
 int main(int argc, char* argv[]) {
@@ -73,6 +79,7 @@ int main(int argc, char* argv[]) {
     io.PrintLine(cargo_arr.size());
     io.PrintLine(cargo_arr_cpy.size());
 
+
 ////    nostd::String port_name{"Roatan"};
 ////    nostd::Array<Cargo> cargo_arr{10};
 ////    nostd::Array<Cannon> cannon_arr{10};
@@ -93,6 +100,7 @@ int main(int argc, char* argv[]) {
 //            }
 //        }
 //    }
+
 
     //io.GetString();
     return 0;
