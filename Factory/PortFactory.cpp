@@ -7,6 +7,7 @@
 #include "PortFactory.h"
 #include "ShipFactory.h"
 #include "../exceptions/PortNotFoundException.h"
+#include "../nostd/Random.h"
 
 //TODO remove
 #include "../nostd/IOHandler.h"
@@ -15,13 +16,22 @@ Port* factory::PortFactory::CreatePort(nostd::String port_name) {
     nostd::Array<Cargo> cargo_arr{10};
     nostd::Array<Cannon> cannon_arr{10};
     nostd::Array<Ship> ship_arr{10};
+    nostd::Random r;
 
-    cannon_arr.addBack(Cannon{0, 20});
-    nostd::IOHandler io;
-    ShipFactory sf;
-    Ship random_ship = sf.CreateRandomShip();
-    io.PrintLine(random_ship);
-    ship_arr.addBack(random_ship);
+    int random_ships = r.getRand(1 ,5);
+    //get between 1 and 5 random ships from ShipFactory
+    for (int j = 0; j < random_ships; ++j) {
+        ShipFactory sf;
+        Ship random_ship = sf.CreateRandomShip();
+        ship_arr.addBack(random_ship);
+    }
+
+    Cannon light_cannon{0, 50, r.getRand(0, 5)};
+    Cannon medium_cannon{1, 200, r.getRand(0, 3)};
+    Cannon heavy_cannon{2, 1000, r.getRand(0, 2)};
+    cannon_arr.addBack(light_cannon);
+    cannon_arr.addBack(medium_cannon);
+    cannon_arr.addBack(heavy_cannon);
 
     //Assumed is that both files have the same first_row indicating all possible goods
     _fr.Open("goederen_prijzen.csv");
@@ -55,14 +65,6 @@ Port* factory::PortFactory::CreatePort(nostd::String port_name) {
     delete first_row;
     delete raw_prices_line;
     delete raw_stock_line;
-
-    for(auto &i : cargo_arr) {
-        io.PrintLine(i.GetCargoName());
-    }
-
-    for(int i = 0; i < cargo_arr.size(); ++i) {
-        io.PrintLine(cargo_arr[i].GetCost());
-    }
 
     return new Port(port_name, cargo_arr, cannon_arr, ship_arr);
 }

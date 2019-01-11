@@ -48,7 +48,7 @@ namespace nostd {
         }
 
         void PrintDivider() {
-            std::cout << std::endl << "_____________________________________________" << std::endl;
+            std::cout << "_____________________________________________" << std::endl;
         }
     };
 }

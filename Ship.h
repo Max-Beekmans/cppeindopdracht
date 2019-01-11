@@ -21,11 +21,63 @@ public:
     }
 
     friend std::ostream &operator<<(std::ostream &os, Ship &ship) {
-        return os << ship._cost << ", " << ship._space << ", " << ship._maxCannons << ", " << ship._maxHp << ", " << ship._weight << ", " << ship._isSmall << ", " << ship._type;
+        os << "type:        " << ship._type << std::endl;
+        os << "cost:        " << ship._cost << std::endl;
+        os << "space:       " << ship._space << std::endl;
+        os << "max cannons: " << ship._maxCannons << std::endl;
+        os << "max hp:      " << ship._maxHp << std::endl;
+        os << "weight:      ";
+        switch(ship._weight) {
+            case 0:
+                os << "light";
+                break;
+            case 1:
+                os << "normal";
+                break;
+            case 2:
+                os << "heavy";
+                break;
+            default:
+                os << " ";
+        }
+        os << std::endl;
+        os << "size:        ";
+        if(ship._isSmall) {
+            os << "small" << std::endl;
+        } else {
+            os << "large" << std::endl;
+        }
+        return os;
     }
 
     friend std::ostream &operator<<(std::ostream &os, const Ship &ship) {
-        return os << ship._cost << ", " << ship._space << ", " << ship._maxCannons << ", " << ship._maxHp << ", " << ship._weight << ", " << ship._isSmall << ", " << ship._type;
+        os << "type:        " << ship._type << std::endl;
+        os << "cost:        " << ship._cost << std::endl;
+        os << "space:       " << ship._space << std::endl;
+        os << "max cannons: " << ship._maxCannons << std::endl;
+        os << "max hp:      " << ship._maxHp << std::endl;
+        os << "weight:      ";
+        switch(ship._weight) {
+            case 0:
+                os << "light";
+                break;
+            case 1:
+                os << "normal";
+                break;
+            case 2:
+                os << "heavy";
+                break;
+            default:
+                os << " ";
+        }
+        os << std::endl;
+        os << "size:        ";
+        if(ship._isSmall) {
+            os << "small" << std::endl;
+        } else {
+            os << "large" << std::endl;
+        }
+        return os;
     }
 
     const int GetMaxHp() {

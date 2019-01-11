@@ -22,13 +22,17 @@ public:
 
     //maybe replace for getters and setters
     void PrintValues();
-
+    void PrintPortHeader();
+    void PrintCargo();
+    void PrintCannons();
+    void PrintShips();
 private:
     //once created we don't change the values of the port until we reach a new port.
     nostd::String _port_name;
     nostd::Array<Cargo> _cargo_inventory;
     nostd::Array<Cannon> _cannon_inventory;
     nostd::Array<Ship> _ship_inventory;
+    nostd::IOHandler _io;
 };
 
 
