@@ -23,7 +23,6 @@ void StateManager::PopState() {
 /*Pause the current state and go to a new state which is added at the end of the stack*/
 void StateManager::PushState(BaseState *state) {
     this->_stateStack.Push(state);
-    this->_stateStack.Top()->Init();
 }
 
 bool StateManager::IsEmpty() const {

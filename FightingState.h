@@ -2,18 +2,31 @@
 #define EINDOPDRACHT_FIGHTINGSTATE_H
 
 #include "BaseState.h"
+#include "Player.h"
+#include "Ship.h"
+#include "StateManager.h"
 
 class FightingState : public BaseState {
 public:
-    FightingState() = default;
+    FightingState(Player* player, StateManager* stateManager);
     ~FightingState();
-    void Init() override;
     void Update() override;
     StateEnum GetName() override {
         return Fighting;
     };
+protected:
+    void print_options() override;
 private:
-
+    Ship _enemy;
+    int _fleeLookupTable[3][3];
+    void fight();
+    void shoot(Ship originShip, Ship targetShip);
+    void flee();
+    void surrender();
+    void generate_enemy();
+    int get_flee_chance(Ship playerShip, Ship enemyShip);
+    void init_options();
+    void init_flee_lookup_table();
 };
 
 #endif //EINDOPDRACHT_FIGHTINGSTATE_H
