@@ -8,15 +8,7 @@ void DockedState::Update() {
 
 }
 
-void DockedState::Pause() {
-
-}
-
-void DockedState::Resume() {
-
-}
-
-void DockedState::Cleanup() {
+DockedState::~DockedState() {
 
 }
 

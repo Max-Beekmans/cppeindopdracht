@@ -6,11 +6,9 @@
 class DockedState : public BaseState {
 public:
     DockedState() = default;
+    ~DockedState();
     void Init() override;
     void Update() override;
-    void Pause() override;
-    void Resume() override;
-    void Cleanup() override;
     StateEnum GetName() override {
         return Docked;
     };

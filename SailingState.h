@@ -6,11 +6,9 @@
 class SailingState : public BaseState {
 public:
     SailingState() = default;
+    ~SailingState();
     void Init() override;
     void Update() override;
-    void Pause() override;
-    void Resume() override;
-    void Cleanup() override;
     StateEnum GetName() override {
         return Sailing;
     };
