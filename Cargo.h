@@ -11,11 +11,17 @@ public:
     Cargo(const nostd::String _cargo_name, const int cost, const int amount) : _cargo_name{_cargo_name} ,_cost{cost}, _amount{amount} {};
 
     friend std::ostream &operator<<(std::ostream &os, Cargo &cargo) {
-        return os << cargo._cargo_name << ", " << cargo._amount << ", " << cargo._cost;
+        os << "Name:             " << cargo._cargo_name << std::endl;
+        os << "Amount available: " << cargo._amount << std::endl;
+        os << "Current price:    " << cargo._cost << std::endl;
+        return os;
     }
 
     friend std::ostream &operator<<(std::ostream &os, const Cargo &cargo) {
-        return os << cargo._cargo_name << ", " << cargo._amount << ", " << cargo._cost;
+        os << "Name:             " << cargo._cargo_name << std::endl;
+        os << "Amount available: " << cargo._amount << std::endl;
+        os << "Current price:    " << cargo._cost << std::endl;
+        return os;
     }
 
     const nostd::String GetCargoName() {

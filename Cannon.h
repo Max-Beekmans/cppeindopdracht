@@ -6,12 +6,30 @@
 
 class Cannon {
 public:
-    explicit Cannon(const int weight, const int cost) {}
-    Cannon() : _weight(0), _cost(0) {};
+    explicit Cannon(const int weight, const int cost, const int amount) : _weight(weight), _cost(cost), _amount(amount) {}
+    Cannon() : _weight(0), _cost(0), _amount(0) {};
     ~Cannon() = default;
 
     friend std::ostream &operator<<(std::ostream &os, Cannon &cannon) {
-        return os << cannon._weight << ", " << cannon._cost;
+        switch (cannon._weight) {
+            case 0:
+                os << "Light cannons: ";
+                break;
+            case 1:
+                os << "Medium cannons: ";
+                break;
+            case 2:
+                os << "Heavy cannons: ";
+            default:
+                os << " ";
+        }
+        if(cannon._amount < 1) {
+            os << "UNAVAILABLE";
+        } else {
+            os << cannon._amount << " available";
+        }
+        os << cannon._cost << " g" << std::endl;
+        return os;
     }
     friend std::ostream &operator<<(std::ostream &os, const Cannon &cannon) {
         return os << cannon._weight << ", " << cannon._cost;
@@ -41,6 +59,7 @@ public:
 private:
     int _weight;
     int _cost;
+    int _amount;
 };
 
 #endif //EINDOPDRACHT_CANNON_H

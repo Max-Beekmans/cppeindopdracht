@@ -7,6 +7,7 @@
 
 #include "nostd/IOHandler.h"
 #include "Port.h"
+#include "Player.h"
 
 class Game {
 public:
@@ -17,7 +18,8 @@ private:
     void PrintIntroduction();
     nostd::IOHandler io;
     //union { wind, port } either have wind object or port object?
-    Port* current_port;
+    Port* _current_port;
+    Player _player;
 };
 
 
