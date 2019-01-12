@@ -39,6 +39,9 @@ public:
     void SetDestinationPort(Port port) {
         _destinationPort = port;
     }
+    void ArriveOnDestination() {
+        _currentPort = _destinationPort;
+    }
 private:
     Ship _ship = Ship(nostd::String{"Hallo"}, 200, 400, 9001, 2, 0, 0);
     Port _currentPort;

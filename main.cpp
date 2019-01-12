@@ -16,6 +16,7 @@
 #include "FightingState.h"
 #include "nostd/Stack.h"
 #include "BaseState.h"
+#include "StateManager.h"
 //#include "FileReader.h"
 
 int main(int argc, char* argv[]) {

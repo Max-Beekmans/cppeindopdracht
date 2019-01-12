@@ -16,7 +16,6 @@ void StateManager::PopState() {
     if (!IsEmpty()) {
         BaseState *poppedState = this->_stateStack.Pop();
         delete poppedState;
-
     }
 }
 
@@ -26,7 +25,7 @@ void StateManager::PushState(BaseState *state) {
 }
 
 bool StateManager::IsEmpty() const {
-    return this->_stateStack.IsEmpty() == 0;
+    return this->_stateStack.IsEmpty();
 }
 
 StateManager::~StateManager(){

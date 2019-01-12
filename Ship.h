@@ -5,6 +5,7 @@
 #include "nostd/String.h"
 #include "nostd/Array.h"
 #include "Cannon.h"
+#include "Cargo.h"
 
 //TODO: move FleeLookupTable to more logical class
 
@@ -112,9 +113,23 @@ public:
             _cannons.addBack(cannon);
         }
     }
-
+    nostd::Array<Cannon> GetCannons() {
+        return _cannons;
+    }
+    void AddCargo(Cargo cargo) {
+        //check on if there is space or will we be doing this check in the shop?
+        _cargo.addBack(cargo);
+    }
+    nostd::Array<Cargo> GetCargo() {
+        return _cargo;
+    }
+    void LoseAllCargo() {
+        //this is the correct way to empty an array right?
+        _cargo = {};
+    }
 private:
     nostd::Array<Cannon> _cannons;
+    nostd::Array<Cargo> _cargo;
     nostd::String _type;
     int _maxHp;
     int _currentHp;

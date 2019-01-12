@@ -1,5 +1,6 @@
 #include "FightingState.h"
 #include "nostd/Random.h"
+#include "factory/ShipFactory.h"
 
 FightingState::FightingState(Player* player, StateManager* stateManager) {
     _player = player;
@@ -10,6 +11,25 @@ FightingState::FightingState(Player* player, StateManager* stateManager) {
 }
 
 void FightingState::Update() {
+    print_options();
+
+    //Get input
+    int input;
+    switch(input) {
+        case 1:
+            fight();
+            break;
+        case 2:
+            flee();
+            break;
+        case 3:
+            surrender();
+            break;
+        default:
+            io.PrintLine("Please select a viable option.");
+            print_options();
+            break;
+    }
 
 }
 
@@ -63,7 +83,9 @@ void FightingState::fight() {
 }
 
 void FightingState::shoot(Ship originShip, Ship targetShip) {
-    //targetShip.ReceiveDamage(originShip);
+    for(auto cannon : originShip.GetCannons()) {
+        targetShip.ReceiveDamage(cannon.GetDamage());
+    }
 }
 
 void FightingState::flee() {
@@ -71,7 +93,6 @@ void FightingState::flee() {
 
     nostd::Random r;
 
-    //TODO: player needs a ship getter
     if(r.getRand(0, 100) <= get_flee_chance(_player->GetShip(), _enemy)) {
         io.PrintLine("You succesfully escaped the pirates!");
         _stateManager->PopState();
@@ -81,6 +102,9 @@ void FightingState::flee() {
 }
 
 void FightingState::surrender() {
+    _player->GetShip().LoseAllCargo();
+    io.PrintLine("You surrender to the pirates, they steal everything they can fit on their ship and throw everything else in the sea. That's just how pirates are.");
+    _stateManager->PopState();
 
 }
 
@@ -89,6 +113,6 @@ int FightingState::get_flee_chance(Ship playerShip, Ship enemyShip) {
 }
 
 void FightingState::generate_enemy() {
-    //TODO: we need a ShipFactory where you can get a random ship (as an enemy)
-    _enemy = Ship(nostd::String{"Hallo"}, 200, 400, 9001, 2, 0, 0);
+    factory::ShipFactory factory;
+    _enemy = factory.CreateRandomShip();
 }
