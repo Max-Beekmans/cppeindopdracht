@@ -39,6 +39,10 @@ namespace nostd {
             return x;
         }
 
+        void HandleOptions(nostd::Array<nostd::String>& options) {
+
+        }
+
         //not really but just whitespace
         void ClearConsole() {
             for (int i = 0; i < 10; ++i) {
