@@ -10,7 +10,7 @@ FightingState::FightingState(Player* player, StateManager* stateManager) {
 }
 
 void FightingState::Update() {
-
+    print_options();
 }
 
 FightingState::~FightingState() {

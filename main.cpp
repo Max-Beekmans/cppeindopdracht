@@ -16,6 +16,7 @@
 #include "FightingState.h"
 #include "nostd/Stack.h"
 #include "BaseState.h"
+#include "StateManager.h"
 //#include "FileReader.h"
 
 int main(int argc, char* argv[]) {
@@ -97,6 +98,15 @@ int main(int argc, char* argv[]) {
 //            }
 //        }
 //    }
+
+    Player* player = new Player();
+    StateManager* stateManager = new StateManager();
+    stateManager->PushState(new FightingState(player, stateManager));
+    stateManager->PushState(new DockedState(player, stateManager));
+    //stateManager->PopState();
+    //stateManager->CurrentState()->Update();
+    io.Print("Empty? ");
+    io.PrintLine(stateManager->IsEmpty());
 
 
     //io.GetString();
