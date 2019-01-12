@@ -11,8 +11,8 @@ public:
     StateEnum GetName() override {
         return Docked;
     };
-protected:
-    void print_options() override;
+private:
+    void print_options();
 };
 
 #endif //EINDOPDRACHT_DOCKEDSTATE_H

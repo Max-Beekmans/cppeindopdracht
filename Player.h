@@ -21,7 +21,7 @@ public:
     const int GetGold() {
         return _gold;
     }
-    Ship GetShip() {
+    Ship& GetShip() {
         return _ship;
     }
     void SetShip(Ship ship) {
@@ -33,17 +33,17 @@ public:
     const Port GetDestinationPort() {
         return _destinationPort;
     }
-    void SetCurrentPort(Port port) {
+    void SetCurrentPort(const Port& port) {
         _currentPort = port;
     }
-    void SetDestinationPort(Port port) {
+    void SetDestinationPort(const Port& port) {
         _destinationPort = port;
     }
     void ArriveOnDestination() {
         _currentPort = _destinationPort;
     }
 private:
-    Ship _ship = Ship(nostd::String{"Hallo"}, 200, 400, 9001, 2, 0, 0);
+    Ship _ship;
     Port _currentPort;
     Port _destinationPort;
     int _gold;

@@ -11,6 +11,7 @@
 #include "SailingState.h"
 #include "FightingState.h"
 #include "DockedState.h"
+#include "Factory/ShipFactory.h"
 
 Game::Game() {
 
@@ -30,13 +31,18 @@ void Game::StartGame() {
     } catch (exceptions::PortNotFoundException &e) {
         io.PrintLine(e.what());
     }*/
+    factory::ShipFactory shipFactory;
+    StateManager* stateManager = new StateManager();
+    Player* player = new Player();
+    player->SetShip(shipFactory.CreateRandomShip());
+    io.PrintLine(player->GetShip());
+    io.PrintLine(player->GetShip().GetCurrentHp());
+    player->GetShip().ReceiveDamage(30);
+    io.PrintLine(player->GetShip().GetCurrentHp());
+    io.PrintLine(player->GetShip());
 
-    StateManager* stateManager;
-    Player* player;
-
-    stateManager->PushState(new FightingState(player, stateManager));
-    stateManager->PushState(new DockedState(player, stateManager));
-    stateManager->PushState(new SailingState(player, stateManager));
+    //stateManager->PushState(new SailingState(player, stateManager));
+    //stateManager->CurrentState()->Update();
 }
 
 void Game::PrintIntroduction() {
