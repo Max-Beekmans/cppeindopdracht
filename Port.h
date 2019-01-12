@@ -26,6 +26,8 @@ public:
     void PrintCargo();
     void PrintCannons();
     void PrintShips();
+
+    const nostd::Array<Cargo>& GetCargoInventory() const;
 private:
     //once created we don't change the values of the port until we reach a new port.
     nostd::String _port_name;

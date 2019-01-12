@@ -120,6 +120,9 @@ public:
         //check on if there is space or will we be doing this check in the shop?
         _cargo.addBack(cargo);
     }
+    void RemoveCargo(size_t n) {
+        _cargo.removeN(n);
+    }
     nostd::Array<Cargo> GetCargo() {
         return _cargo;
     }

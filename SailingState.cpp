@@ -1,10 +1,8 @@
 #include "SailingState.h"
 #include "nostd/Random.h"
 
-SailingState::SailingState(Player* player, StateManager* stateManager) {
-    _player = player;
-    _stateManager = stateManager;
-    _turns = CalculateTurns(_player->GetCurrentPort(), _player->GetDestinationPort());
+SailingState::SailingState(Player& player, StateManager& stateManager) : BaseState(player, stateManager) {
+    _turns = CalculateTurns(_player.GetCurrentPort(), _player.GetDestinationPort());
 }
 
 void SailingState::Update() {
@@ -15,7 +13,7 @@ void SailingState::Update() {
                 io.PrintLine("The ship didn't move.");
                 break;
             case 3 ... 4:
-                if (_player->GetShip().GetWeight() == 0) {
+                if (_player.GetShip().GetWeight() == 0) {
                     _turns--;
                     io.PrintLine("You sailed, you are now 1 turn closer to the target port.");
                 } else {
@@ -23,7 +21,7 @@ void SailingState::Update() {
                 }
                 break;
             case 5 ... 7:
-                if (_player->GetShip().GetWeight() != 2) {
+                if (_player.GetShip().GetWeight() != 2) {
                     _turns--;
                     io.PrintLine("You sailed, you are now 1 turn closer to the target port.");
                 } else {
@@ -49,22 +47,26 @@ void SailingState::Update() {
                     _turns--;
                     io.PrintLine("You sailed, you are now 1 turn closer to the target port.");
                 }
-                _player->GetShip().ReceiveDamage(r.getRand(1, 100));
-                if(_player->GetShip().GetCurrentHp() <= 0) {
+                _player.GetShip().ReceiveDamage(r.getRand(1, 100));
+                if(_player.GetShip().GetCurrentHp() <= 0) {
                     io.PrintLine("Your ship has sunk, the game is over.");
                     //TODO: actually quit the game here
                 }
                 break;
         }
     }
-    _player->ArriveOnDestination();
+    _player.ArriveOnDestination();
 }
 
-int SailingState::CalculateTurns(Port currentPort, Port destinationPort) {
+int SailingState::CalculateTurns(const Port& currentPort, const Port& destinationPort) {
     //TODO: implementation
     return 20;
 }
 
 SailingState::~SailingState() {
+
+}
+
+void SailingState::print_options() {
 
 }

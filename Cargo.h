@@ -24,13 +24,17 @@ public:
         return os;
     }
 
-    const nostd::String GetCargoName() {
+    bool operator==(const Cargo& a) {
+        return (a._cargo_name == this->_cargo_name);
+    }
+
+    const nostd::String GetCargoName() const {
         return _cargo_name;
     }
-    const int GetCost() {
+    const int GetCost() const {
         return _cost;
     }
-    const int GetAmount() {
+    const int GetAmount() const {
         return _amount;
     }
 private:

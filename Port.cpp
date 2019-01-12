@@ -60,6 +60,10 @@ void Port::PrintShips() {
     }
 }
 
+const nostd::Array<Cargo>& Port::GetCargoInventory() const {
+    return _cargo_inventory;
+}
+
 
 
 

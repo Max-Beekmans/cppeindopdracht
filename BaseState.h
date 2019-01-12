@@ -11,11 +11,13 @@ class StateManager;
 
 class BaseState {
 public:
+    BaseState(Player& player, StateManager& stateManager) : _player(player), _stateManager(stateManager) {}
+    ~BaseState() = default;
     virtual void Update()=0;
     virtual StateEnum GetName() { return Base; };
 protected:
-    Player* _player;
-    StateManager* _stateManager;
+    Player& _player;
+    StateManager& _stateManager;
     nostd::Array<nostd::String> _options;
     nostd::IOHandler io;
     virtual void print_options()=0;
