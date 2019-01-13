@@ -22,6 +22,8 @@ private:
     void SellCannons();
     void BuyShip();
     void ShowGoldBalance();
+    void ShowShipHealth();
+    void RepairShip();
 };
 
 #endif //EINDOPDRACHT_DOCKEDSTATE_H

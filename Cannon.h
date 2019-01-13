@@ -3,6 +3,7 @@
 
 #include <ostream>
 #include "nostd/Range.h"
+#include "nostd/String.h"
 
 class Cannon {
 public:
@@ -33,6 +34,10 @@ public:
     }
     friend std::ostream &operator<<(std::ostream &os, const Cannon &cannon) {
         return os << cannon._weight << ", " << cannon._cost;
+    }
+
+    bool operator==(const Cannon& a) {
+        return (a._weight == this->_weight);
     }
 
     const int GetDamage() {

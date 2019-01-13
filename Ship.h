@@ -106,7 +106,11 @@ public:
         _currentHp -= damage;
     }
     void RestoreHp(int hp) {
-        _currentHp += hp;
+        if(_currentHp + hp > _maxHp) {
+            _currentHp = _maxHp;
+        } else {
+            _currentHp += hp;
+        }
     }
     void AddCannon(Cannon cannon) {
         if (_cannons.size() < _maxCannons) {

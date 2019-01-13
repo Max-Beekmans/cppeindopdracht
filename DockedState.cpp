@@ -34,7 +34,7 @@ void DockedState::Update() {
             //SailTo(port_name);
             break;
         case 6:
-            //RepairShip();
+            RepairShip();
             break;
         case 7:
             //QuitLife();
@@ -147,6 +147,13 @@ void DockedState::ShowGoldBalance() {
     io.PrintLine(_player.GetGold());
 }
 
+void DockedState::ShowShipHealth() {
+    io.Print("Your ships health: ");
+    io.Print(_player_ship.GetCurrentHp());
+    io.Print("/");
+    io.PrintLine(_player_ship.GetMaxHp());
+}
+
 void DockedState::BuyCannons() {
     nostd::Array<nostd::String> arr;
     for(const auto &i : _current_port.GetCannonInventory()) {
@@ -175,4 +182,37 @@ void DockedState::BuyShip() {
         return;
     }
     _player_ship = _current_port.GetShipInventory()[op];
+}
+
+void DockedState::RepairShip() {
+    _player_ship.ReceiveDamage(93);
+    if(_player_ship.GetCurrentHp() == _player_ship.GetMaxHp()) {
+        io.PrintLine("Your ship is in perfect condition. You don't need to repair your ship.");
+        return;
+    }
+    io.PrintLine("Repairing your ship will cost 1 gold per 10 health points.");
+    ShowShipHealth();
+    ShowGoldBalance();
+    io.Print("How much gold would you like to spend to restore your ship?");
+    io.Print(" (max: ");
+    int maxRepair = (_player_ship.GetMaxHp() - _player_ship.GetCurrentHp()) / 10 + ((_player_ship.GetMaxHp() - _player_ship.GetCurrentHp()) % 10 != 0);
+    io.Print(maxRepair);
+    io.PrintLine(")");
+    int gold = io.GetInt();
+    if(gold > _player.GetGold()) {
+        io.PrintLine("You can't afford these repairments. Choose for a cheaper repairment.");
+        ShowGoldBalance();
+        return;
+    } else if(gold < 0 || gold > maxRepair) {
+        io.Print("Invalid amount. You can only use a max of: ");
+        io.Print(maxRepair);
+        io.PrintLine(" gold.");
+        return;
+    }
+    _player_ship.RestoreHp(gold * 10);
+    _player.LoseGold(gold);
+    io.Print("Your ship has been repaired for ");
+    io.Print(gold);
+    io.PrintLine(" gold.");
+    ShowShipHealth();
 }
