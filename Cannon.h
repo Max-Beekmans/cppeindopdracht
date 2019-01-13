@@ -66,11 +66,21 @@ public:
     }
     const nostd::String GetStringWeight() const {
         switch(_weight) {
-            case 0: return nostd::String{"Licht cannon"};
+            case 0: return nostd::String{"Light cannon"};
             case 1: return nostd::String{"Medium cannon"};
             case 2: return nostd::String{"Heavy cannon"};
             default: return nostd::String{"Invalid cannon"};
         }
+    }
+    int DeductAmount(const int amount) {
+        if(amount > _amount || amount < 0) {
+            return -1;
+        }
+        _amount -= amount;
+        return _amount;
+    }
+    void IncreaseAmount(const int amount) {
+        _amount += amount;
     }
 private:
     int _weight;

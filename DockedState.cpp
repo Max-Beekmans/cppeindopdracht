@@ -22,7 +22,7 @@ void DockedState::Update() {
         case 1:
             SellCargo();
         case 2:
-            //BuyCannons();
+            BuyCannons();
             break;
         case 3:
             //SellCannons();
@@ -112,7 +112,7 @@ void DockedState::BuyCargo() {
     while((_current_port.GetCargoInventory()[op].GetCost() * amount) > _player.GetGold()) {
         io.PrintLine("You can't afford this. Enter different amount or -1 to cancel");
         amount = io.GetInt();
-        if(amount == -1) {
+        if(amount < 0) {
             return;
         }
     }
@@ -162,12 +162,61 @@ void DockedState::BuyCannons() {
 
     int op = io.HandleOptions(arr);
 
-    if(_current_port.GetCannonInventory()[op].GetAmount() <= 0) {
-        io.PrintLine("not enough stock");
+    //0 or smaller returns you to the options
+    if(op < 0) {
         return;
     }
 
-    //if(_player_ship.GetMaxCannons())
+    if(_current_port.GetCannonInventory()[op].GetWeight() == 2 && _player_ship.IsSmall()) {
+        io.PrintLine("You can't use heavy cannons on a small ship.");
+        return;
+    }
+
+    io.Print("How many: ");
+    io.Print(_current_port.GetCannonInventory()[op].GetStringWeight());
+    io.PrintLine("s Would you like to buy: ");
+
+    int amount = io.GetInt();
+
+    while((_current_port.GetCannonInventory()[op].GetCost() * amount) > _player.GetGold()) {
+        io.PrintLine("You can't afford this. Enter different amount or -1 to cancel");
+        amount = io.GetInt();
+        if(amount < 0) {
+            return;
+        }
+    }
+
+    if(_current_port.GetCannonInventory()[op].GetAmount() < amount) {
+        io.Print("Not enough stock, we only have ");
+        io.Print(_current_port.GetCannonInventory()[op].GetAmount());
+        io.Print(_current_port.GetCannonInventory()[op].GetStringWeight());
+        io.PrintLine("s in stock.");
+        return;
+    }
+
+    if(_player_ship.GetCannonAmount() + amount > _player_ship.GetMaxCannons()) {
+        io.PrintLine("You don't have room for that much cannons.");
+        io.Print("You have ");
+        io.Print(_player_ship.GetMaxCannons() - _player_ship.GetCannonAmount());
+        io.PrintLine("free spots for cannons.");
+        return;
+    }
+
+    int f = _player_ship.GetCannons().find(_current_port.GetCannonInventory()[op]);
+    //Player doesn't have this cannon yet so add new object to it's ship
+    if(f == -1) {
+        Cannon c {_current_port.GetCannonInventory()[op].GetWeight(), _current_port.GetCannonInventory()[op].GetCost(), amount};
+        _player_ship.AddCannon(c);
+    } else {
+        _player_ship.GetCannons()[f].IncreaseAmount(amount);
+    }
+
+    //Notify player of his gold and what he just sold for.
+    io.Print("Bought for: ");
+    io.PrintLine(_current_port.GetCannonInventory()[f].GetCost() * amount);
+    _player.LoseGold(_current_port.GetCannonInventory()[f].GetCost() * amount);
+
+    this->ShowGoldBalance();
 }
 
 void DockedState::BuyShip() {
