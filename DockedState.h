@@ -14,10 +14,13 @@ public:
 protected:
     void print_options() override;
 private:
-    const Port& _current_port;
+    Port& _current_port;
     Ship& _player_ship;
     void BuyCargo();
     void SellCargo();
+    void BuyCannons();
+    void SellCannons();
+    void BuyShip();
     void ShowGoldBalance();
 };
 

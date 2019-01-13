@@ -40,6 +40,7 @@ namespace nostd {
         }
 
         int HandleOptions(const nostd::Array<nostd::String>& options) {
+            PrintLine("Enter number for option or 11 for more options");
             //left to print
             auto op = static_cast<size_t>(options.size());
             //index left off
@@ -67,6 +68,7 @@ namespace nostd {
                     }
                 }
             }
+            return -1;
         }
 
         //not really but just whitespace

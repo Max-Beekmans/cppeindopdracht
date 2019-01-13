@@ -50,11 +50,22 @@ public:
         nostd::Range range{0, maxRange};
         return range.GetRandom();
     }
-    const int GetWeight() {
+    const int GetWeight() const {
         return _weight;
     }
-    const int GetCost() {
+    const int GetCost() const {
         return _cost;
+    }
+    const int GetAmount() const {
+        return _amount;
+    }
+    const nostd::String GetStringWeight() const {
+        switch(_weight) {
+            case 0: return nostd::String{"Licht cannon"};
+            case 1: return nostd::String{"Medium cannon"};
+            case 2: return nostd::String{"Heavy cannon"};
+            default: return nostd::String{"Invalid cannon"};
+        }
     }
 private:
     int _weight;

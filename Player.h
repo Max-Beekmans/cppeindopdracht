@@ -5,7 +5,7 @@
 #ifndef EINDOPDRACHT_PLAYER_H
 #define EINDOPDRACHT_PLAYER_H
 
-#define STARTING_GOLD 1000
+#define STARTING_GOLD 100000
 
 #include "Ship.h"
 #include "Port.h"
@@ -29,7 +29,7 @@ public:
     void SetShip(Ship ship) {
         _ship = ship;
     }
-    const Port& GetCurrentPort() {
+    Port& GetCurrentPort() {
         return _currentPort;
     }
     const Port& GetDestinationPort() {

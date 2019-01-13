@@ -37,6 +37,16 @@ public:
     const int GetAmount() const {
         return _amount;
     }
+    int DeductAmount(const int amount) {
+        if(amount > _amount || amount < 0) {
+            return -1;
+        }
+        _amount -= amount;
+        return _amount;
+    }
+    void IncreaseAmount(const int amount) {
+        _amount += amount;
+    }
 private:
     nostd::String _cargo_name;
     int _cost;
