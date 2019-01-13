@@ -8,7 +8,7 @@
 
 class FightingState : public BaseState {
 public:
-    FightingState(Player* player, StateManager* stateManager);
+    FightingState(Player& player, StateManager& stateManager);
     ~FightingState();
     void Update() override;
     StateEnum GetName() override {

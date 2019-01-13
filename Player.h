@@ -5,12 +5,14 @@
 #ifndef EINDOPDRACHT_PLAYER_H
 #define EINDOPDRACHT_PLAYER_H
 
+#define STARTING_GOLD 100000
+
 #include "Ship.h"
 #include "Port.h"
 
 class Player {
 public:
-    Player() = default;
+    Player(Ship& starting_ship, Port& starting_port) : _ship(starting_ship), _currentPort(starting_port), _gold(STARTING_GOLD) {}
     ~Player() = default;
     void ReceiveGold(int gold) {
         _gold += gold;
@@ -27,13 +29,13 @@ public:
     void SetShip(Ship ship) {
         _ship = ship;
     }
-    const Port GetCurrentPort() {
+    Port& GetCurrentPort() {
         return _currentPort;
     }
-    const Port GetDestinationPort() {
+    const Port& GetDestinationPort() {
         return _destinationPort;
     }
-    void SetCurrentPort(const Port& port) {
+    void SetCurrentPort(Port& port) {
         _currentPort = port;
     }
     void SetDestinationPort(const Port& port) {
@@ -43,8 +45,8 @@ public:
         _currentPort = _destinationPort;
     }
 private:
-    Ship _ship;
-    Port _currentPort;
+    Ship& _ship;
+    Port& _currentPort;
     Port _destinationPort;
     int _gold;
 };

@@ -5,14 +5,23 @@
 
 class DockedState : public BaseState {
 public:
-    DockedState(Player* player, StateManager* stateManager);
+    DockedState(Player& player, StateManager& stateManager);
     ~DockedState();
     void Update() override;
     StateEnum GetName() override {
         return Docked;
     };
+protected:
+    void print_options() override;
 private:
-    void print_options();
+    Port& _current_port;
+    Ship& _player_ship;
+    void BuyCargo();
+    void SellCargo();
+    void BuyCannons();
+    void SellCannons();
+    void BuyShip();
+    void ShowGoldBalance();
 };
 
 #endif //EINDOPDRACHT_DOCKEDSTATE_H

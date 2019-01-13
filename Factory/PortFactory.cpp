@@ -12,7 +12,7 @@
 //TODO remove
 #include "../nostd/IOHandler.h"
 
-Port* factory::PortFactory::CreatePort(nostd::String port_name) {
+Port factory::PortFactory::CreatePort(nostd::String port_name) {
     nostd::Array<Cargo> cargo_arr{10};
     nostd::Array<Cannon> cannon_arr{10};
     nostd::Array<Ship> ship_arr{10};
@@ -66,5 +66,5 @@ Port* factory::PortFactory::CreatePort(nostd::String port_name) {
     delete raw_prices_line;
     delete raw_stock_line;
 
-    return new Port(port_name, cargo_arr, cannon_arr, ship_arr);
+    return Port(port_name, cargo_arr, cannon_arr, ship_arr);
 }

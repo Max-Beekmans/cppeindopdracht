@@ -17,7 +17,7 @@ public:
     Ship(const nostd::String type, const int cost, const int space, const int maxCannons, const int maxHp, const int weight, const bool isSmall)
         : _type(type), _cost(cost), _space(space), _maxCannons(maxCannons), _maxHp(maxHp), _currentHp(maxHp), _weight(weight), _isSmall(isSmall) {}
 
-    nostd::String GetType() {
+    nostd::String GetType() const {
         return _type;
     }
 
@@ -120,6 +120,10 @@ public:
         //check on if there is space or will we be doing this check in the shop?
         _cargo.addBack(cargo);
     }
+    //Remove cargo when amount < 1
+    void RemoveCargo(size_t n) {
+        _cargo.removeN(n);
+    }
     nostd::Array<Cargo> GetCargo() {
         return _cargo;
     }
@@ -135,6 +139,8 @@ private:
     int _currentHp;
     int _cost;
     int _space;
+    int _maxSpace;
+    int _cannon_amount;
     int _maxCannons;
     //0 == light, 1 == normal, 2 == heavy
     int _weight;

@@ -2,9 +2,7 @@
 #include "nostd/Random.h"
 #include "factory/ShipFactory.h"
 
-FightingState::FightingState(Player* player, StateManager* stateManager) {
-    _player = player;
-    _stateManager = stateManager;
+FightingState::FightingState(Player& player, StateManager& stateManager) : BaseState(player, stateManager) {
     init_options();
     init_flee_lookup_table();
     generate_enemy();
@@ -67,10 +65,10 @@ void FightingState::print_options() {
 }
 
 void FightingState::fight() {
-    shoot(_player->GetShip(), _enemy);
+    shoot(_player.GetShip(), _enemy);
     if(_enemy.GetCurrentHp() > 0) {
-        shoot(_enemy, _player->GetShip());
-        if(_player->GetShip().GetCurrentHp() <= 0) {
+        shoot(_enemy, _player.GetShip());
+        if(_player.GetShip().GetCurrentHp() <= 0) {
             //gameover
             io.PrintLine("Your ship has sunk, the game is over.");
             //TODO: actually quit the game here
@@ -78,7 +76,7 @@ void FightingState::fight() {
     } else {
         //won fight
         io.PrintLine("You have defeated the pirates!");
-        _stateManager->PopState();
+        _stateManager.PopState();
     }
 }
 
@@ -89,22 +87,22 @@ void FightingState::shoot(Ship originShip, Ship targetShip) {
 }
 
 void FightingState::flee() {
-    shoot(_enemy, _player->GetShip());
+    shoot(_enemy, _player.GetShip());
 
     nostd::Random r;
 
-    if(r.getRand(0, 100) <= get_flee_chance(_player->GetShip(), _enemy)) {
+    if(r.getRand(0, 100) <= get_flee_chance(_player.GetShip(), _enemy)) {
         io.PrintLine("You succesfully escaped the pirates!");
-        _stateManager->PopState();
+        _stateManager.PopState();
     } else {
         io.PrintLine("Sadly you weren't fast enough, you are still in battle!");
     }
 }
 
 void FightingState::surrender() {
-    _player->GetShip().LoseAllCargo();
+    _player.GetShip().LoseAllCargo();
     io.PrintLine("You surrender to the pirates, they steal everything they can fit on their ship and throw everything else in the sea. That's just how pirates are.");
-    _stateManager->PopState();
+    _stateManager.PopState();
 
 }
 

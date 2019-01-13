@@ -7,13 +7,14 @@
 
 class SailingState : public BaseState {
 public:
-    SailingState(Player* player, StateManager* stateManager);
+    SailingState(Player& player, StateManager& stateManager);
     ~SailingState();
     void Update() override;
-    int CalculateTurns(Port currentPort, Port destinationPort);
+    int CalculateTurns(const Port& currentPort, const Port& destinationPort);
     StateEnum GetName() override {
         return Sailing;
     };
+    void print_options() override;
 private:
     int _turns;
 };

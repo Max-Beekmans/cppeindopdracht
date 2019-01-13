@@ -60,6 +60,18 @@ void Port::PrintShips() {
     }
 }
 
+nostd::Array<Cargo>& Port::GetCargoInventory() {
+    return _cargo_inventory;
+}
+
+nostd::Array<Ship>& Port::GetShipInventory() {
+    return _ship_inventory;
+}
+
+nostd::Array<Cannon>& Port::GetCannonInventory() {
+    return _cannon_inventory;
+}
+
 
 
 

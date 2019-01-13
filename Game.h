@@ -17,9 +17,6 @@ public:
 private:
     void PrintIntroduction();
     nostd::IOHandler io;
-    //union { wind, port } either have wind object or port object?
-    Port* _current_port;
-    Player _player;
 };
 
 

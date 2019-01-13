@@ -24,14 +24,28 @@ public:
         return os;
     }
 
-    const nostd::String GetCargoName() {
+    bool operator==(const Cargo& a) {
+        return (a._cargo_name == this->_cargo_name);
+    }
+
+    const nostd::String GetCargoName() const {
         return _cargo_name;
     }
-    const int GetCost() {
+    const int GetCost() const {
         return _cost;
     }
-    const int GetAmount() {
+    const int GetAmount() const {
         return _amount;
+    }
+    int DeductAmount(const int amount) {
+        if(amount > _amount || amount < 0) {
+            return -1;
+        }
+        _amount -= amount;
+        return _amount;
+    }
+    void IncreaseAmount(const int amount) {
+        _amount += amount;
     }
 private:
     nostd::String _cargo_name;
