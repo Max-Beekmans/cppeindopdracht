@@ -22,7 +22,7 @@ void DockedState::Update() {
         case 1:
             SellCargo();
         case 2:
-            //BuyCannons();
+            BuyCannons();
             break;
         case 3:
             //SellCannons();
@@ -68,6 +68,9 @@ void DockedState::SellCargo() {
     }
     //we print in order of arr so we know op is the index of the cargo to be sold from the player ship
     int op = io.HandleOptions(arr);
+    if(op == -1){
+        return;
+    }
     io.Print("How many: ");
     io.Print(_player_ship.GetCargo()[op].GetCargoName());
     io.PrintLine(" Would you like to sell: ");
@@ -79,6 +82,8 @@ void DockedState::SellCargo() {
         amount = io.GetInt();
         x = _player_ship.GetCargo()[op].DeductAmount(amount);
     }
+
+    _player_ship.DecreaseSpace(amount);
 
     //find what the port will buy the selected cargo for
     int f = _current_port.GetCargoInventory().find(_player_ship.GetCargo()[op]);
@@ -97,12 +102,15 @@ void DockedState::SellCargo() {
 }
 
 void DockedState::BuyCargo() {
+    _current_port.PrintCargo();
     nostd::Array<nostd::String> arr;
     for(const auto &i : _current_port.GetCargoInventory()) {
         arr.addBack(i.GetCargoName());
     }
-
     int op = io.HandleOptions(arr);
+    if(op == -1) {
+        return;
+    }
     io.Print("How many: ");
     io.Print(_current_port.GetCargoInventory()[op].GetCargoName());
     io.PrintLine(" Would you like to buy: ");
@@ -116,6 +124,13 @@ void DockedState::BuyCargo() {
             return;
         }
     }
+
+    if(amount > _player_ship.CargoSpaceLeft()) {
+        io.PrintLine("You don't have enough space left");
+        return;
+    }
+
+    _player_ship.IncreaseSpace(amount);
 
     int x = _current_port.GetCargoInventory()[op].DeductAmount(amount);
     while(x == -1) {

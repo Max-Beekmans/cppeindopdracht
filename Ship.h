@@ -93,6 +93,19 @@ public:
     const int GetSpace() {
         return _space;
     }
+    const int CargoSpaceLeft() {
+        return _maxSpace - _space;
+    }
+    bool IncreaseSpace(const int amount) {
+        if(amount > _space) {
+            return false;
+        }
+        _space += amount;
+        return true;
+    }
+    void DecreaseSpace(const int amount) {
+        _space -= amount;
+    }
     const int GetMaxCannons() {
         return _maxCannons;
     }
