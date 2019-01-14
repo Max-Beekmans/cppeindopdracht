@@ -25,7 +25,7 @@ void DockedState::Update() {
             BuyCannons();
             break;
         case 3:
-            //SellCannons();
+            SellCannons();
             break;
         case 4:
             BuyShip();
@@ -152,6 +152,54 @@ void DockedState::ShowShipHealth() {
     io.Print(_player_ship.GetCurrentHp());
     io.Print("/");
     io.PrintLine(_player_ship.GetMaxHp());
+}
+
+void::DockedState::SellCannons() {
+    if(_player.GetShip().GetCannons().size() < 1) {
+        io.PrintLine("You don't have any cannons to sell.");
+        return;
+    }
+
+    //get all cannon weights aboard
+    nostd::Array<nostd::String> arr;
+    for(const auto &i : _player.GetShip().GetCannons()) {
+        arr.addBack(i.GetStringWeight());
+    }
+
+    //we print in order of arr so we know op is the index of the cannon to be sold from the player ship
+    int op = io.HandleOptions(arr);
+
+    //0 or smaller returns you to the options
+    if(op < 0) {
+        return;
+    }
+
+    io.Print("How many: ");
+    io.Print(_player_ship.GetCannons()[op].GetStringWeight());
+    io.PrintLine(" Would you like to sell: ");
+    int amount = io.GetInt();
+    int x = _player_ship.GetCannons()[op].DeductAmount(amount);
+    while(x == -1) {
+        io.Print("Invalid amount. You can only sell a max of: ");
+        io.PrintLine(_player_ship.GetCannons()[op].GetAmount());
+        amount = io.GetInt();
+        x = _player_ship.GetCannons()[op].DeductAmount(amount);
+    }
+
+    //find what the port will buy the selected cannon for
+    int f = _current_port.GetCannonInventory().find(_player_ship.GetCannons()[op]);
+
+    //remove selected cargo from array if amount == 0
+    if(x == 0) {
+        _player.GetShip().RemoveCannon(static_cast<size_t>(op));
+    }
+
+    //Notify player of his gold and what he just sold for.
+    io.Print("Sold for: ");
+    io.PrintLine(_current_port.GetCannonInventory()[f].GetCost() * amount);
+    _player.ReceiveGold(_current_port.GetCannonInventory()[f].GetCost() * amount);
+
+    this->ShowGoldBalance();
 }
 
 void DockedState::BuyCannons() {
