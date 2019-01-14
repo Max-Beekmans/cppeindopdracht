@@ -77,7 +77,8 @@ void FightingState::shoot_player() {
             int damage = cannon.GetDamage();
             _player.GetShip().ReceiveDamage(damage);
             io.Print("You got: ");
-            io.PrintLine(damage);
+            io.Print(damage);
+            io.PrintLine(" damage.");
             io.Print("Your ship health: ");
             io.PrintLine(_player.GetShip().GetCurrentHp());
         }
@@ -90,7 +91,8 @@ void FightingState::shoot_enemy() {
             int damage = cannon.GetDamage();
             _enemy.ReceiveDamage(damage);
             io.Print("You did: ");
-            io.PrintLine(damage);
+            io.Print(damage);
+            io.PrintLine(" damage.");
             io.Print("Enemy ship health: ");
             io.PrintLine(_enemy.GetCurrentHp());
         }
