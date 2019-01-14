@@ -60,7 +60,7 @@ namespace nostd {
         if (count == short_max) {
             //double the alloc (+2 for terminating 0)
             int n = count + count + 2;
-            ptr = expand(ptr, n);
+            expand(ptr, n);
             //assert space left
             space = n - count - 2;
         } else if (short_max < count) {
@@ -68,9 +68,7 @@ namespace nostd {
             if (space == 0) {
                 //double the alloc (+2 for terminating 0)
                 int n = count + count + 2;
-                char* p = expand(ptr, n);
-                delete[] ptr;
-                ptr = p;
+                expand(ptr, n);
                 space = n - count - 2;
             } else {
                 //there is still space
@@ -118,10 +116,11 @@ namespace nostd {
             throw std::out_of_range("String::at()");
     }
 
-    char* String::expand(const char *ptr, int n) {
-        char* p = new char[n];
-        strcpy(p, ptr);
-        return p;
+    void String::expand(const char* p, int n) {
+        char* temp = new char[n];
+        strcpy(temp, p);
+        delete[] this->ptr;
+        this->ptr = temp;
     }
 
     void String::copy_from(const String& copy) {
@@ -130,8 +129,7 @@ namespace nostd {
             count = copy.count;
             ptr = ss;
         } else {
-            //delete[] ptr;
-            ptr = expand(copy.ptr, copy.count + 1);
+            expand(copy.ptr, copy.count + 1);
             count = copy.count;
             space = 0;
         }

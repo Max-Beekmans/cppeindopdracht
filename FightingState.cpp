@@ -113,7 +113,7 @@ void FightingState::surrender() {
     io.PrintLine("You surrender to the pirates, they steal everything they can fit on their ship and throw everything else in the sea. That's just how pirates are.");
     stateManager.PopState();
 }
-
+//TODO pass by reference?
 int FightingState::get_flee_chance(Ship playerShip, Ship enemyShip) {
     return _fleeLookupTable[playerShip.GetWeight()][enemyShip.GetWeight()];
 }
