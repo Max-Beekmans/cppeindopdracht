@@ -71,18 +71,18 @@ void FightingState::shoot_player() {
     for(auto cannon : _enemy.GetCannons()) {
         for(int i = 0; i < cannon.GetAmount(); i++) {
             int damage = cannon.GetDamage();
-            _player.GetShip().ReceiveDamage(damage);
+            player.GetShip().ReceiveDamage(damage);
             io.Print("You got: ");
             io.Print(damage);
             io.PrintLine(" damage.");
             io.Print("Your ship health: ");
-            io.PrintLine(_player.GetShip().GetCurrentHp());
+            io.PrintLine(player.GetShip().GetCurrentHp());
         }
     }
 }
 
 void FightingState::shoot_enemy() {
-    for(auto cannon : _player.GetShip().GetCannons()) {
+    for(auto cannon : player.GetShip().GetCannons()) {
         for(int i = 0; i < cannon.GetAmount(); i++) {
             int damage = cannon.GetDamage();
             _enemy.ReceiveDamage(damage);
