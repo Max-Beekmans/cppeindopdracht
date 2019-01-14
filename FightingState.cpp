@@ -55,13 +55,12 @@ void FightingState::init_flee_lookup_table() {
 }
 
 bool FightingState::fight() {
-    shoot(_player.GetShip(), _enemy);
+    shoot_enemy();
     if(_enemy.GetCurrentHp() > 0) {
-        shoot(_enemy, _player.GetShip());
+        shoot_player();
         if(_player.GetShip().GetCurrentHp() <= 0) {
             //gameover
             io.PrintLine("Your ship has sunk, the game is over.");
-            //TODO: actually quit the game here
             return false;
         }
     } else {
@@ -72,9 +71,15 @@ bool FightingState::fight() {
     return true;
 }
 
-void FightingState::shoot(Ship originShip, Ship targetShip) {
-    for(auto cannon : originShip.GetCannons()) {
-        targetShip.ReceiveDamage(cannon.GetDamage());
+void FightingState::shoot_player() {
+    for(auto cannon : _enemy.GetCannons()) {
+        _player.GetShip().ReceiveDamage(cannon.GetDamage());
+    }
+}
+
+void FightingState::shoot_enemy() {
+    for(auto cannon : _player.GetShip().GetCannons()) {
+        _enemy.ReceiveDamage(cannon.GetDamage());
     }
 }
 
