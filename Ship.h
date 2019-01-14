@@ -79,19 +79,19 @@ public:
         return os;
     }
 
-    const int GetMaxHp() {
+    const int GetMaxHp() const {
         return _maxHp;
     }
-    const int GetCurrentHp() {
+    const int GetCurrentHp() const {
         return _currentHp;
     }
-    const int GetCost() {
+    const int GetCost() const {
         return _cost;
     }
-    const int GetSpace() {
+    const int GetSpace() const {
         return _space;
     }
-    const int GetMaxSpace() {
+    const int GetMaxSpace() const {
         return _maxSpace;
     }
     const int CargoSpaceLeft() {
@@ -103,13 +103,13 @@ public:
     void DecreaseSpace(const int amount) {
         _space -= amount;
     }
-    const int GetMaxCannons() {
+    const int GetMaxCannons() const {
         return _maxCannons;
     }
-    const int GetCannonAmount() {
+    const int GetCannonAmount() const {
         return _cannon_amount;
     }
-    const int GetWeight() {
+    const int GetWeight() const {
         return _weight;
     }
     const bool IsSmall() {
@@ -144,9 +144,7 @@ public:
     void RemoveCargo(const int n) {
         _cargo.removeN(n);
     }
-    //TODO return const reference?
     //can't be const cause I want to edit the reference to _cargo
-    //TODO show voorbeeld voor const voor en achter de method
     nostd::Array<Cargo>& GetCargo() {
         return _cargo;
     }

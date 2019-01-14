@@ -61,7 +61,7 @@ namespace nostd {
         };
 
         void check(int n) const;
-        void expand(const char* ptr, int n);
+        char* expand(const char* ptr, int n);
         void copy_from(const String& copy);
         void move_from(String& move);
     };

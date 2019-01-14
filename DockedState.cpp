@@ -297,8 +297,6 @@ void DockedState::BuyShip() {
 }
 
 void DockedState::RepairShip() {
-    //TODO remove this line?
-    _player_ship.ReceiveDamage(93);
     if (_player_ship.GetCurrentHp() == _player_ship.GetMaxHp()) {
         io.PrintLine("Your ship is in perfect condition. You don't need to repair your ship.");
         return;
