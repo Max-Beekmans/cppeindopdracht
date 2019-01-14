@@ -9,22 +9,24 @@ FightingState::FightingState(Player& player, StateManager& stateManager) : BaseS
 }
 
 bool FightingState::Update() {
-    print_options();
 
-    //Get input
-    int input;
-    switch(input) {
-        case 1:
+    int op = io.HandleOptions(_options);
+    while(op < 0 || op > _options.size() - 1) {
+        io.Print("Invalid option. Select one of these options.");
+        op = io.HandleOptions(_options);
+    }
+
+    switch(op) {
+        case 0:
             return fight();
-        case 2:
+        case 1:
             flee();
             break;
-        case 3:
+        case 2:
             surrender();
             break;
         default:
             io.PrintLine("Please select a viable option.");
-            print_options();
             break;
     }
     return true;
@@ -50,17 +52,6 @@ void FightingState::init_flee_lookup_table() {
     _fleeLookupTable[0][1] = 75;
     _fleeLookupTable[1][1] = 55;
     _fleeLookupTable[2][1] = 30;
-}
-
-void FightingState::print_options() {
-    int i = 1;
-    for(auto option : _options) {
-        io.Print("[");
-        io.Print(i);
-        io.Print("] ");
-        io.PrintLine(option);
-        i++;
-    }
 }
 
 bool FightingState::fight() {

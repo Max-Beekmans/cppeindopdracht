@@ -53,17 +53,6 @@ bool DockedState::Update() {
     return true;
 }
 
-void DockedState::print_options() {
-    int i = 1;
-    for(auto option : _options) {
-        io.Print("[");
-        io.Print(i);
-        io.Print("] ");
-        io.PrintLine(option);
-        i++;
-    }
-}
-
 void DockedState::SellCargo() {
     //get all cargo names aboard
     nostd::Array<nostd::String> arr;
@@ -284,10 +273,6 @@ void DockedState::BuyCannons() {
     _player.LoseGold(_current_port.GetCannonInventory()[f].GetCost() * amount);
 
     this->ShowGoldBalance();
-}
-
-void DockedState::SellCannons() {
-    io.PrintLine("Sell Cannons");
 }
 
 void DockedState::BuyShip() {

@@ -11,8 +11,6 @@ public:
     StateEnum GetName() override {
         return Docked;
     };
-protected:
-    void print_options() override;
 private:
     Port& _current_port;
     Ship& _player_ship;

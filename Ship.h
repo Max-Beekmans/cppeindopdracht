@@ -149,8 +149,9 @@ public:
         return _cargo;
     }
     void LoseAllCargo() {
-        //this is the correct way to empty an array right?
-        _cargo = {};
+        for(int i; i < _cargo.size(); i++) {
+            RemoveCargo(static_cast<size_t>(i));
+        }
     }
 private:
     nostd::Array<Cannon> _cannons;

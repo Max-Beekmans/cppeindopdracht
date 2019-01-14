@@ -14,7 +14,6 @@ public:
     StateEnum GetName() override {
         return Sailing;
     };
-    void print_options() override;
 private:
     int _turns;
 };

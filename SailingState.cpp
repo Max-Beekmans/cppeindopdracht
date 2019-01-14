@@ -1,4 +1,5 @@
 #include "SailingState.h"
+#include "FightingState.h"
 #include "nostd/Random.h"
 
 SailingState::SailingState(Player& player, StateManager& stateManager) : BaseState(player, stateManager) {
@@ -7,7 +8,13 @@ SailingState::SailingState(Player& player, StateManager& stateManager) : BaseSta
 
 bool SailingState::Update() {
     nostd::Random r;
+
     while(_turns > 0) {
+        if(r.getRand(1, 100) <= 20) {
+            _stateManager.PushState(new FightingState(_player, _stateManager));
+            return true;
+        }
+
         switch(r.getRand(1, 20)) {
             case 1 ... 2:
                 io.Print("[None] ");
@@ -83,9 +90,5 @@ int SailingState::CalculateTurns(const Port& currentPort, const Port& destinatio
 }
 
 SailingState::~SailingState() {
-
-}
-
-void SailingState::print_options() {
 
 }

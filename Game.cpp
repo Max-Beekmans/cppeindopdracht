@@ -42,9 +42,7 @@ void Game::StartGame() {
     StateManager stateManager{};
     Player player{starting_ship, starting_port};
 
-    stateManager.PushState(new FightingState(player, stateManager));
     stateManager.PushState(new SailingState(player, stateManager));
-    stateManager.PushState(new DockedState(player, stateManager));
 
     while(stateManager.CurrentState()->Update()) {
 
