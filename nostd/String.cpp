@@ -131,7 +131,7 @@ namespace nostd {
             count = copy.count;
             ptr = ss;
         } else {
-            delete[] ptr;
+            //delete[] ptr;
             ptr = expand(copy.ptr, copy.count + 1);
             count = copy.count;
             space = 0;

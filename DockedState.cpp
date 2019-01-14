@@ -101,7 +101,7 @@ void DockedState::BuyCargo() {
         arr.addBack(i.GetCargoName());
     }
     int op = io.HandleOptions(arr);
-    if(op == -1) {
+    if(op < 0) {
         return;
     }
     io.Print("How many: ");
@@ -144,8 +144,8 @@ void DockedState::BuyCargo() {
 
     //Notify player of his gold and what he just sold for.
     io.Print("Bought for: ");
-    io.PrintLine(_current_port.GetCargoInventory()[f].GetCost() * amount);
-    _player.LoseGold(_current_port.GetCargoInventory()[f].GetCost() * amount);
+    io.PrintLine(_current_port.GetCargoInventory()[op].GetCost() * amount);
+    _player.LoseGold(_current_port.GetCargoInventory()[op].GetCost() * amount);
 
     this->ShowGoldBalance();
 }
@@ -269,8 +269,8 @@ void DockedState::BuyCannons() {
 
     //Notify player of his gold and what he just sold for.
     io.Print("Bought for: ");
-    io.PrintLine(_current_port.GetCannonInventory()[f].GetCost() * amount);
-    _player.LoseGold(_current_port.GetCannonInventory()[f].GetCost() * amount);
+    io.PrintLine(_current_port.GetCannonInventory()[op].GetCost() * amount);
+    _player.LoseGold(_current_port.GetCannonInventory()[op].GetCost() * amount);
 
     this->ShowGoldBalance();
 }
@@ -324,7 +324,7 @@ void DockedState::RepairShip() {
 }
 
 void DockedState::SailTo() {
-    FileReader fr{"afstanden_tussen_steden.csv"};
+    /*FileReader fr{"afstanden_tussen_steden.csv"};
     nostd::String* first_row {fr.GetSpecificLine(nostd::String{""})};
     nostd::Array<nostd::String> token_arr = first_row->Tokenize(';');
     token_arr.removeN(0);
@@ -334,5 +334,6 @@ void DockedState::SailTo() {
         return;
     }
     io.PrintLine(token_arr[op]);
-    delete first_row;
+    delete first_row;*/
+    _stateManager.PushAndReplace();
 }

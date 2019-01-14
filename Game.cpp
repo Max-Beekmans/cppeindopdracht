@@ -37,12 +37,13 @@ void Game::StartGame() {
     Port starting_port = pf.CreatePort(nostd::String{"Port Royale"});
     factory::ShipFactory sf;
     Ship starting_ship = sf.CreateRandomShip();
+    io.PrintLine(starting_ship.GetType());
     starting_ship.AddCargo(Cargo{nostd::String{"bakstenen"}, 20, 2});
 
     StateManager stateManager{};
     Player player{starting_ship, starting_port};
 
-    stateManager.PushState(new SailingState(player, stateManager));
+    stateManager.PushState(new DockedState(player, stateManager));
 
     while(stateManager.CurrentState()->Update()) {
 

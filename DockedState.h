@@ -2,6 +2,7 @@
 #define EINDOPDRACHT_DOCKEDSTATE_H
 
 #include "BaseState.h"
+#include "StateManager.h"
 
 class DockedState : public BaseState {
 public:

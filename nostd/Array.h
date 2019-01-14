@@ -156,7 +156,7 @@ namespace nostd {
 
         void copy_from(const Array<T>& arr) {
             count = arr.count;
-            delete[] ptr;
+            //delete[] ptr;
             ptr = this->expand(arr.ptr, arr.count);
             space = 0;
         }

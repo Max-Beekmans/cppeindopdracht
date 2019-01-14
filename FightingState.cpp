@@ -73,7 +73,10 @@ bool FightingState::fight() {
 
 void FightingState::shoot_player() {
     for(auto cannon : _enemy.GetCannons()) {
+        int damage = cannon.GetDamage();
         _player.GetShip().ReceiveDamage(cannon.GetDamage());
+        io.Print("You got: ");
+        io.PrintLine(damage);
     }
 }
 
@@ -84,7 +87,7 @@ void FightingState::shoot_enemy() {
 }
 
 void FightingState::flee() {
-    shoot(_enemy, _player.GetShip());
+    shoot_player();
 
     nostd::Random r;
 
