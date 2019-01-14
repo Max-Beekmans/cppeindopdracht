@@ -93,6 +93,9 @@ public:
     const int GetSpace() {
         return _space;
     }
+    const int GetMaxSpace() {
+        return _maxSpace;
+    }
     const int CargoSpaceLeft() {
         return _maxSpace - _space;
     }
@@ -105,6 +108,9 @@ public:
     const int GetMaxCannons() {
         return _maxCannons;
     }
+    const int GetCannonAmount() {
+        return _cannon_amount;
+    }
     const int GetWeight() {
         return _weight;
     }
@@ -115,12 +121,18 @@ public:
         _currentHp -= damage;
     }
     void RestoreHp(int hp) {
-        _currentHp += hp;
+        if(_currentHp + hp > _maxHp) {
+            _currentHp = _maxHp;
+        } else {
+            _currentHp += hp;
+        }
     }
     void AddCannon(Cannon cannon) {
-        if (_cannons.size() < _maxCannons) {
-            _cannons.addBack(cannon);
-        }
+        _cannons.addBack(cannon);
+        _space += cannon.GetAmount();
+    }
+    void RemoveCannon(size_t n) {
+        _cannons.removeN(n);
     }
     nostd::Array<Cannon> GetCannons() {
         return _cannons;
@@ -137,8 +149,9 @@ public:
         return _cargo;
     }
     void LoseAllCargo() {
-        //this is the correct way to empty an array right?
-        _cargo = {};
+        for(int i; i < _cargo.size(); i++) {
+            RemoveCargo(static_cast<size_t>(i));
+        }
     }
 private:
     nostd::Array<Cannon> _cannons;

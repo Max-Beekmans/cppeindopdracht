@@ -12,6 +12,7 @@
 #include "SailingState.h"
 #include "FightingState.h"
 #include "DockedState.h"
+#include "Factory/ShipFactory.h"
 
 Game::Game() {
 

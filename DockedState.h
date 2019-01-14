@@ -11,8 +11,6 @@ public:
     StateEnum GetName() override {
         return Docked;
     };
-protected:
-    void print_options() override;
 private:
     Port& _current_port;
     Ship& _player_ship;
@@ -23,6 +21,8 @@ private:
     void SailTo();
     void BuyShip();
     void ShowGoldBalance();
+    void ShowShipHealth();
+    void RepairShip();
 };
 
 #endif //EINDOPDRACHT_DOCKEDSTATE_H

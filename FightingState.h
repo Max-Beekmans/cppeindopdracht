@@ -14,8 +14,6 @@ public:
     StateEnum GetName() override {
         return Fighting;
     };
-protected:
-    void print_options() override;
 private:
     Ship _enemy;
     int _fleeLookupTable[3][3];

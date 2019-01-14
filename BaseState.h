@@ -20,7 +20,6 @@ protected:
     StateManager& _stateManager;
     nostd::Array<nostd::String> _options;
     nostd::IOHandler io;
-    virtual void print_options()=0;
 };
 
 #endif //EINDOPDRACHT_BASESTATE_H

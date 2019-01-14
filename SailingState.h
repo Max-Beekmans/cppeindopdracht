@@ -3,6 +3,7 @@
 
 #include "BaseState.h"
 #include "Port.h"
+#include "StateManager.h"
 
 class SailingState : public BaseState {
 public:
@@ -13,7 +14,6 @@ public:
     StateEnum GetName() override {
         return Sailing;
     };
-    void print_options() override;
 private:
     int _turns;
 };

@@ -39,5 +39,9 @@ add_executable(eindopdracht
         SailingState.h
         SailingState.cpp
         FightingState.cpp
-        FightingState.h Factory/Factory.h Factory/ShipFactory.cpp Factory/ShipFactory.h exceptions/OutOfFileException.h)
+        FightingState.h
+        Factory/Factory.h
+        Factory/ShipFactory.cpp
+        Factory/ShipFactory.h
+        exceptions/OutOfFileException.h)
 

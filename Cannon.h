@@ -3,6 +3,7 @@
 
 #include <ostream>
 #include "nostd/Range.h"
+#include "nostd/String.h"
 
 class Cannon {
 public:
@@ -35,6 +36,10 @@ public:
         return os << cannon._weight << ", " << cannon._cost;
     }
 
+    bool operator==(const Cannon& a) {
+        return (a._weight == this->_weight);
+    }
+
     const int GetDamage() {
         int maxRange = 0;
         switch(_weight) {
@@ -61,11 +66,21 @@ public:
     }
     const nostd::String GetStringWeight() const {
         switch(_weight) {
-            case 0: return nostd::String{"Licht cannon"};
+            case 0: return nostd::String{"Light cannon"};
             case 1: return nostd::String{"Medium cannon"};
             case 2: return nostd::String{"Heavy cannon"};
             default: return nostd::String{"Invalid cannon"};
         }
+    }
+    int DeductAmount(const int amount) {
+        if(amount > _amount || amount < 0) {
+            return -1;
+        }
+        _amount -= amount;
+        return _amount;
+    }
+    void IncreaseAmount(const int amount) {
+        _amount += amount;
     }
 private:
     int _weight;

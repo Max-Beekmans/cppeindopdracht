@@ -38,7 +38,7 @@ public:
     void SetCurrentPort(Port& port) {
         _currentPort = port;
     }
-    void SetDestinationPort(Port port) {
+    void SetDestinationPort(const Port& port) {
         _destinationPort = port;
     }
     void ArriveOnDestination() {
