@@ -1,5 +1,6 @@
 #ifndef EINDOPDRACHT_RANGE_H
 #define EINDOPDRACHT_RANGE_H
+
 #include "Random.h"
 
 namespace nostd {

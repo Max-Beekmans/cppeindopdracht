@@ -1,10 +1,9 @@
 #include "SailingState.h"
 #include "FightingState.h"
+#include "DockedState.h"
 #include "nostd/Random.h"
 
-SailingState::SailingState(Player& player, StateManager& stateManager, const int turns) : BaseState(player, stateManager), _turns(turns) {
-    //_turns = CalculateTurns(_player.GetCurrentPort(), _player.GetDestinationPort());
-}
+SailingState::SailingState(Player& player, StateManager& stateManager, const int turns) : BaseState(player, stateManager), _turns(turns) {}
 
 bool SailingState::Update() {
     nostd::Random r;
@@ -74,13 +73,12 @@ bool SailingState::Update() {
                 if(_player.GetShip().GetCurrentHp() <= 0) {
                     io.PrintLine("Your ship has sunk, the game is over.");
                     _turns = 0;
-                    //TODO: actually quit the game here
                     return false;
                 }
                 break;
         }
     }
-    //_statemanager.PushandReplace(new DockingState(_player, _statemanager));
+    _stateManager.PushAndReplace(new DockedState(_player, _stateManager));
     return true;
 }
 

@@ -1,7 +1,6 @@
 //
 // Created by MaxBe on 9/11/2018.
 //
-
 #include <cstring>
 #include "String.h"
 

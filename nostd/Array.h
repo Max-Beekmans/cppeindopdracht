@@ -9,7 +9,6 @@
 
 #include <stdexcept>
 #include <cstring>
-#include <iostream>
 
 namespace nostd {
     //Generic array object using pointer semantics and providing short string optimization
@@ -54,8 +53,6 @@ namespace nostd {
             move_from(arr);
             return *this;
         }
-        //TODO make concat? (only if cases arise)
-        //TODO make compare? (very expensive operation and we don't know if our generic has == operators)
 
         T& at(const int n) {
             check(n);

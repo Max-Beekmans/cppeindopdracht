@@ -72,7 +72,7 @@ nostd::Array<Cannon>& Port::GetCannonInventory() {
     return _cannon_inventory;
 }
 
-const nostd::String Port::GetPortName() const {
+nostd::String Port::GetPortName() const {
     return _port_name;
 }
 

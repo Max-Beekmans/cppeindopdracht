@@ -7,8 +7,6 @@
 #include "Cannon.h"
 #include "Cargo.h"
 
-//TODO: move FleeLookupTable to more logical class
-
 class Ship {
 public:
     Ship() noexcept : _type{}, _cost(0), _space(0), _maxCannons(0), _maxHp(0), _weight(1), _isSmall(false), _currentHp(0) {};
