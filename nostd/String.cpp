@@ -1,7 +1,6 @@
 //
 // Created by MaxBe on 9/11/2018.
 //
-
 #include <cstring>
 #include "String.h"
 
@@ -188,7 +187,7 @@ namespace nostd {
     //b. assigning new value to the *this ptr
     nostd::Array<nostd::String> String::Tokenize(const char delim) {
         nostd::String* arr = this->Split(delim);
-        nostd::Array<nostd::String> token_arr;
+        nostd::Array<nostd::String> token_arr{};
         while(arr != nullptr) {
             token_arr.addBack(arr[0]);
             *this = arr[1];

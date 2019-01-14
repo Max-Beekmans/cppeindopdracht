@@ -11,8 +11,8 @@
 
 class Game {
 public:
-    Game();
-    ~Game();
+    Game() = default;
+    ~Game() = default;
     void StartGame();
 private:
     void PrintIntroduction();

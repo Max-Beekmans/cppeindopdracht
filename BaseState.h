@@ -1,7 +1,6 @@
 #ifndef EINDOPDRACHT_BASESTATE_H
 #define EINDOPDRACHT_BASESTATE_H
 
-#include "StateEnum.h"
 #include "nostd/IOHandler.h"
 #include "nostd/Array.h"
 #include "nostd/String.h"
@@ -11,14 +10,13 @@ class StateManager;
 
 class BaseState {
 public:
-    BaseState(Player& player, StateManager& stateManager) : _player(player), _stateManager(stateManager) {}
+    BaseState(Player& player, StateManager& stateManager) : player(player), stateManager(stateManager) {}
     ~BaseState() = default;
-    virtual bool Update()=0;
-    virtual StateEnum GetName() { return Base; };
+    virtual bool Update() = 0;
 protected:
-    Player& _player;
-    StateManager& _stateManager;
-    nostd::Array<nostd::String> _options;
+    Player& player;
+    StateManager& stateManager;
+    nostd::Array<nostd::String> options;
     nostd::IOHandler io;
 };
 

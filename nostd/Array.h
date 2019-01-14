@@ -9,7 +9,6 @@
 
 #include <stdexcept>
 #include <cstring>
-#include <iostream>
 
 namespace nostd {
     //Generic array object using pointer semantics and providing short string optimization
@@ -54,8 +53,6 @@ namespace nostd {
             move_from(arr);
             return *this;
         }
-        //TODO make concat? (only if cases arise)
-        //TODO make compare? (very expensive operation and we don't know if our generic has == operators)
 
         T& at(const int n) {
             check(n);
@@ -91,7 +88,7 @@ namespace nostd {
             ptr[count++] = obj;
         }
 
-        void removeN(int n) {
+        void removeN(const int n) {
             //I don't know how to override the last element and shift
             //So I just copy everything except n
             T* temp = new T[count - 1];
@@ -108,7 +105,7 @@ namespace nostd {
 //            }
         }
 
-        const int find(T& obj) const{
+        const int find(const T& obj) const{
             for(int i = 0; i < count; ++i) {
                 if(ptr[i] == obj) {
                     return i;

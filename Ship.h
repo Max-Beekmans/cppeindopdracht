@@ -7,8 +7,6 @@
 #include "Cannon.h"
 #include "Cargo.h"
 
-//TODO: move FleeLookupTable to more logical class
-
 class Ship {
 public:
     Ship() noexcept : _type{}, _cost(0), _space(0), _maxCannons(0), _maxHp(0), _weight(1), _isSmall(false), _currentHp(0) {};
@@ -117,10 +115,10 @@ public:
     const bool IsSmall() {
         return _isSmall;
     }
-    void ReceiveDamage(int damage) {
+    void ReceiveDamage(const int damage) {
         _currentHp -= damage;
     }
-    void RestoreHp(int hp) {
+    void RestoreHp(const int hp) {
         if(_currentHp + hp > _maxHp) {
             _currentHp = _maxHp;
         } else {
@@ -131,9 +129,10 @@ public:
         _cannons.addBack(cannon);
         _space += cannon.GetAmount();
     }
-    void RemoveCannon(size_t n) {
+    void RemoveCannon(const int n) {
         _cannons.removeN(n);
     }
+    //TODO return const reference?
     nostd::Array<Cannon> GetCannons() {
         return _cannons;
     }
@@ -142,15 +141,19 @@ public:
         _cargo.addBack(cargo);
     }
     //Remove cargo when amount < 1
-    void RemoveCargo(size_t n) {
+    void RemoveCargo(const int n) {
         _cargo.removeN(n);
     }
-    nostd::Array<Cargo> GetCargo() {
+    //TODO return const reference?
+    //can't be const cause I want to edit the reference to _cargo
+    //TODO show voorbeeld voor const voor en achter de method
+    nostd::Array<Cargo>& GetCargo() {
         return _cargo;
     }
+    //TODO replace with new array after some array fixes?
     void LoseAllCargo() {
         for(int i = 0; i < _cargo.size(); i++) {
-            RemoveCargo(static_cast<size_t>(i));
+            RemoveCargo(i);
         }
     }
 private:

@@ -13,21 +13,9 @@
 #include "FightingState.h"
 #include "DockedState.h"
 
-Game::Game() {}
-
-Game::~Game() {}
-
 void Game::StartGame() {
 //    io.PrintLine("Start game");
 //    PrintIntroduction();
-//    factory::PortFactory pf;
-//    try{
-//        _current_port = pf.CreatePort(nostd::String{"Roatan"});
-//        _current_port->PrintValues();
-//    } catch (exceptions::PortNotFoundException &e) {
-//        io.PrintLine(e.what());
-//    }
-//
     factory::ShipFactory sf;
     Ship starting_ship = sf.CreateRandomShip();
     io.PrintLine(starting_ship.GetType());
@@ -39,9 +27,8 @@ void Game::StartGame() {
 
     stateManager.PushState(new SailingState(player, stateManager, 200));
 
-    while(stateManager.CurrentState()->Update()) {
-
-    }
+    //loops until some state returns false. Exit the game if false;
+    while(stateManager.CurrentState()->Update()) {}
     io.PrintLine("Quit game");
 }
 

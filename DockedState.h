@@ -7,11 +7,8 @@
 class DockedState : public BaseState {
 public:
     DockedState(Player& player, StateManager& stateManager);
-    ~DockedState();
+    ~DockedState() = default;
     bool Update() override;
-    StateEnum GetName() override {
-        return Docked;
-    };
 private:
     Port _current_port;
     Ship& _player_ship;

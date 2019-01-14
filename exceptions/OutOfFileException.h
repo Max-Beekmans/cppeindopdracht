@@ -1,7 +1,6 @@
 //
 // Created by MaxBe on 11-Jan-19.
 //
-
 #ifndef EINDOPDRACHT_OUTOFFILEEXCEPTION_H
 #define EINDOPDRACHT_OUTOFFILEEXCEPTION_H
 
