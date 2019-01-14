@@ -12,6 +12,7 @@ namespace factory {
     class ShipFactory : Factory {
     public:
         Ship CreateRandomShip();
+        Ship CreateEnemyShip();
     };
 }
 

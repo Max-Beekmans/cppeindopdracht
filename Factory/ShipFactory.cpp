@@ -60,3 +60,40 @@ Ship factory::ShipFactory::CreateRandomShip() {
             isSmall
             );
 }
+
+Ship factory::ShipFactory::CreateEnemyShip() {
+    Ship s = CreateRandomShip();
+    nostd::Random rand;
+    int cannons = rand.getRand(0, s.GetMaxCannons());
+
+    for (int i = 0; i < cannons; ++i) {
+        Cannon c;
+        int weight = 0;
+        if(s.IsSmall()){
+            //only light or heavy cannons
+            weight = rand.getRand(0, 1);
+        } else {
+            //all cannons
+            weight = rand.getRand(0, 2);
+        }
+
+        switch (weight) {
+            case 0:
+                c = Cannon{weight, 50, 1};
+                break;
+            case 1:
+                c = Cannon{weight, 200, 1};
+                break;
+            case 2:
+                c = Cannon{weight, 1000, 1};
+                break;
+        }
+        int x = s.GetCannons().find(c);
+        if(x < 0) {
+            s.AddCannon(c);
+        } else {
+            s.GetCannons()[x].IncreaseAmount(1);
+        }
+    }
+    return s;
+}
