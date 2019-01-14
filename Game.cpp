@@ -12,15 +12,10 @@
 #include "SailingState.h"
 #include "FightingState.h"
 #include "DockedState.h"
-#include "Factory/ShipFactory.h"
 
-Game::Game() {
+Game::Game() {}
 
-}
-
-Game::~Game() {
-
-}
+Game::~Game() {}
 
 void Game::StartGame() {
 //    io.PrintLine("Start game");
@@ -33,15 +28,13 @@ void Game::StartGame() {
 //        io.PrintLine(e.what());
 //    }
 //
-    factory::PortFactory pf;
-    Port starting_port = pf.CreatePort(nostd::String{"Port Royale"});
     factory::ShipFactory sf;
     Ship starting_ship = sf.CreateRandomShip();
     io.PrintLine(starting_ship.GetType());
     starting_ship.AddCargo(Cargo{nostd::String{"bakstenen"}, 20, 2});
 
     StateManager stateManager{};
-    Player player{starting_ship, starting_port};
+    Player player{starting_ship, nostd::String{"Port Royale"}};
 
     stateManager.PushState(new DockedState(player, stateManager));
 

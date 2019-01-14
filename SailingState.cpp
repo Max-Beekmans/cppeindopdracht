@@ -2,8 +2,8 @@
 #include "FightingState.h"
 #include "nostd/Random.h"
 
-SailingState::SailingState(Player& player, StateManager& stateManager) : BaseState(player, stateManager) {
-    _turns = CalculateTurns(_player.GetCurrentPort(), _player.GetDestinationPort());
+SailingState::SailingState(Player& player, StateManager& stateManager, const int turns) : BaseState(player, stateManager), _turns(turns) {
+    //_turns = CalculateTurns(_player.GetCurrentPort(), _player.GetDestinationPort());
 }
 
 bool SailingState::Update() {
@@ -80,7 +80,7 @@ bool SailingState::Update() {
                 break;
         }
     }
-    _player.ArriveOnDestination();
+    //_statemanager.PushandReplace(new DockingState(_player, _statemanager));
     return true;
 }
 
