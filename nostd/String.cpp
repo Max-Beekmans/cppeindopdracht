@@ -131,7 +131,7 @@ namespace nostd {
             count = copy.count;
             ptr = ss;
         } else {
-            delete[] ptr;
+            //delete[] ptr;
             ptr = expand(copy.ptr, copy.count + 1);
             count = copy.count;
             space = 0;
@@ -188,7 +188,7 @@ namespace nostd {
     //b. assigning new value to the *this ptr
     nostd::Array<nostd::String> String::Tokenize(const char delim) {
         nostd::String* arr = this->Split(delim);
-        nostd::Array<nostd::String> token_arr;
+        nostd::Array<nostd::String> token_arr{};
         while(arr != nullptr) {
             token_arr.addBack(arr[0]);
             *this = arr[1];
