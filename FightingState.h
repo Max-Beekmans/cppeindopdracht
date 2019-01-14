@@ -21,7 +21,7 @@ private:
     void flee();
     void surrender();
     void generate_enemy();
-    int get_flee_chance(Ship playerShip, Ship enemyShip);
+    int get_flee_chance(Ship& playerShip, Ship& enemyShip);
     void init_options();
     void init_flee_lookup_table();
 };

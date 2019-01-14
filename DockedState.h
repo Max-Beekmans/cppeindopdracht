@@ -13,11 +13,11 @@ private:
     Port _current_port;
     Ship& _player_ship;
     void BuyCargo();
-    void SellCargo();
+    bool SellCargo();
     void BuyCannons();
-    void SellCannons();
+    bool SellCannons();
     void SailTo();
-    void BuyShip();
+    bool BuyShip();
     void ShowGoldBalance();
     void ShowShipHealth();
     void RepairShip();
