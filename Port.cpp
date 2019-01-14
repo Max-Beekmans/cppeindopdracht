@@ -6,35 +6,54 @@
 
 Port::Port(const nostd::String port_name, const nostd::Array<Cargo> cargo_inventory,
            const nostd::Array<Cannon> cannon_inventory, const nostd::Array<Ship> ship_inventory) :
-        _port_name{port_name}, _cargo_inventory{cargo_inventory}, _cannon_inventory{cannon_inventory}, _ship_inventory{ship_inventory} {
-    nostd::IOHandler io;
-    io.PrintLine(_port_name);
+        _port_name{port_name}, _cargo_inventory{cargo_inventory}, _cannon_inventory{cannon_inventory}, _ship_inventory{ship_inventory} {}
+
+void Port::PrintPortHeader() {
+    //_io.ClearConsole();
+    _io.Print("Port name: ");
+    _io.PrintLine(_port_name);
+    _io.PrintDivider();
 }
 
-Port::~Port() = default;
-
-void Port::PrintValues() {
-    nostd::IOHandler io{};
-    io.Print("Port name: ");
-    io.PrintLine(_port_name);
-    io.Print("Cargo inv: ");
-    for(auto i : _cargo_inventory) {
-        io.Print(i);
-        io.Print(" ,");
+void Port::PrintCargo() {
+    for(const auto &i : _cargo_inventory) {
+        _io.Print(i);
+        _io.PrintDivider();
     }
-    io.PrintLine(' ');
-    io.Print("Cannon inv: ");
-    for(auto j : _cannon_inventory) {
-        io.Print(j);
-        io.Print(" ,");
-    }
-    io.PrintLine(' ');
-    io.Print("Ship inv: ");
-    for(auto k : _ship_inventory) {
-        io.Print(k);
-        io.Print(" ,");
-    }
-    io.PrintLine(' ');
 }
+
+void Port::PrintCannons() {
+    for(const auto &i : _cannon_inventory) {
+        _io.Print(i);
+        _io.PrintDivider();
+    }
+}
+
+void Port::PrintShips() {
+    for(const auto &i : _ship_inventory) {
+        _io.Print(i);
+        _io.PrintDivider();
+    }
+}
+
+nostd::Array<Cargo>& Port::GetCargoInventory() {
+    return _cargo_inventory;
+}
+
+nostd::Array<Ship>& Port::GetShipInventory() {
+    return _ship_inventory;
+}
+
+nostd::Array<Cannon>& Port::GetCannonInventory() {
+    return _cannon_inventory;
+}
+
+nostd::String Port::GetPortName() const {
+    return _port_name;
+}
+
+
+
+
 
 

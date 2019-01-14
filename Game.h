@@ -7,17 +7,16 @@
 
 #include "nostd/IOHandler.h"
 #include "Port.h"
+#include "Player.h"
 
 class Game {
 public:
-    Game();
-    ~Game();
+    Game() = default;
+    ~Game() = default;
     void StartGame();
 private:
     void PrintIntroduction();
     nostd::IOHandler io;
-    //union { wind, port } either have wind object or port object?
-    Port* current_port;
 };
 
 

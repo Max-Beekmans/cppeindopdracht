@@ -1,10 +1,8 @@
 //
 // Created by Max on 07-Jan-19.
 //
-
 #ifndef EINDOPDRACHT_FILEREADER_H
 #define EINDOPDRACHT_FILEREADER_H
-
 
 #include "nostd/String.h"
 #include <fstream>
@@ -27,6 +25,10 @@ public:
     /* specifier has to be in the first column */
     /* if the specifier can't be found a nullptr is returned */
     nostd::String* GetSpecificLine(nostd::String line_specifier);
+
+    /* Get the n-th line. returns nullptr if out of file */
+    /* throws OutOfFileException if nth line is not in bounds of file */
+    nostd::String GetNthLine(size_t n);
 
     /* Opens _file_stream with file.
     returns false is already opened or if file can't be found */

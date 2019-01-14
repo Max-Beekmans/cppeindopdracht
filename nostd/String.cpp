@@ -1,7 +1,6 @@
 //
 // Created by MaxBe on 9/11/2018.
 //
-
 #include <cstring>
 #include "String.h"
 
@@ -131,7 +130,8 @@ namespace nostd {
             count = copy.count;
             ptr = ss;
         } else {
-            ptr = this->expand(copy.ptr, copy.count + 1);
+            //delete[] ptr;
+            ptr = expand(copy.ptr, copy.count + 1);
             count = copy.count;
             space = 0;
         }
@@ -186,15 +186,20 @@ namespace nostd {
     //a. function is not const
     //b. assigning new value to the *this ptr
     nostd::Array<nostd::String> String::Tokenize(const char delim) {
-        nostd::String* arr = this->Split(';');
-        nostd::Array<nostd::String> token_arr{10};
+        nostd::String* arr = this->Split(delim);
+        nostd::Array<nostd::String> token_arr{};
         while(arr != nullptr) {
             token_arr.addBack(arr[0]);
             *this = arr[1];
-            arr = this->Split(';');
+            arr = this->Split(delim);
         }
 
+        delete[] arr;
         return token_arr;
+    }
+
+    bool String::isEmpty() const {
+        return size() <= 0;
     }
 
     //helper nonmember functions

@@ -17,18 +17,25 @@
 class Port {
 public:
     Port() = default;
+    ~Port() = default;
     Port(const nostd::String port_name, const nostd::Array<Cargo> cargo_inventory, const nostd::Array<Cannon> cannon_inventory, const nostd::Array<Ship> ship_inventory);
-    ~Port();
 
-    //maybe replace for getters and setters
-    void PrintValues();
+    void PrintPortHeader();
+    void PrintCargo();
+    void PrintCannons();
+    void PrintShips();
 
+    nostd::String GetPortName() const;
+    nostd::Array<Cargo>& GetCargoInventory();
+    nostd::Array<Ship>& GetShipInventory();
+    nostd::Array<Cannon>& GetCannonInventory();
 private:
     //once created we don't change the values of the port until we reach a new port.
     nostd::String _port_name;
     nostd::Array<Cargo> _cargo_inventory;
     nostd::Array<Cannon> _cannon_inventory;
     nostd::Array<Ship> _ship_inventory;
+    nostd::IOHandler _io;
 };
 
 

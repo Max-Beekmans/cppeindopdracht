@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.12)
+cmake_minimum_required(VERSION 3.10)
 project(eindopdracht)
 
 set(CMAKE_CXX_STANDARD 11)
@@ -22,22 +22,24 @@ add_executable(eindopdracht
         Cargo.h
         Game.cpp
         Game.h
-        Player.cpp
         Player.h
         Port.cpp
         Port.h
-        PortFactory.cpp
-        PortFactory.h
+        Factory/PortFactory.cpp
+        Factory/PortFactory.h
         exceptions/PortNotFoundException.h
         StateManager.h
         StateManager.cpp
         BaseState.h
-        StateEnum.h
         nostd/Stack.h
         DockedState.h
         DockedState.cpp
         SailingState.h
         SailingState.cpp
         FightingState.cpp
-        FightingState.h)
+        FightingState.h
+        Factory/Factory.h
+        Factory/ShipFactory.cpp
+        Factory/ShipFactory.h
+        exceptions/OutOfFileException.h)
 

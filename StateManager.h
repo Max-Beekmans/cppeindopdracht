@@ -14,6 +14,8 @@ public:
 
     void PushState(BaseState* state);
 
+    void PushAndReplace(BaseState* state);
+
     void PopState();
 
     bool IsEmpty() const;
@@ -25,4 +27,5 @@ public:
 private:
     nostd::Stack<BaseState*> _stateStack;
 };
+
 #endif //EINDOPDRACHT_STATEMANAGER_H

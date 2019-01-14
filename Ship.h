@@ -4,42 +4,81 @@
 #include <ostream>
 #include "nostd/String.h"
 #include "nostd/Array.h"
-
-//TODO: move FleeLookupTable to more logical class
+#include "Cannon.h"
+#include "Cargo.h"
 
 class Ship {
 public:
-    Ship() noexcept : _type{}, _cost(0), _space(0), _maxCannons(0), _maxHp(0), _weight(0), _isSmall(false), _currentHp(0) {};
+    Ship() noexcept : _type{}, _cost(0), _space(0), _maxCannons(0), _maxHp(0), _weight(1), _isSmall(false), _currentHp(0) {};
     ~Ship() = default;
 
     Ship(const nostd::String type, const int cost, const int space, const int maxCannons, const int maxHp, const int weight, const bool isSmall)
-        : _type(type), _cost(cost), _space(space), _maxCannons(maxCannons), _maxHp(maxHp), _currentHp(maxHp), _weight(weight), _isSmall(isSmall) {
-        initFleeLookupTable();
-    }
+        : _type(type), _cost(cost), _maxSpace(space), _space(0), _maxCannons(maxCannons), _cannon_amount(0), _maxHp(maxHp), _currentHp(maxHp), _weight(weight), _isSmall(isSmall) {}
 
-    nostd::String GetType() {
+    nostd::String GetType() const {
         return _type;
     }
 
     friend std::ostream &operator<<(std::ostream &os, Ship &ship) {
-        return os << ship._cost << ", " << ship._space << ", " << ship._maxCannons << ", " << ship._maxHp << ", " << ship._weight << ", " << ship._isSmall << ", " << ship._type;
+        os << "type:        " << ship._type << std::endl;
+        os << "cost:        " << ship._cost << std::endl;
+        os << "space:       " << ship._space << std::endl;
+        os << "max cannons: " << ship._maxCannons << std::endl;
+        os << "max hp:      " << ship._maxHp << std::endl;
+        os << "weight:      ";
+        switch(ship._weight) {
+            case 0:
+                os << "light";
+                break;
+            case 1:
+                os << "normal";
+                break;
+            case 2:
+                os << "heavy";
+                break;
+            default:
+                os << " ";
+        }
+        os << std::endl;
+        os << "size:        ";
+        if(ship._isSmall) {
+            os << "small" << std::endl;
+        } else {
+            os << "large" << std::endl;
+        }
+        return os;
     }
 
     friend std::ostream &operator<<(std::ostream &os, const Ship &ship) {
-        return os << ship._cost << ", " << ship._space << ", " << ship._maxCannons << ", " << ship._maxHp << ", " << ship._weight << ", " << ship._isSmall << ", " << ship._type;
+        os << "type:        " << ship._type << std::endl;
+        os << "cost:        " << ship._cost << std::endl;
+        os << "space:       " << ship._space << std::endl;
+        os << "max cannons: " << ship._maxCannons << std::endl;
+        os << "max hp:      " << ship._maxHp << std::endl;
+        os << "weight:      ";
+        switch(ship._weight) {
+            case 0:
+                os << "light";
+                break;
+            case 1:
+                os << "normal";
+                break;
+            case 2:
+                os << "heavy";
+                break;
+            default:
+                os << " ";
+        }
+        os << std::endl;
+        os << "size:        ";
+        if(ship._isSmall) {
+            os << "small" << std::endl;
+        } else {
+            os << "large" << std::endl;
+        }
+        return os;
     }
 
-    void initFleeLookupTable() {
-        _fleeLookupTable[0][0] = 50;
-        _fleeLookupTable[1][0] = 30;
-        _fleeLookupTable[2][0] = 5;
-        _fleeLookupTable[0][1] = 60;
-        _fleeLookupTable[1][1] = 40;
-        _fleeLookupTable[2][1] = 15;
-        _fleeLookupTable[0][1] = 75;
-        _fleeLookupTable[1][1] = 55;
-        _fleeLookupTable[2][1] = 30;
-    }
     const int GetMaxHp() {
         return _maxHp;
     }
@@ -52,8 +91,23 @@ public:
     const int GetSpace() {
         return _space;
     }
+    const int GetMaxSpace() {
+        return _maxSpace;
+    }
+    const int CargoSpaceLeft() {
+        return _maxSpace - _space;
+    }
+    void IncreaseSpace(const int amount) {
+        _space += amount;
+    }
+    void DecreaseSpace(const int amount) {
+        _space -= amount;
+    }
     const int GetMaxCannons() {
         return _maxCannons;
+    }
+    const int GetCannonAmount() {
+        return _cannon_amount;
     }
     const int GetWeight() {
         return _weight;
@@ -61,26 +115,61 @@ public:
     const bool IsSmall() {
         return _isSmall;
     }
-    void receiveDamage(int damage) {
+    void ReceiveDamage(const int damage) {
         _currentHp -= damage;
     }
-    void restoreHp(int hp) {
-        _currentHp += hp;
+    void RestoreHp(const int hp) {
+        if(_currentHp + hp > _maxHp) {
+            _currentHp = _maxHp;
+        } else {
+            _currentHp += hp;
+        }
     }
-    int GetFleeChance() {
-        return 0;
+    void AddCannon(Cannon cannon) {
+        _cannons.addBack(cannon);
+        _space += cannon.GetAmount();
     }
-
+    void RemoveCannon(const int n) {
+        _cannons.removeN(n);
+    }
+    //TODO return const reference?
+    nostd::Array<Cannon> GetCannons() {
+        return _cannons;
+    }
+    void AddCargo(Cargo cargo) {
+        //check on if there is space or will we be doing this check in the shop?
+        _cargo.addBack(cargo);
+    }
+    //Remove cargo when amount < 1
+    void RemoveCargo(const int n) {
+        _cargo.removeN(n);
+    }
+    //TODO return const reference?
+    //can't be const cause I want to edit the reference to _cargo
+    //TODO show voorbeeld voor const voor en achter de method
+    nostd::Array<Cargo>& GetCargo() {
+        return _cargo;
+    }
+    //TODO replace with new array after some array fixes?
+    void LoseAllCargo() {
+        for(int i = 0; i < _cargo.size(); i++) {
+            RemoveCargo(i);
+        }
+    }
 private:
+    nostd::Array<Cannon> _cannons;
+    nostd::Array<Cargo> _cargo;
     nostd::String _type;
     int _maxHp;
     int _currentHp;
     int _cost;
     int _space;
+    int _maxSpace;
+    int _cannon_amount;
     int _maxCannons;
+    //0 == light, 1 == normal, 2 == heavy
     int _weight;
     bool _isSmall;
-    int _fleeLookupTable[3][3];
 };
 
 #endif //EINDOPDRACHT_SHIP_H
