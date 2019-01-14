@@ -37,7 +37,7 @@ void Game::StartGame() {
     StateManager stateManager{};
     Player player{starting_ship, nostd::String{"Port Royale"}};
 
-    stateManager.PushState(new SailingState(player, stateManager, 200));
+    stateManager.PushState(new DockedState(player, stateManager));
 
     while(stateManager.CurrentState()->Update()) {
 

@@ -290,7 +290,12 @@ void DockedState::BuyShip() {
         io.PrintLine("You can't afford this ship");
         return;
     }
-    _player_ship = _current_port.GetShipInventory()[op];
+    Ship temp_ship = _current_port.GetShipInventory()[op];
+    temp_ship.SetCannons(_player_ship.GetCannons());
+    temp_ship.SetCannonAmount(_player_ship.GetCannonAmount());
+    temp_ship.SetCargo(_player_ship.GetCargo());
+    temp_ship.SetSpace(_player_ship.GetSpace());
+    _player_ship = temp_ship;
 }
 
 void DockedState::RepairShip() {
