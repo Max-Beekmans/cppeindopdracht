@@ -27,6 +27,8 @@ public:
     void PrintCannons();
     void PrintShips();
 
+    const nostd::String GetPortName() const;
+
     nostd::Array<Cargo>& GetCargoInventory();
     nostd::Array<Ship>& GetShipInventory();
     nostd::Array<Cannon>& GetCannonInventory();
