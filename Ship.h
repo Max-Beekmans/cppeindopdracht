@@ -15,7 +15,7 @@ public:
     ~Ship() = default;
 
     Ship(const nostd::String type, const int cost, const int space, const int maxCannons, const int maxHp, const int weight, const bool isSmall)
-        : _type(type), _cost(cost), _space(space), _maxCannons(maxCannons), _maxHp(maxHp), _currentHp(maxHp), _weight(weight), _isSmall(isSmall) {}
+        : _type(type), _cost(cost), _maxSpace(space), _space(0), _maxCannons(maxCannons), _cannon_amount(0), _maxHp(maxHp), _currentHp(maxHp), _weight(weight), _isSmall(isSmall) {}
 
     nostd::String GetType() const {
         return _type;
@@ -96,12 +96,8 @@ public:
     const int CargoSpaceLeft() {
         return _maxSpace - _space;
     }
-    bool IncreaseSpace(const int amount) {
-        if(amount > _space) {
-            return false;
-        }
+    void IncreaseSpace(const int amount) {
         _space += amount;
-        return true;
     }
     void DecreaseSpace(const int amount) {
         _space -= amount;
