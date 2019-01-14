@@ -149,7 +149,7 @@ public:
         return _cargo;
     }
     void LoseAllCargo() {
-        for(int i; i < _cargo.size(); i++) {
+        for(int i = 0; i < _cargo.size(); i++) {
             RemoveCargo(static_cast<size_t>(i));
         }
     }

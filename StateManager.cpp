@@ -27,11 +27,12 @@ void StateManager::PushState(BaseState *state) {
 void StateManager::PushAndReplace(BaseState *state) {
     /*Cleanup the current state*/
     if (!IsEmpty()) {
-        BaseState* poppedState = this->_stateStack.Pop();
+        BaseState *poppedState = this->_stateStack.Pop();
         delete poppedState;
     }
     /*add and initialize the new state*/
     this->_stateStack.Push(state);
+}
 
 bool StateManager::IsEmpty() const {
     return this->_stateStack.IsEmpty();

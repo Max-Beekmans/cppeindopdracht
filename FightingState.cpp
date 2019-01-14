@@ -73,16 +73,27 @@ bool FightingState::fight() {
 
 void FightingState::shoot_player() {
     for(auto cannon : _enemy.GetCannons()) {
-        int damage = cannon.GetDamage();
-        _player.GetShip().ReceiveDamage(cannon.GetDamage());
-        io.Print("You got: ");
-        io.PrintLine(damage);
+        for(int i = 0; i < cannon.GetAmount(); i++) {
+            int damage = cannon.GetDamage();
+            _player.GetShip().ReceiveDamage(damage);
+            io.Print("You got: ");
+            io.PrintLine(damage);
+            io.Print("Your ship health: ");
+            io.PrintLine(_player.GetShip().GetCurrentHp());
+        }
     }
 }
 
 void FightingState::shoot_enemy() {
     for(auto cannon : _player.GetShip().GetCannons()) {
-        _enemy.ReceiveDamage(cannon.GetDamage());
+        for(int i = 0; i < cannon.GetAmount(); i++) {
+            int damage = cannon.GetDamage();
+            _enemy.ReceiveDamage(damage);
+            io.Print("You did: ");
+            io.PrintLine(damage);
+            io.Print("Enemy ship health: ");
+            io.PrintLine(_enemy.GetCurrentHp());
+        }
     }
 }
 
@@ -112,4 +123,5 @@ int FightingState::get_flee_chance(Ship playerShip, Ship enemyShip) {
 void FightingState::generate_enemy() {
     factory::ShipFactory factory;
     _enemy = factory.CreateRandomShip();
+    _enemy.AddCannon(Cannon{1, 0, 1});
 }
