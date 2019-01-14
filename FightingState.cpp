@@ -10,10 +10,10 @@ FightingState::FightingState(Player& player, StateManager& stateManager) : BaseS
 
 bool FightingState::Update() {
 
-    int op = io.HandleOptions(_options);
-    while(op < 0 || op > _options.size() - 1) {
+    int op = io.HandleOptions(options);
+    while(op < 0 || op > options.size() - 1) {
         io.Print("Invalid option. Select one of these options.");
-        op = io.HandleOptions(_options);
+        op = io.HandleOptions(options);
     }
 
     switch(op) {
@@ -32,14 +32,10 @@ bool FightingState::Update() {
     return true;
 }
 
-FightingState::~FightingState() {
-
-}
-
 void FightingState::init_options() {
-    _options.addBack(nostd::String{"Attack"});
-    _options.addBack(nostd::String{"Flee"});
-    _options.addBack(nostd::String{"Surrender"});
+    options.addBack(nostd::String{"Attack"});
+    options.addBack(nostd::String{"Flee"});
+    options.addBack(nostd::String{"Surrender"});
 }
 
 void FightingState::init_flee_lookup_table() {
@@ -58,7 +54,7 @@ bool FightingState::fight() {
     shoot_enemy();
     if(_enemy.GetCurrentHp() > 0) {
         shoot_player();
-        if(_player.GetShip().GetCurrentHp() <= 0) {
+        if(player.GetShip().GetCurrentHp() <= 0) {
             //gameover
             io.PrintLine("Your ship has sunk, the game is over.");
             return false;
@@ -66,7 +62,7 @@ bool FightingState::fight() {
     } else {
         //won fight
         io.PrintLine("You have defeated the pirates!");
-        _stateManager.PopState();
+        stateManager.PopState();
     }
     return true;
 }
@@ -74,14 +70,14 @@ bool FightingState::fight() {
 void FightingState::shoot_player() {
     for(auto cannon : _enemy.GetCannons()) {
         int damage = cannon.GetDamage();
-        _player.GetShip().ReceiveDamage(cannon.GetDamage());
+        player.GetShip().ReceiveDamage(cannon.GetDamage());
         io.Print("You got: ");
         io.PrintLine(damage);
     }
 }
 
 void FightingState::shoot_enemy() {
-    for(auto cannon : _player.GetShip().GetCannons()) {
+    for(auto cannon : player.GetShip().GetCannons()) {
         _enemy.ReceiveDamage(cannon.GetDamage());
     }
 }
@@ -91,18 +87,18 @@ void FightingState::flee() {
 
     nostd::Random r;
 
-    if(r.getRand(0, 100) <= get_flee_chance(_player.GetShip(), _enemy)) {
+    if(r.getRand(0, 100) <= get_flee_chance(player.GetShip(), _enemy)) {
         io.PrintLine("You succesfully escaped the pirates!");
-        _stateManager.PopState();
+        stateManager.PopState();
     } else {
         io.PrintLine("Sadly you weren't fast enough, you are still in battle!");
     }
 }
 
 void FightingState::surrender() {
-    _player.GetShip().LoseAllCargo();
+    player.GetShip().LoseAllCargo();
     io.PrintLine("You surrender to the pirates, they steal everything they can fit on their ship and throw everything else in the sea. That's just how pirates are.");
-    _stateManager.PopState();
+    stateManager.PopState();
 }
 
 int FightingState::get_flee_chance(Ship playerShip, Ship enemyShip) {

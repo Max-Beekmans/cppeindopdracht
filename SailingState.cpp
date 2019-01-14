@@ -10,7 +10,7 @@ bool SailingState::Update() {
 
     while(_turns > 0) {
         if(r.getRand(1, 100) <= 20) {
-            _stateManager.PushState(new FightingState(_player, _stateManager));
+            stateManager.PushState(new FightingState(player, stateManager));
             return true;
         }
 
@@ -21,7 +21,7 @@ bool SailingState::Update() {
                 break;
             case 3 ... 4:
                 io.Print("[Breeze] ");
-                if (_player.GetShip().GetWeight() == 0) {
+                if (player.GetShip().GetWeight() == 0) {
                     _turns--;
                     io.PrintLine("You sailed, you are now 1 turn closer to the target port.");
                 } else {
@@ -30,7 +30,7 @@ bool SailingState::Update() {
                 break;
             case 5 ... 7:
                 io.Print("[Weak] ");
-                if (_player.GetShip().GetWeight() != 2) {
+                if (player.GetShip().GetWeight() != 2) {
                     _turns--;
                     io.PrintLine("You sailed, you are now 1 turn closer to the target port.");
                 } else {
@@ -61,16 +61,16 @@ bool SailingState::Update() {
                 }
                 int percentage = r.getRand(1, 100);
 
-                int damage = percentage * _player.GetShip().GetMaxHp() / 100;
+                int damage = percentage * player.GetShip().GetMaxHp() / 100;
 
-                _player.GetShip().ReceiveDamage(damage);
+                player.GetShip().ReceiveDamage(damage);
                 io.Print("The storm has damaged your ship and you received ");
                 io.Print(damage);
                 io.PrintLine(" damage.");
                 io.Print("You have ");
-                io.Print(_player.GetShip().GetCurrentHp());
+                io.Print(player.GetShip().GetCurrentHp());
                 io.PrintLine(" health points left.");
-                if(_player.GetShip().GetCurrentHp() <= 0) {
+                if(player.GetShip().GetCurrentHp() <= 0) {
                     io.PrintLine("Your ship has sunk, the game is over.");
                     _turns = 0;
                     return false;
@@ -78,15 +78,6 @@ bool SailingState::Update() {
                 break;
         }
     }
-    _stateManager.PushAndReplace(new DockedState(_player, _stateManager));
+    stateManager.PushAndReplace(new DockedState(player, stateManager));
     return true;
-}
-
-int SailingState::CalculateTurns(const Port& currentPort, const Port& destinationPort) {
-    //TODO: implementation
-    return 200;
-}
-
-SailingState::~SailingState() {
-
 }

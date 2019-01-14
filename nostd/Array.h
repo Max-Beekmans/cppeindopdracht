@@ -88,7 +88,7 @@ namespace nostd {
             ptr[count++] = obj;
         }
 
-        void removeN(int n) {
+        void removeN(const int n) {
             //I don't know how to override the last element and shift
             //So I just copy everything except n
             T* temp = new T[count - 1];
@@ -105,7 +105,7 @@ namespace nostd {
 //            }
         }
 
-        const int find(T& obj) const{
+        const int find(const T& obj) const{
             for(int i = 0; i < count; ++i) {
                 if(ptr[i] == obj) {
                     return i;

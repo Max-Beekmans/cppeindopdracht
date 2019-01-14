@@ -7,7 +7,6 @@ namespace nostd {
     class Range {
     public:
         Range(const int minValue, const int maxValue) : _minValue(minValue), _maxValue(maxValue) {}
-
         ~Range() = default;
 
         const int GetRandom() {

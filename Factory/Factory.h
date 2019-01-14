@@ -9,7 +9,6 @@
 namespace factory {
     class Factory {
     public:
-
     protected:
         FileReader fileReader;
     };

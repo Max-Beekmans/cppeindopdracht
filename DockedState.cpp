@@ -2,24 +2,28 @@
 #include "FileReader.h"
 #include "SailingState.h"
 #include "Factory/PortFactory.h"
+#include "exceptions/PortNotFoundException.h"
 
 DockedState::DockedState(Player& player, StateManager& stateManager) : BaseState(player, stateManager), _player_ship(player.GetShip()) {
     factory::PortFactory pf{};
-    _current_port = pf.CreatePort(_player.GetDestinationPort());
-    _options.addBack(nostd::String{"Buy cargo"});
-    _options.addBack(nostd::String{"Sell cargo"});
-    _options.addBack(nostd::String{"Buy cannons"});
-    _options.addBack(nostd::String{"Sell cannons"});
-    _options.addBack(nostd::String{"Buy/sell ship"});
-    _options.addBack(nostd::String{"Set sail"});
-    _options.addBack(nostd::String{"Repair Ship"});
-    _options.addBack(nostd::String{"Quit Game"});
+    try {
+        _current_port = pf.CreatePort(player.GetDestinationPort());
+    } catch(exceptions::PortNotFoundException &e) {
+        io.PrintLine(e.what());
+    }
+    options.addBack(nostd::String{"Buy cargo"});
+    options.addBack(nostd::String{"Sell cargo"});
+    options.addBack(nostd::String{"Buy cannons"});
+    options.addBack(nostd::String{"Sell cannons"});
+    options.addBack(nostd::String{"Buy/sell ship"});
+    options.addBack(nostd::String{"Set sail"});
+    options.addBack(nostd::String{"Repair Ship"});
+    options.addBack(nostd::String{"Quit Game"});
 }
 
-DockedState::~DockedState() {}
-
 bool DockedState::Update() {
-    int op = io.HandleOptions(_options);
+    _current_port.PrintPortHeader();
+    int op = io.HandleOptions(options);
     switch (op) {
         case 0:
             BuyCargo();
@@ -56,11 +60,15 @@ bool DockedState::Update() {
     }
     return true;
 }
-
+//pick cargo you want to sell
+//enter how much you want to sell. Can't be more than what you have or a negative value
+//decrease space used on your ship
+//find how much the port will buy it for
+//receive gold
 void DockedState::SellCargo() {
     //get all cargo names aboard
-    nostd::Array<nostd::String> arr;
-    for(const auto &i : _player.GetShip().GetCargo()) {
+    nostd::Array<nostd::String> arr{};
+    for(const auto &i : player.GetShip().GetCargo()) {
         arr.addBack(i.GetCargoName());
     }
     //we print in order of arr so we know op is the index of the cargo to be sold from the player ship
@@ -70,7 +78,7 @@ void DockedState::SellCargo() {
     }
     io.Print("How many: ");
     io.Print(_player_ship.GetCargo()[op].GetCargoName());
-    io.PrintLine(" Would you like to sell: ");
+    io.PrintLine(" would you like to sell?");
     int amount = io.GetInt();
     int x = _player_ship.GetCargo()[op].DeductAmount(amount);
     while(x < 0) {
@@ -79,25 +87,28 @@ void DockedState::SellCargo() {
         amount = io.GetInt();
         x = _player_ship.GetCargo()[op].DeductAmount(amount);
     }
-
     _player_ship.DecreaseSpace(amount);
-
     //find what the port will buy the selected cargo for
     int f = _current_port.GetCargoInventory().find(_player_ship.GetCargo()[op]);
-
+    //cargo wasn't found in the cargo inventory
+    if(f < 0) {
+        return;
+    }
     //remove selected cargo from array if amount == 0
     if(x == 0) {
-        _player.GetShip().RemoveCargo(static_cast<size_t>(op));
+        player.GetShip().RemoveCargo(op);
     }
-
     //Notify player of his gold and what he just sold for.
     io.Print("Sold for: ");
     io.PrintLine(_current_port.GetCargoInventory()[f].GetCost() * amount);
-    _player.ReceiveGold(_current_port.GetCargoInventory()[f].GetCost() * amount);
+    player.ReceiveGold(_current_port.GetCargoInventory()[f].GetCost() * amount);
 
     this->ShowGoldBalance();
 }
-
+//pick cargo you want to buy
+//specify how much you want to buy, can't be more than what you can afford or what the shop has in stock
+//check if you have enough ship space
+//
 void DockedState::BuyCargo() {
     _current_port.PrintCargo();
     nostd::Array<nostd::String> arr;
@@ -110,25 +121,17 @@ void DockedState::BuyCargo() {
     }
     io.Print("How many: ");
     io.Print(_current_port.GetCargoInventory()[op].GetCargoName());
-    io.PrintLine(" Would you like to buy: ");
-
+    io.PrintLine(" would you like to buy?");
     int amount = io.GetInt();
-
-    while((_current_port.GetCargoInventory()[op].GetCost() * amount) > _player.GetGold()) {
+    //check if you can afford the specified cargo.cost * amount
+    while((_current_port.GetCargoInventory()[op].GetCost() * amount) > player.GetGold()) {
         io.PrintLine("You can't afford this. Enter different amount or -1 to cancel");
         amount = io.GetInt();
         if(amount < 0) {
             return;
         }
     }
-
-    if(amount > _player_ship.CargoSpaceLeft()) {
-        io.PrintLine("You don't have enough space left");
-        return;
-    }
-
-    _player_ship.IncreaseSpace(amount);
-
+    //deduct the shop amount and check if you didn't go over.
     int x = _current_port.GetCargoInventory()[op].DeductAmount(amount);
     while(x == -1) {
         io.Print("Invalid amount. You can only buy a max of: ");
@@ -136,7 +139,13 @@ void DockedState::BuyCargo() {
         amount = io.GetInt();
         x = _current_port.GetCargoInventory()[op].DeductAmount(amount);
     }
-
+    //check if you have enough space on your ship
+    if(amount > _player_ship.CargoSpaceLeft()) {
+        io.PrintLine("You don't have enough space left");
+        return;
+    }
+    //increase space used on your ship
+    _player_ship.IncreaseSpace(amount);
     int f = _player_ship.GetCargo().find(_current_port.GetCargoInventory()[op]);
     //Player doesn't have this cargo yet so add new object to it's ship
     if(f == -1) {
@@ -145,36 +154,22 @@ void DockedState::BuyCargo() {
     } else {
         _player_ship.GetCargo()[f].IncreaseAmount(amount);
     }
-
     //Notify player of his gold and what he just sold for.
     io.Print("Bought for: ");
     io.PrintLine(_current_port.GetCargoInventory()[op].GetCost() * amount);
-    _player.LoseGold(_current_port.GetCargoInventory()[op].GetCost() * amount);
-
+    player.LoseGold(_current_port.GetCargoInventory()[op].GetCost() * amount);
     this->ShowGoldBalance();
 }
 
-void DockedState::ShowGoldBalance() {
-    io.Print("Current gold: ");
-    io.PrintLine(_player.GetGold());
-}
-
-void DockedState::ShowShipHealth() {
-    io.Print("Your ships health: ");
-    io.Print(_player_ship.GetCurrentHp());
-    io.Print("/");
-    io.PrintLine(_player_ship.GetMaxHp());
-}
-
 void::DockedState::SellCannons() {
-    if(_player.GetShip().GetCannons().size() < 1) {
+    if(player.GetShip().GetCannons().size() < 1) {
         io.PrintLine("You don't have any cannons to sell.");
         return;
     }
 
     //get all cannon weights aboard
     nostd::Array<nostd::String> arr;
-    for(const auto &i : _player.GetShip().GetCannons()) {
+    for(const auto &i : player.GetShip().GetCannons()) {
         arr.addBack(i.GetStringWeight());
     }
 
@@ -200,21 +195,28 @@ void::DockedState::SellCannons() {
 
     //find what the port will buy the selected cannon for
     int f = _current_port.GetCannonInventory().find(_player_ship.GetCannons()[op]);
+    //port doesn't have the cannon
+    if(f < 0){
+        return;
+    }
+
+    _current_port.GetCannonInventory().at(f).DeductAmount(amount);
 
     //remove selected cargo from array if amount == 0
     if(x == 0) {
-        _player.GetShip().RemoveCannon(static_cast<size_t>(op));
+        player.GetShip().RemoveCannon(op);
     }
 
     //Notify player of his gold and what he just sold for.
     io.Print("Sold for: ");
     io.PrintLine(_current_port.GetCannonInventory()[f].GetCost() * amount);
-    _player.ReceiveGold(_current_port.GetCannonInventory()[f].GetCost() * amount);
+    player.ReceiveGold(_current_port.GetCannonInventory()[f].GetCost() * amount);
 
     this->ShowGoldBalance();
 }
 
 void DockedState::BuyCannons() {
+    _current_port.PrintCannons();
     nostd::Array<nostd::String> arr;
     for(const auto &i : _current_port.GetCannonInventory()) {
         arr.addBack(i.GetStringWeight());
@@ -238,7 +240,7 @@ void DockedState::BuyCannons() {
 
     int amount = io.GetInt();
 
-    while((_current_port.GetCannonInventory()[op].GetCost() * amount) > _player.GetGold()) {
+    while((_current_port.GetCannonInventory()[op].GetCost() * amount) > player.GetGold()) {
         io.PrintLine("You can't afford this. Enter different amount or -1 to cancel");
         amount = io.GetInt();
         if(amount < 0) {
@@ -274,19 +276,20 @@ void DockedState::BuyCannons() {
     //Notify player of his gold and what he just sold for.
     io.Print("Bought for: ");
     io.PrintLine(_current_port.GetCannonInventory()[op].GetCost() * amount);
-    _player.LoseGold(_current_port.GetCannonInventory()[op].GetCost() * amount);
+    player.LoseGold(_current_port.GetCannonInventory()[op].GetCost() * amount);
 
     this->ShowGoldBalance();
 }
 
 void DockedState::BuyShip() {
+    _current_port.PrintShips();
     nostd::Array<nostd::String> arr;
     for(const auto &i : _current_port.GetShipInventory()) {
         arr.addBack(i.GetType());
     }
 
     int op = io.HandleOptions(arr);
-    if(_current_port.GetShipInventory()[op].GetCost() - (_player_ship.GetCost() / 2) > _player.GetGold()) {
+    if(_current_port.GetShipInventory()[op].GetCost() - (_player_ship.GetCost() / 2) > player.GetGold()) {
         io.PrintLine("You can't afford this ship");
         return;
     }
@@ -294,6 +297,7 @@ void DockedState::BuyShip() {
 }
 
 void DockedState::RepairShip() {
+    //TODO remove this line?
     _player_ship.ReceiveDamage(93);
     if (_player_ship.GetCurrentHp() == _player_ship.GetMaxHp()) {
         io.PrintLine("Your ship is in perfect condition. You don't need to repair your ship.");
@@ -309,7 +313,7 @@ void DockedState::RepairShip() {
     io.Print(maxRepair);
     io.PrintLine(")");
     int gold = io.GetInt();
-    if (gold > _player.GetGold()) {
+    if (gold > player.GetGold()) {
         io.PrintLine("You can't afford these repairments. Choose for a cheaper repairment.");
         ShowGoldBalance();
         return;
@@ -320,13 +324,15 @@ void DockedState::RepairShip() {
         return;
     }
     _player_ship.RestoreHp(gold * 10);
-    _player.LoseGold(gold);
+    player.LoseGold(gold);
     io.Print("Your ship has been repaired for ");
     io.Print(gold);
     io.PrintLine(" gold.");
     ShowShipHealth();
 }
-
+//pick city to sail to.
+//find the nth token in the line starting with the current port name
+//print turns and go to sailing state.
 void DockedState::SailTo() {
     FileReader fr{"afstanden_tussen_steden.csv"};
     nostd::String* first_row {fr.GetSpecificLine(nostd::String{""})};
@@ -340,11 +346,28 @@ void DockedState::SailTo() {
     nostd::String* city_row {fr.GetSpecificLine(_current_port.GetPortName())};
     nostd::Array<nostd::String> city_token_arr = city_row->Tokenize(';');
     nostd::String str = city_token_arr.at(op + 1);
+    io.Print("Sailing to: ");
     io.PrintLine(token_arr[op]);
+    io.Print("Turns: ");
     io.PrintLine(str);
     int turns = atoi(str.c_str());
-    _player.SetDestinationPort(token_arr[op]);
-    _stateManager.PushState(new SailingState(_player, _stateManager, turns));
+    //set destination port string to retrieve object on arrival.
+    player.SetDestinationPort(token_arr[op]);
+    //switch to SailingState
+    stateManager.PushState(new SailingState(player, stateManager, turns));
+    //cleanup of heap ptrs returned by fr.GetSpecificLine()
     delete city_row;
     delete first_row;
+}
+
+void DockedState::ShowGoldBalance() {
+    io.Print("Current gold: ");
+    io.PrintLine(player.GetGold());
+}
+
+void DockedState::ShowShipHealth() {
+    io.Print("Your ships health: ");
+    io.Print(_player_ship.GetCurrentHp());
+    io.Print("/");
+    io.PrintLine(_player_ship.GetMaxHp());
 }
