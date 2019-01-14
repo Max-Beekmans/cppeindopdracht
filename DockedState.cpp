@@ -327,12 +327,19 @@ void DockedState::SailTo() {
     FileReader fr{"afstanden_tussen_steden.csv"};
     nostd::String* first_row {fr.GetSpecificLine(nostd::String{""})};
     nostd::Array<nostd::String> token_arr = first_row->Tokenize(';');
+    //first token is empty string
     token_arr.removeN(0);
     int op = io.HandleOptions(token_arr);
-    //first option is empty string so I want to catch that too
-    if(op <= 0) {
+    if(op < 0) {
         return;
     }
+    nostd::String* city_row {fr.GetSpecificLine(_current_port.GetPortName())};
+    nostd::Array<nostd::String> city_token_arr = city_row->Tokenize(';');
+    nostd::String str = city_token_arr.at(op + 1);
     io.PrintLine(token_arr[op]);
+    io.PrintLine(str);
+    int turns = atoi(str.c_str());
+    _stateManager.PushState(new SailingState(_player, _stateManager, turns));
+    delete city_row;
     delete first_row;
 }
