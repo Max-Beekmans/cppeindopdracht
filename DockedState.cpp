@@ -1,4 +1,5 @@
 #include "DockedState.h"
+#include "FileReader.h"
 
 DockedState::DockedState(Player& player, StateManager& stateManager) : BaseState(player, stateManager), _player_ship(player.GetShip()), _current_port(player.GetCurrentPort()) {
     _options.addBack(nostd::String{"Buy cargo"});
@@ -13,7 +14,7 @@ DockedState::DockedState(Player& player, StateManager& stateManager) : BaseState
 
 DockedState::~DockedState() {}
 
-void DockedState::Update() {
+bool DockedState::Update() {
     int op = io.HandleOptions(_options);
     switch (op) {
         case 0:
@@ -21,32 +22,35 @@ void DockedState::Update() {
             break;
         case 1:
             SellCargo();
+            break;
         case 2:
             BuyCannons();
             break;
         case 3:
-            //SellCannons();
+            SellCannons();
             break;
         case 4:
             BuyShip();
             break;
         case 5:
-            //SailTo(port_name);
+            SailTo();
             break;
         case 6:
             //RepairShip();
             break;
         case 7:
             //QuitLife();
-            break;
+            return false;
         case -1:
             io.Print(op);
             io.PrintLine("Invalid choice");
-            break;
+            return false;
         default:
             io.Print(op);
             io.PrintLine("Invalid choice");
+            return false;
     }
+    return true;
 }
 
 void DockedState::print_options() {
@@ -178,6 +182,10 @@ void DockedState::BuyCannons() {
     //if(_player_ship.GetMaxCannons())
 }
 
+void DockedState::SellCannons() {
+    io.PrintLine("Sell Cannons");
+}
+
 void DockedState::BuyShip() {
     nostd::Array<nostd::String> arr;
     for(const auto &i : _current_port.GetShipInventory()) {
@@ -190,4 +198,18 @@ void DockedState::BuyShip() {
         return;
     }
     _player_ship = _current_port.GetShipInventory()[op];
+}
+
+void DockedState::SailTo() {
+    FileReader fr{"afstanden_tussen_steden.csv"};
+    nostd::String* first_row {fr.GetSpecificLine(nostd::String{""})};
+    nostd::Array<nostd::String> token_arr = first_row->Tokenize(';');
+    token_arr.removeN(0);
+    int op = io.HandleOptions(token_arr);
+    //first option is empty string so I want to catch that too
+    if(op <= 0) {
+        return;
+    }
+    io.PrintLine(token_arr[op]);
+    delete first_row;
 }

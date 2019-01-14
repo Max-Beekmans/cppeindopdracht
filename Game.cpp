@@ -45,7 +45,10 @@ void Game::StartGame() {
     stateManager.PushState(new SailingState(player, stateManager));
     stateManager.PushState(new DockedState(player, stateManager));
 
-    stateManager.CurrentState()->Update();
+    while(stateManager.CurrentState()->Update()) {
+
+    }
+    io.PrintLine("Quit game");
 }
 
 void Game::PrintIntroduction() {

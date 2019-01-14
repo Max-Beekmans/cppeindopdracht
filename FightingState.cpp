@@ -8,15 +8,14 @@ FightingState::FightingState(Player& player, StateManager& stateManager) : BaseS
     generate_enemy();
 }
 
-void FightingState::Update() {
+bool FightingState::Update() {
     print_options();
 
     //Get input
     int input;
     switch(input) {
         case 1:
-            fight();
-            break;
+            return fight();
         case 2:
             flee();
             break;
@@ -28,7 +27,7 @@ void FightingState::Update() {
             print_options();
             break;
     }
-
+    return true;
 }
 
 FightingState::~FightingState() {
@@ -64,7 +63,7 @@ void FightingState::print_options() {
     }
 }
 
-void FightingState::fight() {
+bool FightingState::fight() {
     shoot(_player.GetShip(), _enemy);
     if(_enemy.GetCurrentHp() > 0) {
         shoot(_enemy, _player.GetShip());
@@ -72,12 +71,14 @@ void FightingState::fight() {
             //gameover
             io.PrintLine("Your ship has sunk, the game is over.");
             //TODO: actually quit the game here
+            return false;
         }
     } else {
         //won fight
         io.PrintLine("You have defeated the pirates!");
         _stateManager.PopState();
     }
+    return true;
 }
 
 void FightingState::shoot(Ship originShip, Ship targetShip) {
@@ -103,7 +104,6 @@ void FightingState::surrender() {
     _player.GetShip().LoseAllCargo();
     io.PrintLine("You surrender to the pirates, they steal everything they can fit on their ship and throw everything else in the sea. That's just how pirates are.");
     _stateManager.PopState();
-
 }
 
 int FightingState::get_flee_chance(Ship playerShip, Ship enemyShip) {

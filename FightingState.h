@@ -10,7 +10,7 @@ class FightingState : public BaseState {
 public:
     FightingState(Player& player, StateManager& stateManager);
     ~FightingState();
-    void Update() override;
+    bool Update() override;
     StateEnum GetName() override {
         return Fighting;
     };
@@ -19,7 +19,7 @@ protected:
 private:
     Ship _enemy;
     int _fleeLookupTable[3][3];
-    void fight();
+    bool fight();
     void shoot(Ship originShip, Ship targetShip);
     void flee();
     void surrender();

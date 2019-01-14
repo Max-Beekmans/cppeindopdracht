@@ -5,7 +5,7 @@ SailingState::SailingState(Player& player, StateManager& stateManager) : BaseSta
     _turns = CalculateTurns(_player.GetCurrentPort(), _player.GetDestinationPort());
 }
 
-void SailingState::Update() {
+bool SailingState::Update() {
     nostd::Random r;
     while(_turns > 0) {
         switch(r.getRand(1, 20)) {
@@ -51,11 +51,13 @@ void SailingState::Update() {
                 if(_player.GetShip().GetCurrentHp() <= 0) {
                     io.PrintLine("Your ship has sunk, the game is over.");
                     //TODO: actually quit the game here
+                    return false;
                 }
                 break;
         }
     }
     _player.ArriveOnDestination();
+    return true;
 }
 
 int SailingState::CalculateTurns(const Port& currentPort, const Port& destinationPort) {
