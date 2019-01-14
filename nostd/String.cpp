@@ -192,8 +192,7 @@ namespace nostd {
         while(arr != nullptr) {
             token_arr.addBack(arr[0]);
             *this = arr[1];
-            delete[] arr;
-            arr = this->Split(';');
+            arr = this->Split(delim);
         }
 
         delete[] arr;

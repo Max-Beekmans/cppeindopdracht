@@ -1,4 +1,5 @@
 #include "DockedState.h"
+#include "FileReader.h"
 
 DockedState::DockedState(Player& player, StateManager& stateManager) : BaseState(player, stateManager), _player_ship(player.GetShip()), _current_port(player.GetCurrentPort()) {
     _options.addBack(nostd::String{"Buy cargo"});
@@ -13,7 +14,7 @@ DockedState::DockedState(Player& player, StateManager& stateManager) : BaseState
 
 DockedState::~DockedState() {}
 
-void DockedState::Update() {
+bool DockedState::Update() {
     int op = io.HandleOptions(_options);
     switch (op) {
         case 0:
@@ -21,6 +22,7 @@ void DockedState::Update() {
             break;
         case 1:
             SellCargo();
+            break;
         case 2:
             BuyCannons();
             break;
@@ -31,22 +33,24 @@ void DockedState::Update() {
             BuyShip();
             break;
         case 5:
-            //SailTo(port_name);
+            SailTo();
             break;
         case 6:
             RepairShip();
             break;
         case 7:
             //QuitLife();
-            break;
+            return false;
         case -1:
             io.Print(op);
             io.PrintLine("Invalid choice");
-            break;
+            return false;
         default:
             io.Print(op);
             io.PrintLine("Invalid choice");
+            return false;
     }
+    return true;
 }
 
 void DockedState::print_options() {
@@ -282,6 +286,10 @@ void DockedState::BuyCannons() {
     this->ShowGoldBalance();
 }
 
+void DockedState::SellCannons() {
+    io.PrintLine("Sell Cannons");
+}
+
 void DockedState::BuyShip() {
     nostd::Array<nostd::String> arr;
     for(const auto &i : _current_port.GetShipInventory()) {
@@ -298,7 +306,7 @@ void DockedState::BuyShip() {
 
 void DockedState::RepairShip() {
     _player_ship.ReceiveDamage(93);
-    if(_player_ship.GetCurrentHp() == _player_ship.GetMaxHp()) {
+    if (_player_ship.GetCurrentHp() == _player_ship.GetMaxHp()) {
         io.PrintLine("Your ship is in perfect condition. You don't need to repair your ship.");
         return;
     }
@@ -307,15 +315,16 @@ void DockedState::RepairShip() {
     ShowGoldBalance();
     io.Print("How much gold would you like to spend to restore your ship?");
     io.Print(" (max: ");
-    int maxRepair = (_player_ship.GetMaxHp() - _player_ship.GetCurrentHp()) / 10 + ((_player_ship.GetMaxHp() - _player_ship.GetCurrentHp()) % 10 != 0);
+    int maxRepair = (_player_ship.GetMaxHp() - _player_ship.GetCurrentHp()) / 10 +
+                    ((_player_ship.GetMaxHp() - _player_ship.GetCurrentHp()) % 10 != 0);
     io.Print(maxRepair);
     io.PrintLine(")");
     int gold = io.GetInt();
-    if(gold > _player.GetGold()) {
+    if (gold > _player.GetGold()) {
         io.PrintLine("You can't afford these repairments. Choose for a cheaper repairment.");
         ShowGoldBalance();
         return;
-    } else if(gold < 0 || gold > maxRepair) {
+    } else if (gold < 0 || gold > maxRepair) {
         io.Print("Invalid amount. You can only use a max of: ");
         io.Print(maxRepair);
         io.PrintLine(" gold.");
@@ -327,4 +336,18 @@ void DockedState::RepairShip() {
     io.Print(gold);
     io.PrintLine(" gold.");
     ShowShipHealth();
+}
+
+void DockedState::SailTo() {
+    FileReader fr{"afstanden_tussen_steden.csv"};
+    nostd::String* first_row {fr.GetSpecificLine(nostd::String{""})};
+    nostd::Array<nostd::String> token_arr = first_row->Tokenize(';');
+    token_arr.removeN(0);
+    int op = io.HandleOptions(token_arr);
+    //first option is empty string so I want to catch that too
+    if(op <= 0) {
+        return;
+    }
+    io.PrintLine(token_arr[op]);
+    delete first_row;
 }

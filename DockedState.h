@@ -7,7 +7,7 @@ class DockedState : public BaseState {
 public:
     DockedState(Player& player, StateManager& stateManager);
     ~DockedState();
-    void Update() override;
+    bool Update() override;
     StateEnum GetName() override {
         return Docked;
     };
@@ -20,6 +20,7 @@ private:
     void SellCargo();
     void BuyCannons();
     void SellCannons();
+    void SailTo();
     void BuyShip();
     void ShowGoldBalance();
     void ShowShipHealth();
