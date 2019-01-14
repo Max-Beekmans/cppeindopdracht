@@ -133,7 +133,7 @@ public:
         _cannons.removeN(n);
     }
     //TODO return const reference?
-    nostd::Array<Cannon> GetCannons() {
+    nostd::Array<Cannon>& GetCannons() {
         return _cannons;
     }
     void AddCargo(Cargo cargo) {
