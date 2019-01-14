@@ -1,7 +1,6 @@
 //
 // Created by MaxBe on 09-Jan-19.
 //
-
 #ifndef EINDOPDRACHT_PLAYER_H
 #define EINDOPDRACHT_PLAYER_H
 
@@ -14,6 +13,7 @@ class Player {
 public:
     Player(Ship& starting_ship, nostd::String port) : _ship(starting_ship), _gold(STARTING_GOLD), _destinationPort(port) {}
     ~Player() = default;
+
     void ReceiveGold(int gold) {
         _gold += gold;
     }

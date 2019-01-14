@@ -8,30 +8,6 @@ Port::Port(const nostd::String port_name, const nostd::Array<Cargo> cargo_invent
            const nostd::Array<Cannon> cannon_inventory, const nostd::Array<Ship> ship_inventory) :
         _port_name{port_name}, _cargo_inventory{cargo_inventory}, _cannon_inventory{cannon_inventory}, _ship_inventory{ship_inventory} {}
 
-Port::~Port() = default;
-
-void Port::PrintValues() {
-    PrintPortHeader();
-    PrintCargo();
-    PrintShips();
-    PrintCannons();
-//    nostd::IOHandler io{};
-//    io.Print("Port name: ");
-//    io.PrintLine(_port_name);
-//    io.PrintLine("Cargo inv: ");
-//    for(const auto &i : _cargo_inventory) {
-//        io.Print(i);
-//    }
-//    io.PrintLine("Cannon inv: ");
-//    for(const auto &j : _cannon_inventory) {
-//        io.Print(j);
-//    }
-//    io.PrintLine("Ship inv: ");
-//    for(const auto &k : _ship_inventory) {
-//        io.Print(k);
-//    }
-}
-
 void Port::PrintPortHeader() {
     //_io.ClearConsole();
     _io.Print("Port name: ");
@@ -72,7 +48,7 @@ nostd::Array<Cannon>& Port::GetCannonInventory() {
     return _cannon_inventory;
 }
 
-const nostd::String Port::GetPortName() const {
+nostd::String Port::GetPortName() const {
     return _port_name;
 }
 

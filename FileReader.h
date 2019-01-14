@@ -1,10 +1,8 @@
 //
 // Created by Max on 07-Jan-19.
 //
-
 #ifndef EINDOPDRACHT_FILEREADER_H
 #define EINDOPDRACHT_FILEREADER_H
-
 
 #include "nostd/String.h"
 #include <fstream>

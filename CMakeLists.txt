@@ -22,7 +22,6 @@ add_executable(eindopdracht
         Cargo.h
         Game.cpp
         Game.h
-        Player.cpp
         Player.h
         Port.cpp
         Port.h
@@ -32,7 +31,6 @@ add_executable(eindopdracht
         StateManager.h
         StateManager.cpp
         BaseState.h
-        StateEnum.h
         nostd/Stack.h
         DockedState.h
         DockedState.cpp

@@ -1,17 +1,16 @@
 #include "SailingState.h"
 #include "FightingState.h"
+#include "DockedState.h"
 #include "nostd/Random.h"
 
-SailingState::SailingState(Player& player, StateManager& stateManager, const int turns) : BaseState(player, stateManager), _turns(turns) {
-    //_turns = CalculateTurns(_player.GetCurrentPort(), _player.GetDestinationPort());
-}
+SailingState::SailingState(Player& player, StateManager& stateManager, const int turns) : BaseState(player, stateManager), _turns(turns) {}
 
 bool SailingState::Update() {
     nostd::Random r;
 
     while(_turns > 0) {
         if(r.getRand(1, 100) <= 20) {
-            _stateManager.PushState(new FightingState(_player, _stateManager));
+            stateManager.PushState(new FightingState(player, stateManager));
             return true;
         }
 
@@ -22,7 +21,7 @@ bool SailingState::Update() {
                 break;
             case 3 ... 4:
                 io.Print("[Breeze] ");
-                if (_player.GetShip().GetWeight() == 0) {
+                if (player.GetShip().GetWeight() == 0) {
                     _turns--;
                     io.PrintLine("You sailed, you are now 1 turn closer to the target port.");
                 } else {
@@ -31,7 +30,7 @@ bool SailingState::Update() {
                 break;
             case 5 ... 7:
                 io.Print("[Weak] ");
-                if (_player.GetShip().GetWeight() != 2) {
+                if (player.GetShip().GetWeight() != 2) {
                     _turns--;
                     io.PrintLine("You sailed, you are now 1 turn closer to the target port.");
                 } else {
@@ -62,28 +61,23 @@ bool SailingState::Update() {
                 }
                 int percentage = r.getRand(1, 100);
 
-                int damage = percentage * _player.GetShip().GetMaxHp() / 100;
+                int damage = percentage * player.GetShip().GetMaxHp() / 100;
 
-                _player.GetShip().ReceiveDamage(damage);
+                player.GetShip().ReceiveDamage(damage);
                 io.Print("The storm has damaged your ship and you received ");
                 io.Print(damage);
                 io.PrintLine(" damage.");
                 io.Print("You have ");
-                io.Print(_player.GetShip().GetCurrentHp());
+                io.Print(player.GetShip().GetCurrentHp());
                 io.PrintLine(" health points left.");
-                if(_player.GetShip().GetCurrentHp() <= 0) {
+                if(player.GetShip().GetCurrentHp() <= 0) {
                     io.PrintLine("Your ship has sunk, the game is over.");
                     _turns = 0;
-                    //TODO: actually quit the game here
                     return false;
                 }
                 break;
         }
     }
-    //_statemanager.PushandReplace(new DockingState(_player, _statemanager));
+    stateManager.PushAndReplace(new DockedState(player, stateManager));
     return true;
-}
-
-SailingState::~SailingState() {
-
 }

@@ -9,9 +9,6 @@
 #include "../exceptions/PortNotFoundException.h"
 #include "../nostd/Random.h"
 
-//TODO remove
-#include "../nostd/IOHandler.h"
-
 Port factory::PortFactory::CreatePort(nostd::String port_name) {
     nostd::Array<Cargo> cargo_arr{10};
     nostd::Array<Cannon> cannon_arr{10};
@@ -34,14 +31,13 @@ Port factory::PortFactory::CreatePort(nostd::String port_name) {
     cannon_arr.addBack(heavy_cannon);
 
     //Assumed is that both files have the same first_row indicating all possible goods
-    _fr.Open("goederen_prijzen.csv");
-    nostd::String* first_row {_fr.GetSpecificLine(nostd::String{""})};
-    nostd::String* raw_prices_line {_fr.GetSpecificLine(port_name)};
+    fileReader.Open("goederen_prijzen.csv");
+    nostd::String* first_row {fileReader.GetSpecificLine(nostd::String{""})};
+    nostd::String* raw_prices_line {fileReader.GetSpecificLine(port_name)};
 
-    //TODO make some exception handling here.
-    _fr.Close();
-    _fr.Open("goederen_hoeveelheid.csv");
-    nostd::String* raw_stock_line {_fr.GetSpecificLine(port_name)};
+    fileReader.Close();
+    fileReader.Open("goederen_hoeveelheid.csv");
+    nostd::String* raw_stock_line {fileReader.GetSpecificLine(port_name)};
 
     if(first_row == nullptr || raw_prices_line == nullptr || raw_stock_line == nullptr) {
         throw exceptions::PortNotFoundException("Port name could not be found in file");

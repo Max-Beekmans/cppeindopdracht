@@ -1,7 +1,6 @@
 //
 // Created by MaxBe on 9/11/2018.
 //
-
 #ifndef EINDOPDRACHT_STRING_H
 #define EINDOPDRACHT_STRING_H
 

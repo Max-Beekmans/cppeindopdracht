@@ -2,17 +2,14 @@
 #define EINDOPDRACHT_SAILINGSTATE_H
 
 #include "BaseState.h"
-#include "Port.h"
 #include "StateManager.h"
+#include "Port.h"
 
 class SailingState : public BaseState {
 public:
     SailingState(Player& player, StateManager& stateManager, const int turns);
-    ~SailingState();
+    ~SailingState() = default;
     bool Update() override;
-    StateEnum GetName() override {
-        return Sailing;
-    };
 private:
     int _turns;
 };

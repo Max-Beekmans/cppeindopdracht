@@ -6,11 +6,11 @@
 #include "exceptions/OutOfFileException.h"
 
 FileReader::FileReader(const char* filename) {
-    _file_stream.open(filename);
+    Open(filename);
 }
 
 FileReader::~FileReader() {
-    _file_stream.close();
+    Close();
 }
 
 const nostd::String FileReader::GetLine() {
