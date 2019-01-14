@@ -47,6 +47,7 @@ Ship factory::ShipFactory::CreateRandomShip() {
                 weight = 0;
             }
         }
+        delete[] s;
     }
 
     return Ship(

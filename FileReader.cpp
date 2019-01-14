@@ -34,6 +34,7 @@ nostd::String* FileReader::GetSpecificLine(const nostd::String line_specifier) {
         //line didn't contain ';' delim
         //If the first column matches the line_specifier return current line and exit
         if(ptr != nullptr && ptr[0] == line_specifier) {
+            delete[] ptr;
             return s;
         }
         delete s;

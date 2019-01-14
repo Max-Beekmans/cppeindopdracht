@@ -131,7 +131,8 @@ namespace nostd {
             count = copy.count;
             ptr = ss;
         } else {
-            ptr = this->expand(copy.ptr, copy.count + 1);
+            delete[] ptr;
+            ptr = expand(copy.ptr, copy.count + 1);
             count = copy.count;
             space = 0;
         }
@@ -191,6 +192,7 @@ namespace nostd {
         while(arr != nullptr) {
             token_arr.addBack(arr[0]);
             *this = arr[1];
+            delete[] arr;
             arr = this->Split(';');
         }
 
@@ -199,10 +201,7 @@ namespace nostd {
     }
 
     bool String::isEmpty() const {
-        if(size() <= 0) {
-            return true;
-        }
-        return false;
+        return size() <= 0;
     }
 
     //helper nonmember functions
