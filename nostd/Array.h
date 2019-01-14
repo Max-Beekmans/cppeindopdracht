@@ -44,9 +44,7 @@ namespace nostd {
 
         Array<T>& operator=(const Array<T>& arr) {
             if (this == &arr) return *this;
-            T* p = ptr;
             copy_from(arr);
-            delete[] p;
             return *this;
         }
 
@@ -160,6 +158,7 @@ namespace nostd {
 
         void copy_from(const Array<T>& arr) {
             count = arr.count;
+            delete[] ptr;
             ptr = this->expand(arr.ptr, arr.count);
             space = 0;
         }
