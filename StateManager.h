@@ -14,6 +14,8 @@ public:
 
     void PushState(BaseState* state);
 
+    void PushAndReplace(BaseState* state);
+
     void PopState();
 
     bool IsEmpty() const;

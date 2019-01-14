@@ -86,7 +86,7 @@ bool SailingState::Update() {
 
 int SailingState::CalculateTurns(const Port& currentPort, const Port& destinationPort) {
     //TODO: implementation
-    return 20;
+    return 200;
 }
 
 SailingState::~SailingState() {

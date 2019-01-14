@@ -30,6 +30,7 @@ void Game::StartGame() {
 //
     factory::ShipFactory sf;
     Ship starting_ship = sf.CreateRandomShip();
+    io.PrintLine(starting_ship.GetType());
     starting_ship.AddCargo(Cargo{nostd::String{"bakstenen"}, 20, 2});
 
     StateManager stateManager{};
