@@ -80,7 +80,7 @@ bool SailingState::Update() {
                 break;
         }
     }
-    _player.ArriveOnDestination();
+    //_statemanager.PushandReplace(new DockingState(_player, _statemanager));
     return true;
 }
 

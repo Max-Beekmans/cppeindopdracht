@@ -1,6 +1,6 @@
 #include "FightingState.h"
 #include "nostd/Random.h"
-#include "factory/ShipFactory.h"
+#include "Factory/ShipFactory.h"
 
 FightingState::FightingState(Player& player, StateManager& stateManager) : BaseState(player, stateManager) {
     init_options();

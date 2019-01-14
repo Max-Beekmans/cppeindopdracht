@@ -2,6 +2,7 @@
 #define EINDOPDRACHT_DOCKEDSTATE_H
 
 #include "BaseState.h"
+#include "StateManager.h"
 
 class DockedState : public BaseState {
 public:
@@ -12,7 +13,7 @@ public:
         return Docked;
     };
 private:
-    Port& _current_port;
+    Port _current_port;
     Ship& _player_ship;
     void BuyCargo();
     void SellCargo();

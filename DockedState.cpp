@@ -1,7 +1,11 @@
 #include "DockedState.h"
 #include "FileReader.h"
+#include "SailingState.h"
+#include "Factory/PortFactory.h"
 
-DockedState::DockedState(Player& player, StateManager& stateManager) : BaseState(player, stateManager), _player_ship(player.GetShip()), _current_port(player.GetCurrentPort()) {
+DockedState::DockedState(Player& player, StateManager& stateManager) : BaseState(player, stateManager), _player_ship(player.GetShip()) {
+    factory::PortFactory pf{};
+    _current_port = pf.CreatePort(_player.GetDestinationPort());
     _options.addBack(nostd::String{"Buy cargo"});
     _options.addBack(nostd::String{"Sell cargo"});
     _options.addBack(nostd::String{"Buy cannons"});
@@ -61,7 +65,7 @@ void DockedState::SellCargo() {
     }
     //we print in order of arr so we know op is the index of the cargo to be sold from the player ship
     int op = io.HandleOptions(arr);
-    if(op == -1){
+    if(op < 0){
         return;
     }
     io.Print("How many: ");
@@ -69,7 +73,7 @@ void DockedState::SellCargo() {
     io.PrintLine(" Would you like to sell: ");
     int amount = io.GetInt();
     int x = _player_ship.GetCargo()[op].DeductAmount(amount);
-    while(x == -1) {
+    while(x < 0) {
         io.Print("Invalid amount. You can only sell a max of: ");
         io.PrintLine(_player_ship.GetCargo()[op].GetAmount());
         amount = io.GetInt();
@@ -339,6 +343,7 @@ void DockedState::SailTo() {
     io.PrintLine(token_arr[op]);
     io.PrintLine(str);
     int turns = atoi(str.c_str());
+    _player.SetDestinationPort(token_arr[op]);
     _stateManager.PushState(new SailingState(_player, _stateManager, turns));
     delete city_row;
     delete first_row;

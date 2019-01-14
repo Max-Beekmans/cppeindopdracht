@@ -12,7 +12,7 @@
 
 class Player {
 public:
-    Player(Ship& starting_ship, Port& starting_port) : _ship(starting_ship), _currentPort(starting_port), _gold(STARTING_GOLD) {}
+    Player(Ship& starting_ship, nostd::String port) : _ship(starting_ship), _gold(STARTING_GOLD), _destinationPort(port) {}
     ~Player() = default;
     void ReceiveGold(int gold) {
         _gold += gold;
@@ -29,25 +29,15 @@ public:
     void SetShip(Ship ship) {
         _ship = ship;
     }
-    Port& GetCurrentPort() {
-        return _currentPort;
-    }
-    const Port& GetDestinationPort() {
+    const nostd::String GetDestinationPort() {
         return _destinationPort;
     }
-    void SetCurrentPort(Port& port) {
-        _currentPort = port;
-    }
-    void SetDestinationPort(const Port& port) {
+    void SetDestinationPort(const nostd::String port) {
         _destinationPort = port;
-    }
-    void ArriveOnDestination() {
-        _currentPort = _destinationPort;
     }
 private:
     Ship& _ship;
-    Port& _currentPort;
-    Port _destinationPort;
+    nostd::String _destinationPort;
     int _gold;
 };
 
