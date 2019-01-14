@@ -6,7 +6,7 @@ StateManager::StateManager() { this->_stateStack = {}; }
 void StateManager::PopAll() {
     while (!IsEmpty())
     {
-        BaseState *poppedState = this->_stateStack.Pop();
+        BaseState* poppedState = this->_stateStack.Pop();
         delete poppedState;
     }
 }
@@ -14,13 +14,23 @@ void StateManager::PopAll() {
 /* Leave current state and go to previous state*/
 void StateManager::PopState() {
     if (!IsEmpty()) {
-        BaseState *poppedState = this->_stateStack.Pop();
+        BaseState* poppedState = this->_stateStack.Pop();
         delete poppedState;
     }
 }
 
 /*Pause the current state and go to a new state which is added at the end of the stack*/
 void StateManager::PushState(BaseState *state) {
+    this->_stateStack.Push(state);
+}
+
+void StateManager::PushAndReplace(BaseState *state) {
+    /*Cleanup the current state*/
+    if (!IsEmpty()) {
+        BaseState* poppedState = this->_stateStack.Pop();
+        delete poppedState;
+    }
+    /*add and initialize the new state*/
     this->_stateStack.Push(state);
 }
 

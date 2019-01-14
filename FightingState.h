@@ -18,6 +18,8 @@ private:
     Ship _enemy;
     int _fleeLookupTable[3][3];
     bool fight();
+    void shoot_player();
+    void shoot_enemy();
     void shoot(Ship originShip, Ship targetShip);
     void flee();
     void surrender();

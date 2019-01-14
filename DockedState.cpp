@@ -105,7 +105,7 @@ void DockedState::BuyCargo() {
         arr.addBack(i.GetCargoName());
     }
     int op = io.HandleOptions(arr);
-    if(op == -1) {
+    if(op < 0) {
         return;
     }
     io.Print("How many: ");
@@ -148,8 +148,8 @@ void DockedState::BuyCargo() {
 
     //Notify player of his gold and what he just sold for.
     io.Print("Bought for: ");
-    io.PrintLine(_current_port.GetCargoInventory()[f].GetCost() * amount);
-    _player.LoseGold(_current_port.GetCargoInventory()[f].GetCost() * amount);
+    io.PrintLine(_current_port.GetCargoInventory()[op].GetCost() * amount);
+    _player.LoseGold(_current_port.GetCargoInventory()[op].GetCost() * amount);
 
     this->ShowGoldBalance();
 }
@@ -273,8 +273,8 @@ void DockedState::BuyCannons() {
 
     //Notify player of his gold and what he just sold for.
     io.Print("Bought for: ");
-    io.PrintLine(_current_port.GetCannonInventory()[f].GetCost() * amount);
-    _player.LoseGold(_current_port.GetCannonInventory()[f].GetCost() * amount);
+    io.PrintLine(_current_port.GetCannonInventory()[op].GetCost() * amount);
+    _player.LoseGold(_current_port.GetCannonInventory()[op].GetCost() * amount);
 
     this->ShowGoldBalance();
 }
