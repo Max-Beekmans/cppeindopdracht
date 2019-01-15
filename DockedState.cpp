@@ -29,17 +29,14 @@ bool DockedState::Update() {
             BuyCargo();
             break;
         case 1:
-            SellCargo();
-            break;
+            return SellCargo();
         case 2:
             BuyCannons();
             break;
         case 3:
-            SellCannons();
-            break;
+            return SellCannons();
         case 4:
-            BuyShip();
-            break;
+            return BuyShip();
         case 5:
             SailTo();
             break;
@@ -65,7 +62,7 @@ bool DockedState::Update() {
 //decrease space used on your ship
 //find how much the port will buy it for
 //receive gold
-void DockedState::SellCargo() {
+bool DockedState::SellCargo() {
     //get all cargo names aboard
     nostd::Array<nostd::String> arr{};
     for(const auto &i : player.GetShip().GetCargo()) {
@@ -74,7 +71,7 @@ void DockedState::SellCargo() {
     //we print in order of arr so we know op is the index of the cargo to be sold from the player ship
     int op = io.HandleOptions(arr);
     if(op < 0){
-        return;
+        return true;
     }
     io.Print("How many: ");
     io.Print(_player_ship.GetCargo()[op].GetCargoName());
@@ -92,7 +89,7 @@ void DockedState::SellCargo() {
     int f = _current_port.GetCargoInventory().find(_player_ship.GetCargo()[op]);
     //cargo wasn't found in the cargo inventory
     if(f < 0) {
-        return;
+        return true;
     }
     //remove selected cargo from array if amount == 0
     if(x == 0) {
@@ -104,6 +101,12 @@ void DockedState::SellCargo() {
     player.ReceiveGold(_current_port.GetCargoInventory()[f].GetCost() * amount);
 
     this->ShowGoldBalance();
+    if(player.GetGold() >= 1000000) {
+        io.PrintLine("You have won the game, safed the dragon and slain the princess.");
+        return false;
+    }
+    return true;
+
 }
 //pick cargo you want to buy
 //specify how much you want to buy, can't be more than what you can afford or what the shop has in stock
@@ -161,10 +164,10 @@ void DockedState::BuyCargo() {
     this->ShowGoldBalance();
 }
 
-void::DockedState::SellCannons() {
+bool DockedState::SellCannons() {
     if(player.GetShip().GetCannons().size() < 1) {
         io.PrintLine("You don't have any cannons to sell.");
-        return;
+        return true;
     }
 
     //get all cannon weights aboard
@@ -178,7 +181,7 @@ void::DockedState::SellCannons() {
 
     //0 or smaller returns you to the options
     if(op < 0) {
-        return;
+        return true;
     }
 
     io.Print("How many: ");
@@ -197,7 +200,7 @@ void::DockedState::SellCannons() {
     int f = _current_port.GetCannonInventory().find(_player_ship.GetCannons()[op]);
     //port doesn't have the cannon
     if(f < 0){
-        return;
+        return true;
     }
 
     _current_port.GetCannonInventory().at(f).DeductAmount(amount);
@@ -213,6 +216,11 @@ void::DockedState::SellCannons() {
     player.ReceiveGold(_current_port.GetCannonInventory()[f].GetCost() * amount);
 
     this->ShowGoldBalance();
+    if(player.GetGold() >= 1000000) {
+        io.PrintLine("You have won the game, safed the dragon and slain the princess.");
+        return false;
+    }
+    return true;
 }
 
 void DockedState::BuyCannons() {
@@ -281,7 +289,7 @@ void DockedState::BuyCannons() {
     this->ShowGoldBalance();
 }
 
-void DockedState::BuyShip() {
+bool DockedState::BuyShip() {
     _current_port.PrintShips();
     nostd::Array<nostd::String> arr;
     for(const auto &i : _current_port.GetShipInventory()) {
@@ -291,9 +299,22 @@ void DockedState::BuyShip() {
     int op = io.HandleOptions(arr);
     if(_current_port.GetShipInventory()[op].GetCost() - (_player_ship.GetCost() / 2) > player.GetGold()) {
         io.PrintLine("You can't afford this ship");
-        return;
+        return true;
     }
-    _player_ship = _current_port.GetShipInventory()[op];
+    Ship temp_ship = _current_port.GetShipInventory()[op];
+    temp_ship.SetCannons(_player_ship.GetCannons());
+    temp_ship.SetCannonAmount(_player_ship.GetCannonAmount());
+    temp_ship.SetCargo(_player_ship.GetCargo());
+    temp_ship.SetSpace(_player_ship.GetSpace());
+    _player_ship = temp_ship;
+
+    player.LoseGold(_current_port.GetShipInventory()[op].GetCost() - (_player_ship.GetCost() / 2));
+
+    if(player.GetGold() >= 1000000) {
+        io.PrintLine("You have won the game, safed the dragon and slain the princess.");
+        return false;
+    }
+    return true;
 }
 
 void DockedState::RepairShip() {

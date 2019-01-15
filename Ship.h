@@ -153,6 +153,18 @@ public:
             RemoveCargo(i);
         }
     }
+    void SetCannons(nostd::Array<Cannon> cannons) {
+        _cannons = cannons;
+    }
+    void SetCargo(nostd::Array<Cargo> cargo) {
+        _cargo = cargo;
+    }
+    void SetSpace(int space) {
+        _space = space;
+    }
+    void SetCannonAmount(int amount) {
+        _cannon_amount = amount;
+    }
 private:
     nostd::Array<Cannon> _cannons;
     nostd::Array<Cargo> _cargo;
