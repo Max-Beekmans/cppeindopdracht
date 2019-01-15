@@ -132,7 +132,6 @@ public:
     void RemoveCannon(const int n) {
         _cannons.removeN(n);
     }
-    //TODO return const reference?
     nostd::Array<Cannon>& GetCannons() {
         return _cannons;
     }

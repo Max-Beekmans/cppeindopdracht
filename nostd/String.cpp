@@ -3,6 +3,7 @@
 //
 #include <cstring>
 #include "String.h"
+#include <iostream>
 
 namespace nostd {
 
@@ -180,6 +181,37 @@ namespace nostd {
 
         return res;
     }
+
+    nostd::Array<nostd::String> String::Split(nostd::String str, const char delim) {
+        nostd::Array<nostd::String> array{};
+        const int index = str.Find(delim);
+        if (index < 0) {
+            return array;
+        }
+        nostd::String before{};
+        nostd::String after{};
+        for (int i = 0; i <= index - 1; ++i) {
+            before += str.at(i);
+        }
+
+        for (int j = index + 1; j < str.size(); ++j) {
+            after += str.at(j);
+        }
+        array.addBack(before);
+        array.addBack(after);
+        return array;
+    }
+
+//    nostd::Array<nostd::String> String::Tokenize(const char delim) {
+//        nostd::Array<nostd::String> arr = this->Split(*this, delim);
+//        nostd::Array<nostd::String> token_arr{};
+//        while(arr.size() > 0) {
+//            token_arr.addBack(arr[0]);
+//            //*this = arr[1];
+//            arr = this->Split(arr[1], delim);
+//        }
+//        return token_arr;
+//    }
 
     //can't call this function on a const string cause:
     //a. function is not const

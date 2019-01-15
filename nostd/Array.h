@@ -147,7 +147,7 @@ namespace nostd {
             for (int i = 0; i < this->size(); ++i) {
                 temp[i] = p[i];
             }
-            delete[] this->ptr;
+            delete[] ptr;
             this->ptr = temp;
         }
 
@@ -161,7 +161,8 @@ namespace nostd {
             ptr = arr.ptr;
             space = arr.space;
             count = arr.count;
-            delete[] arr.ptr;
+            arr.ptr = 0;
+            //delete[] arr.ptr;
             arr.count = 0;
             arr.space = 0;
         }
