@@ -3,6 +3,7 @@
 //
 #include <cstring>
 #include "String.h"
+#include <iostream>
 
 namespace nostd {
 
@@ -118,10 +119,10 @@ namespace nostd {
             throw std::out_of_range("String::at()");
     }
 
-    char* String::expand(const char *ptr, int n) {
-        char* p = new char[n];
-        strcpy(p, ptr);
-        return p;
+    char* String::expand(const char* p, int n) {
+        char* temp = new char[n];
+        strcpy(temp, p);
+        return temp;
     }
 
     void String::copy_from(const String& copy) {
@@ -130,7 +131,6 @@ namespace nostd {
             count = copy.count;
             ptr = ss;
         } else {
-            //delete[] ptr;
             ptr = expand(copy.ptr, copy.count + 1);
             count = copy.count;
             space = 0;
@@ -182,6 +182,37 @@ namespace nostd {
         return res;
     }
 
+    nostd::Array<nostd::String> String::Split(nostd::String str, const char delim) {
+        nostd::Array<nostd::String> array{};
+        const int index = str.Find(delim);
+        if (index < 0) {
+            return array;
+        }
+        nostd::String before{};
+        nostd::String after{};
+        for (int i = 0; i <= index - 1; ++i) {
+            before += str.at(i);
+        }
+
+        for (int j = index + 1; j < str.size(); ++j) {
+            after += str.at(j);
+        }
+        array.addBack(before);
+        array.addBack(after);
+        return array;
+    }
+
+//    nostd::Array<nostd::String> String::Tokenize(const char delim) {
+//        nostd::Array<nostd::String> arr = this->Split(*this, delim);
+//        nostd::Array<nostd::String> token_arr{};
+//        while(arr.size() > 0) {
+//            token_arr.addBack(arr[0]);
+//            //*this = arr[1];
+//            arr = this->Split(arr[1], delim);
+//        }
+//        return token_arr;
+//    }
+
     //can't call this function on a const string cause:
     //a. function is not const
     //b. assigning new value to the *this ptr
@@ -191,6 +222,7 @@ namespace nostd {
         while(arr != nullptr) {
             token_arr.addBack(arr[0]);
             *this = arr[1];
+            delete[] arr;
             arr = this->Split(delim);
         }
 

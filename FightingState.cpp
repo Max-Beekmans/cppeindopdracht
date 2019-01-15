@@ -114,12 +114,11 @@ void FightingState::surrender() {
     stateManager.PopState();
 }
 
-int FightingState::get_flee_chance(Ship playerShip, Ship enemyShip) {
+int FightingState::get_flee_chance(Ship& playerShip, Ship& enemyShip) {
     return _fleeLookupTable[playerShip.GetWeight()][enemyShip.GetWeight()];
 }
 
 void FightingState::generate_enemy() {
     factory::ShipFactory factory;
-    _enemy = factory.CreateRandomShip();
-    _enemy.AddCannon(Cannon{1, 0, 1});
+    _enemy = factory.CreateEnemyShip();
 }

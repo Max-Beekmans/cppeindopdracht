@@ -2,6 +2,7 @@
 //#include "test/catch2/catch.hpp"
 
 #include "Game.h"
+#include <iostream>
 
 int main(int argc, char* argv[]) {
 //    Catch::Session session;

@@ -80,7 +80,7 @@ namespace nostd {
         void addBack(T obj) {
             if (space == 0) {
                 int n = count + count;
-                ptr = expand(ptr, n);
+                expand(ptr, n);
                 space = n - count;
             } else {
                 --space;
@@ -90,7 +90,7 @@ namespace nostd {
 
         void removeN(const int n) {
             //I don't know how to override the last element and shift
-            //So I just copy everything except n
+            //So I just copy everything - 1 and overwrite
             T* temp = new T[count - 1];
             for (int i = n; i < count - 1; ++i) {
                 temp[i] = ptr[i + 1];
@@ -141,20 +141,19 @@ namespace nostd {
                 throw std::out_of_range("nostd::Array::at()");
         }
 
-        T* expand(const T* ptr, int n) {
+        void expand(const T* p, int n) {
             T* temp = new T[n];
             //memcpy(temp, ptr, sizeof(temp));
             for (int i = 0; i < this->size(); ++i) {
-                temp[i] = ptr[i];
+                temp[i] = p[i];
             }
-            //delete[] ptr;
-            return temp;
+            delete[] ptr;
+            this->ptr = temp;
         }
 
         void copy_from(const Array<T>& arr) {
             count = arr.count;
-            //delete[] ptr;
-            ptr = this->expand(arr.ptr, arr.count);
+            this->expand(arr.ptr, arr.count);
             space = 0;
         }
 
@@ -162,7 +161,8 @@ namespace nostd {
             ptr = arr.ptr;
             space = arr.space;
             count = arr.count;
-            delete[] arr.ptr;
+            arr.ptr = 0;
+            //delete[] arr.ptr;
             arr.count = 0;
             arr.space = 0;
         }
