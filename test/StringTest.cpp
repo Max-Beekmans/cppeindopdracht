@@ -10,7 +10,7 @@ TEST_CASE("Compare two strings", "[single-file]") {
     REQUIRE(a == b);
 }
 
-TEST_CASE("Create string with char[] buffer", "[single-file]") {
+TEST_CASE("Create string with char buffer", "[single-file]") {
     const char *buffer = "Blaze it fgt";
     nostd::String a(buffer);
     std::string b = std::string(a.c_str());
