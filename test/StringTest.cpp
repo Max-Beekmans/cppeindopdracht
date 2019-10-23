@@ -11,7 +11,8 @@ TEST_CASE("Compare two strings", "[single-file]") {
 }
 
 TEST_CASE("Create string with char[] buffer", "[single-file]") {
-    const char buffer[420] = "Blaze it fgt";
+    const char *buffer = "Blaze it fgt";
     nostd::String a(buffer);
-    REQUIRE(a.c_str() == buffer);
+    std::string b = std::string(a.c_str());
+    REQUIRE(b == "Blaze it fgt");
 }
