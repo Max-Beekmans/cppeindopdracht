@@ -11,7 +11,7 @@ class StateManager;
 class BaseState {
 public:
     BaseState(Player& player, StateManager& stateManager) : player(player), stateManager(stateManager) {}
-    ~BaseState() = default;
+    virtual ~BaseState() = default;
     virtual bool Update() = 0;
 protected:
     Player& player;

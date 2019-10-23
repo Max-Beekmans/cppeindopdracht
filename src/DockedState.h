@@ -4,7 +4,7 @@
 #include "BaseState.h"
 #include "StateManager.h"
 
-class DockedState : public BaseState {
+class DockedState : public virtual BaseState {
 public:
     DockedState(Player& player, StateManager& stateManager);
     ~DockedState() = default;

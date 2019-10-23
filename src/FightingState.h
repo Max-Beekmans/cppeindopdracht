@@ -6,7 +6,7 @@
 #include "Ship.h"
 #include "StateManager.h"
 
-class FightingState : public BaseState {
+class FightingState : public virtual BaseState {
 public:
     FightingState(Player& player, StateManager& stateManager);
     ~FightingState() = default;

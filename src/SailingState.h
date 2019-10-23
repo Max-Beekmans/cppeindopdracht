@@ -5,7 +5,7 @@
 #include "StateManager.h"
 #include "Port.h"
 
-class SailingState : public BaseState {
+class SailingState : public virtual BaseState {
 public:
     SailingState(Player& player, StateManager& stateManager, const int turns);
     ~SailingState() = default;
