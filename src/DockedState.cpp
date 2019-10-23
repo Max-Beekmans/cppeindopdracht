@@ -186,7 +186,9 @@ bool DockedState::SellCannons() {
 
     io.Print("How many: ");
     io.Print(_player_ship.GetCannons()[op].GetStringWeight());
-    io.PrintLine(" Would you like to sell: ");
+    io.PrintLine(" Would you like to sell? ");
+    io.Print(" You have: ");
+    io.Print(_player_ship.GetCannons()[op].GetAmount());
     int amount = io.GetInt();
     int x = _player_ship.GetCannons()[op].DeductAmount(amount);
     while(x == -1) {
