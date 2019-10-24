@@ -7,7 +7,6 @@ configure_file(src/readables/goederen_hoeveelheid.csv goederen_hoeveelheid.csv C
 configure_file(src/readables/goederen_prijzen.csv goederen_prijzen.csv COPYONLY)
 configure_file(src/readables/schepen.csv schepen.csv COPYONLY)
 
-#add_subdirectory(src)
 add_subdirectory(test)
 
 add_executable(eindopdracht

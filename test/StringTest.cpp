@@ -25,11 +25,3 @@ TEST_CASE("Create string with char buffer and assign by copy contructor", "[sing
     REQUIRE(a.size() == b.size());
     REQUIRE(a.capacity() == b.capacity());
 }
-
-TEST_CASE("Maintain trivial_copy for string", "[single-file]") {
-    REQUIRE(std::is_trivially_copyable<nostd::String>::value);
-}
-
-TEST_CASE("Maintain trivial assignment for string", "[single-file]") {
-    REQUIRE(std::is_trivially_assignable<nostd::String, nostd::String>::value);
-}

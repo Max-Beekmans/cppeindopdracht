@@ -1,8 +1,8 @@
 //
 // Created by MaxBe on 9/11/2018.
 //
-#include <cstring>
 #include "String.h"
+#include <cstring>
 #include <iostream>
 
 namespace nostd {
@@ -204,17 +204,6 @@ namespace nostd {
         array.addBack(after);
         return array;
     }
-
-//    nostd::Array<nostd::String> String::Tokenize(const char delim) {
-//        nostd::Array<nostd::String> arr = this->Split(*this, delim);
-//        nostd::Array<nostd::String> token_arr{};
-//        while(arr.size() > 0) {
-//            token_arr.addBack(arr[0]);
-//            //*this = arr[1];
-//            arr = this->Split(arr[1], delim);
-//        }
-//        return token_arr;
-//    }
 
     //can't call this function on a const string cause:
     //a. function is not const
