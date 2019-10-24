@@ -31,7 +31,3 @@ void Game::StartGame() {
     while(stateManager.CurrentState()->Update()) {}
     io.PrintLine("Quit game");
 }
-
-void Game::PrintIntroduction() {
-    io.PrintLine("Introduction");
-}
