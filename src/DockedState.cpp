@@ -66,7 +66,9 @@ bool DockedState::SellCargo() {
     //get all cargo names aboard
     nostd::Array<nostd::String> arr{};
     for(const auto &i : player.GetShip().GetCargo()) {
-        arr.addBack(i.GetCargoName());
+        if(i.GetAmount() > 0)
+            if(i.GetAmount() > 0)
+                arr.addBack(i.GetCargoName());
     }
     //we print in order of arr so we know op is the index of the cargo to be sold from the player ship
     int op = io.HandleOptions(arr);
@@ -91,10 +93,7 @@ bool DockedState::SellCargo() {
     if(f < 0) {
         return true;
     }
-    //remove selected cargo from array if amount == 0
-    if(x == 0) {
-        player.GetShip().RemoveCargo(op);
-    }
+
     //Notify player of his gold and what he just sold for.
     io.Print("Sold for: ");
     io.PrintLine(_current_port.GetCargoInventory()[f].GetCost() * amount);
@@ -173,7 +172,8 @@ bool DockedState::SellCannons() {
     //get all cannon weights aboard
     nostd::Array<nostd::String> arr;
     for(const auto &i : player.GetShip().GetCannons()) {
-        arr.addBack(i.GetStringWeight());
+        if(i.GetAmount() > 0)
+            arr.addBack(i.GetStringWeight());
     }
 
     //we print in order of arr so we know op is the index of the cannon to be sold from the player ship
@@ -206,11 +206,6 @@ bool DockedState::SellCannons() {
     }
 
     _current_port.GetCannonInventory().at(f).DeductAmount(amount);
-
-    //remove selected cargo from array if amount == 0
-    if(x == 0) {
-        player.GetShip().RemoveCannon(op);
-    }
 
     //Notify player of his gold and what he just sold for.
     io.Print("Sold for: ");
