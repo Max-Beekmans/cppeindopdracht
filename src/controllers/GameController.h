@@ -4,9 +4,9 @@
 #include "../nostd/IOHandler.h"
 #include "../views/GameView.h"
 #include "../models/Ship.h"
-/*#include "../controllers/SailingController.h"
+#include "../controllers/SailingController.h"
 #include "../controllers/FightingController.h"
-#include "../controllers/PortController.h"*/
+#include "../controllers/PortController.h"
 
 namespace controllers {
     class GameController {
@@ -17,7 +17,7 @@ namespace controllers {
 
             void StartGame();
 
-            void EnterPort(const nostd::String name);
+            void EnterPort(const std::string name);
             void StartBattle();
             void Sail();
 
@@ -33,19 +33,19 @@ namespace controllers {
                 return _gold;
             }
 
-            models::Ship &GetShip() const {
-                return *_ship;
+            models::Ship &GetShip() {
+                return _ship;
             }
 
             void SetShip(models::Ship ship) {
-                _ship = &ship;
+                _ship = ship;
             }
 
-            const nostd::String GetDestinationPort() {
+            const std::string GetDestinationPort() {
                 return _destinationPort;
             }
 
-            void SetDestinationPort(const nostd::String port) {
+            void SetDestinationPort(const std::string port) {
                 _destinationPort = port;
             }
 
@@ -53,11 +53,11 @@ namespace controllers {
             nostd::IOHandler io;
             nostd::String _destinationPort;
             int _gold;
-            models::Ship* _ship;
+            models::Ship _ship;
             views::GameView* _view;
-            /*PortController* _port;
+            PortController* _port;
             SailingController* _sea;
-            FightingController* _fight;*/
+            FightingController* _fight;
     };
 
 }

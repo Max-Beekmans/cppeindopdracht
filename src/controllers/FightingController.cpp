@@ -1,7 +1,4 @@
 #include "FightingController.h"
-#include "../nostd/Random.h"
-#include "../factories/ShipFactory.h"
-#include "GameController.h"
 
 controllers::FightingController::FightingController(GameController& game) {
     /*init_options();
