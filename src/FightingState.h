@@ -5,6 +5,7 @@
 #include "Player.h"
 #include "Ship.h"
 #include "StateManager.h"
+#include "nostd/Array.h"
 
 class FightingState : public virtual BaseState {
 public:
@@ -13,12 +14,12 @@ public:
     bool Update() override;
 private:
     Ship _enemy;
-    int _fleeLookupTable[3][3];
+    nostd::Array<nostd::Array<int>> _fleeLookupTable;
     bool fight();
     void shoot_player();
     void shoot_enemy();
     void shoot(Ship originShip, Ship targetShip);
-    void flee();
+    bool flee();
     void surrender();
     void generate_enemy();
     int get_flee_chance(Ship& playerShip, Ship& enemyShip);

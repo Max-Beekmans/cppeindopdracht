@@ -1,21 +1,18 @@
 //
 // Created by MaxBe on 9/11/2018.
 //
-#include <cstring>
 #include "String.h"
+#include <cstring>
 #include <iostream>
 
 namespace nostd {
 
-    String::String() noexcept : count(0), space(0), ptr(ss) { ss[0] = '\0'; }
+    String::String() noexcept : count{0}, ptr{ss} { ss[0] = '\0'; }
 
-    String::~String() {
-        if (short_max < count) {
-            delete[] ptr;
-        }
-    }
-
-    String::String(const char* val) : space{0} {
+    String::String(const char* val):
+        count{static_cast<int>(strlen(val))},
+        ptr{ss},
+        space{0} {
         //scuffed replacement for strlen() since it kept erroring
         //performance wise it's equally fast.
         this->count = 0;
@@ -28,8 +25,30 @@ namespace nostd {
         copy_from(copy);
     }
 
+    String& String::operator=(const String& copy) {
+        if (this == &copy) return *this;
+        char* p = (short_max < count) ? ptr : nullptr;
+        copy_from(copy);
+        delete[] p;
+        return *this;
+    }
+
     String::String(String&& move) noexcept {
         move_from(move);
+    }
+
+    String& String::operator=(String&& move) noexcept{
+        if (this == &move) return *this;
+        //only release memory when there is any
+        if (short_max < count) delete [] ptr;
+        move_from(move);
+        return *this;
+    }
+
+    String::~String() {
+        if (short_max < count) {
+            delete[] ptr;
+        }
     }
 
     //operator overloading methods
@@ -39,21 +58,6 @@ namespace nostd {
 
     std::ostream& operator<<(std::ostream& os, const String& string) {
         return os << string.c_str();
-    }
-
-    String& String::operator=(const String& copy) {
-        if (this == &copy) return *this;
-//        if (short_max < count) delete [] ptr;
-        copy_from(copy);
-        return *this;
-    }
-
-    String& String::operator=(String&& move) noexcept{
-        if (this == &move) return *this;
-        //only release memory when there is any
-        if (short_max < count) delete [] ptr;
-        move_from(move);
-        return *this;
     }
 
     String& String::operator+=(char c) {
@@ -127,8 +131,7 @@ namespace nostd {
 
     void String::copy_from(const String& copy) {
         if (copy.count <= short_max) {
-            memcpy(this->ss, &copy.ss, sizeof(copy.ss));
-            count = copy.count;
+            memcpy(this, &copy, sizeof(copy));
             ptr = ss;
         } else {
             ptr = expand(copy.ptr, copy.count + 1);
@@ -139,7 +142,7 @@ namespace nostd {
 
     void String::move_from(String &move) {
         if (move.count <= short_max) {
-            memcpy(this->ss, &move.ss, sizeof(move.ss));
+            memcpy(this, &move, sizeof(move));
             count = move.count;
             ptr = ss;
         } else {
@@ -201,17 +204,6 @@ namespace nostd {
         array.addBack(after);
         return array;
     }
-
-//    nostd::Array<nostd::String> String::Tokenize(const char delim) {
-//        nostd::Array<nostd::String> arr = this->Split(*this, delim);
-//        nostd::Array<nostd::String> token_arr{};
-//        while(arr.size() > 0) {
-//            token_arr.addBack(arr[0]);
-//            //*this = arr[1];
-//            arr = this->Split(arr[1], delim);
-//        }
-//        return token_arr;
-//    }
 
     //can't call this function on a const string cause:
     //a. function is not const

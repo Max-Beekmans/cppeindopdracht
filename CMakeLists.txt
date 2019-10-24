@@ -7,7 +7,6 @@ configure_file(src/readables/goederen_hoeveelheid.csv goederen_hoeveelheid.csv C
 configure_file(src/readables/goederen_prijzen.csv goederen_prijzen.csv COPYONLY)
 configure_file(src/readables/schepen.csv schepen.csv COPYONLY)
 
-#add_subdirectory(src)
 add_subdirectory(test)
 
 add_executable(eindopdracht
@@ -16,21 +15,20 @@ add_executable(eindopdracht
         src/nostd/String.cpp
         src/nostd/String.h
         src/nostd/Array.h
+        src/nostd/IOHandler.h
+        src/nostd/Range.h
+        src/exceptions/OutOfFileException.h
+        src/exceptions/PortNotFoundException.h
         src/FileReader.cpp
         src/FileReader.h
-        src/nostd/IOHandler.h
         src/Ship.h
         src/Cannon.h
-        src/nostd/Range.h
         src/Cargo.h
         src/Game.cpp
         src/Game.h
         src/Player.h
         src/Port.cpp
         src/Port.h
-        src/Factory/PortFactory.cpp
-        src/Factory/PortFactory.h
-        src/exceptions/PortNotFoundException.h
         src/StateManager.h
         src/StateManager.cpp
         src/BaseState.h
@@ -41,8 +39,9 @@ add_executable(eindopdracht
         src/SailingState.cpp
         src/FightingState.cpp
         src/FightingState.h
-        src/Factory/Factory.h
-        src/Factory/ShipFactory.cpp
-        src/Factory/ShipFactory.h
-        src/exceptions/OutOfFileException.h)
+        src/factory/Factory.h
+        src/factory/ShipFactory.cpp
+        src/factory/ShipFactory.h
+        src/factory/PortFactory.cpp
+        src/factory/PortFactory.h)
 

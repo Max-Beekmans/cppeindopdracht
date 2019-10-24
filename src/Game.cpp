@@ -2,8 +2,8 @@
 // Created by MaxBe on 09-Jan-19.
 //
 
-#include "Factory/PortFactory.h"
-#include "Factory/ShipFactory.h"
+#include "factory/PortFactory.h"
+#include "factory/ShipFactory.h"
 #include "exceptions/PortNotFoundException.h"
 
 #include "Game.h"
@@ -14,8 +14,6 @@
 #include "DockedState.h"
 
 void Game::StartGame() {
-//    io.PrintLine("Start game");
-//    PrintIntroduction();
     factory::ShipFactory sf;
     Ship starting_ship = sf.CreateRandomShip();
 

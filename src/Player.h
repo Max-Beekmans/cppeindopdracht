@@ -4,7 +4,7 @@
 #ifndef EINDOPDRACHT_PLAYER_H
 #define EINDOPDRACHT_PLAYER_H
 
-#define STARTING_GOLD 1000
+#define STARTING_GOLD 900000
 
 #include "Ship.h"
 #include "Port.h"
