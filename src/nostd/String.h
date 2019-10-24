@@ -7,77 +7,85 @@
 #include <ostream>
 #include "Array.h"
 
+// Helper functions:
+//
+// my_strlen : count the length of a string until a null char
+//
+// my_strncpy : copy n chars from source to destination
 namespace nostd {
-    //Think of this class as merely a wrapper for the annoying char literal or char* stuff
-    //Char* wrapping pointer semantics and providing short string optimization
+
+
+
     class String {
-    public:
-        //Construct ro5
-        String() noexcept;
-        ~String();
-        explicit String(const char* val);
-        String(const String& str);
-        String(String&& move) noexcept;
-
-        //Operators
-        //unchecked element access
-        char& operator[](int n) { return ptr[n]; }
-        char operator[](int n) const { return ptr[n]; }
-        //ostream
-        friend std::ostream &operator<<(std::ostream &os, String &string);
-        friend std::ostream &operator<<(std::ostream &os, const String &string);
-        //copy
-        String& operator=(const String& copy);
-        //move
-        String& operator=(String&& move) noexcept;
-        //add another string and return new
-        //String& operator+(String& add);
-        //add char to the end of the string
-        String& operator+=(char c);
-
-        //Methods
-        int size() const;
-        int capacity() const;
-        bool isEmpty() const;
-        char* c_str();
-        const char* c_str() const;
-        char& at(const int n);
-        char at(int n) const;
-        //find character and return it's index.
-        //If the character can't be found returns -1
-        const int Find(const char c);
-        nostd::String* Split(const char delim);
-        nostd::Array<nostd::String> Split(nostd::String str, const char delim);
-        nostd::Array<nostd::String> Tokenize(const char delim);
+        int length;
+        char *buff;
     private:
-        static const int short_max = 15;
-        int count = 0;
-        char* ptr = nullptr;
-        // discriminated union (count <= short_max)
-        union {
-            // unused space;
-            int space;
-            // +1 for terminating char
-            char ss[short_max + 1];
-        };
-
         void check(int n) const;
-        char* expand(const char* ptr, int n);
-        void copy_from(const String& copy);
-        void move_from(String& move);
+    public:
+        String();
+        String(char *init_val);
+        String(const String &other);
+        ~String();
+
+        char& at(const int n);
+
+        char at(int n) const;
+
+        const int Find(const char c);
+
+        String* Split(const char delim);
+
+        Array<String> Split(nostd::String str, const char delim);
+
+        Array<String> Tokenize(const char delim);
+
+        int size();
+
+        String& operator+=(char c) {
+            String res;
+            res.length = length+1;
+            res.buff = new char[res.length];
+
+            res.buff = new char[res.length];
+            strncpy(res.buff, buff, length);
+            res.buff[length] = c;
+            res.buff[length++] = '\0';
+
+            return res;
+        }
+
+        // operator= returns  myString&  to allow multiple assignments
+
+        String &operator=(const String &other) {
+            if (this != &other) {          // guard against  a = a;
+                delete[] buff;              // release old memory & then
+                length = other.length;       // allocate new memory
+                buff = new char[length];
+                strncpy(buff, other.buff, length);
+            }
+            return *this;                  // return a reference to itself
+        }                                // to allow a = b = c;
+
+        friend String operator+(const String &s1, const String &s2);
+
+        friend String operator+(const String &s, char c);
+
+        friend String operator+(char c, const String &s);
+
+        friend std::ostream &operator<<(std::ostream &, const String &);
+
+        char &operator[](int index) {
+            if (index < 0 || index > length) {
+                exit(-1);
+            }
+            return buff[index];
+        }
     };
-    //nonmember functions
-    char* begin(String& x);
-    char* end(String& x);
-    const char* begin(const String& x);
-    const char* end(const String& x);
-    String& operator+=(String& a, const String& b);
-    String operator+(const String& a, const String& b);
+
     bool operator==(const String& a, const String& b);
-    bool operator!=(const String& a, const String& b);
-    String operator""_s(const char* p, size_t);
+
+    String operator+(const String &s1, const String &s2);
+
+    std::ostream &operator<<(std::ostream &os, const String &s);
 }
-
-
-
 #endif //EINDOPDRACHT_STRING_H

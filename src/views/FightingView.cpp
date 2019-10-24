@@ -1,0 +1,1 @@
+#include "views/FightingView.h"

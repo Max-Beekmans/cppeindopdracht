@@ -1,7 +1,7 @@
 //#define CATCH_CONFIG_RUNNER
 //#include "test/catch2/catch.hpp"
 
-#include "controllers/GameController.h"
+#include "Game.h"
 #include <iostream>
 
 int main(int argc, char* argv[]) {
@@ -12,7 +12,7 @@ int main(int argc, char* argv[]) {
 //        return exitCode;
 //    }
 
-    controllers::GameController g{};
+    Game g{};
     g.StartGame();
 
     return 0;

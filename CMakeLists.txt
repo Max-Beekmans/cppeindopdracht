@@ -13,7 +13,6 @@ add_subdirectory(test)
 add_executable(eindopdracht
         src/main.cpp
         src/nostd/Random.h
-        src/nostd/String.cpp
         src/nostd/String.h
         src/nostd/Array.h
         src/FileReader.cpp
@@ -44,5 +43,5 @@ add_executable(eindopdracht
         src/Factory/Factory.h
         src/Factory/ShipFactory.cpp
         src/Factory/ShipFactory.h
-        src/exceptions/OutOfFileException.h)
+        src/exceptions/OutOfFileException.h src/controllers/GameController.h)
 

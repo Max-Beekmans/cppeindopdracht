@@ -3,7 +3,6 @@
 
 #include <iostream>
 #include "String.h"
-#include "Array.h"
 
 namespace nostd {
     class IOHandler {
