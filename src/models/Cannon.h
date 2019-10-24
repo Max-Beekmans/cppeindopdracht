@@ -2,8 +2,9 @@
 #define EINDOPDRACHT_CANNON_H
 
 #include <ostream>
-#include "nostd/Range.h"
-#include "nostd/String.h"
+#include "../nostd/Range.h"
+#include "../nostd/String.h"
+
 namespace models {
     class Cannon {
     public:
@@ -76,10 +77,10 @@ namespace models {
             return _amount;
         }
 
-        const nostd::String GetStringWeight() const {
+        const nostd::string GetStringWeight() const {
             switch (_weight) {
                 case 0:
-                    return nostd::String{"Light cannon"};
+                    return std::string{"Light cannon"};
                 case 1:
                     return nostd::String{"Medium cannon"};
                 case 2:

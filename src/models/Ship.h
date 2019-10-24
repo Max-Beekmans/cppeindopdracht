@@ -2,8 +2,8 @@
 #define EINDOPDRACHT_SHIP_H
 
 #include <ostream>
-#include "nostd/String.h"
-#include "nostd/Array.h"
+#include "../nostd/String.h"
+#include "../nostd/Array.h"
 #include "Cannon.h"
 #include "Cargo.h"
 namespace models {

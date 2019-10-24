@@ -5,25 +5,21 @@
 #ifndef EINDOPDRACHT_DOCKVIEW_H
 #define EINDOPDRACHT_DOCKVIEW_H
 
-#include "nostd/IOHandler.h"
-#include "Port.h"
-#include "Player.h"
+#include "../nostd/IOHandler.h"
+#include "../models/Port.h"
 
 namespace views {
 
-    class DockView {
+    class FightingView {
     public:
-        GameController();
+        FightingView();
 
-        ~GameController() = default;
+        ~FightingView() = default;
 
-        void StartGame();
 
     private:
-        void PrintIntroduction();
-
         nostd::IOHandler io;
     };
 
 }
-#endif //EINDOPDRACHT_DOCKVIEW_H
+#endif //EINDOPDRACHT_FIGHTINGVIEW_H

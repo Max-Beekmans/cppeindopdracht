@@ -8,10 +8,10 @@
 
 #include "GameController.h"
 
-GameController::GameController() : _gold(0), _view(new GameView()), _port(new PortController(*this)), _fight(new FightingController(*this), _sea(new SailingController(*this))) {}
+controllers::GameController::GameController() : _gold(0), _view(new views::GameView()) {}
 
-void GameController::StartGame() {
-    view.PrintIntroduction();
+void controllers::GameController::StartGame() {
+    _view->PrintIntroduction();
     /*factory::ShipFactory sf;
     _ship = sf.CreateRandomShip();
     _destinationPort = nostd::String{"Port Royale"};
@@ -22,7 +22,7 @@ void GameController::StartGame() {
     EnterPort();*/
 }
 
-void GameController::EnterPort() {
+/*void controllers::GameController::EnterPort() {
     _port->Enter(_destinationPort);
 }
 
@@ -32,11 +32,11 @@ void GameController::StartFight() {
 
 void GameController::Sail(const int turns) {
     _sea->Sail(turns);
-}
+}*/
 
-GameController::~GameController() {
+controllers::GameController::~GameController() {
     delete _view;
-    delete _port;
+    /*delete _port;
     delete _fight;
-    delete _sea;
+    delete _sea;*/
 }

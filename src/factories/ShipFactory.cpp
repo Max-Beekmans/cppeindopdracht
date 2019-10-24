@@ -5,7 +5,7 @@
 #include "ShipFactory.h"
 #include "../nostd/Random.h"
 
-Ship factory::ShipFactory::CreateRandomShip() {
+models::Ship factories::ShipFactory::CreateRandomShip() {
     fileReader.Open("schepen.csv");
     nostd::Random rand;
     nostd::String ship_line = fileReader.GetNthLine(static_cast<size_t> (rand.getRand(1, 13)));
@@ -15,7 +15,7 @@ Ship factory::ShipFactory::CreateRandomShip() {
     nostd::String specials;
     try {
         specials = ship_tokens.at(5);
-        if(!specials.isEmpty()) {
+        if(specials.size() != 0) {
             nospecials = false;
         }
     } catch (...) {
@@ -50,7 +50,7 @@ Ship factory::ShipFactory::CreateRandomShip() {
         delete[] s;
     }
 
-    return Ship(
+    return models::Ship(
             ship_tokens[0],
             atoi(ship_tokens[1].c_str()),
             atoi(ship_tokens[2].c_str()),
@@ -61,13 +61,13 @@ Ship factory::ShipFactory::CreateRandomShip() {
             );
 }
 
-Ship factory::ShipFactory::CreateEnemyShip() {
-    Ship s = CreateRandomShip();
+models::Ship factories::ShipFactory::CreateEnemyShip() {
+    models::Ship s = CreateRandomShip();
     nostd::Random rand;
     int cannons = rand.getRand(0, s.GetMaxCannons());
 
     for (int i = 0; i < cannons; ++i) {
-        Cannon c;
+        models::Cannon c;
         int weight = 0;
         if(s.IsSmall()){
             //only light or heavy cannons
@@ -79,13 +79,13 @@ Ship factory::ShipFactory::CreateEnemyShip() {
 
         switch (weight) {
             case 0:
-                c = Cannon{weight, 50, 1};
+                c = models::Cannon{weight, 50, 1};
                 break;
             case 1:
-                c = Cannon{weight, 200, 1};
+                c = models::Cannon{weight, 200, 1};
                 break;
             case 2:
-                c = Cannon{weight, 1000, 1};
+                c = models::Cannon{weight, 1000, 1};
                 break;
         }
         int x = s.GetCannons().find(c);

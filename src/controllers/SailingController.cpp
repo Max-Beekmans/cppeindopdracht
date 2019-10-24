@@ -1,14 +1,14 @@
-#include "nostd/Random.h"
-#include "controllers/SailingController.h"
+#include "../nostd/Random.h"
+#include "SailingController.h"
 
-SailingController::SailingController(Player& player, GameController& game) {}
+controllers::SailingController::SailingController(GameController& game) {}
 
-bool SailingController::Sail(const int turns) {
+void controllers::SailingController::Sail(const int turns) {
     nostd::Random r;
 
     int _turns = turns;
 
-    while(_turns > 0) {
+    /*while(_turns > 0) {
         if(r.getRand(1, 100) <= 20) {
             stateManager.PushState(new FightingState(player, stateManager));
             return true;
@@ -79,5 +79,5 @@ bool SailingController::Sail(const int turns) {
         }
     }
     stateManager.PushAndReplace(new DockedState(player, stateManager));
-    return true;
+    return true;*/
 }

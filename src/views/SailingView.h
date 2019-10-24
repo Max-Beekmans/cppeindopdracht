@@ -5,8 +5,7 @@
 #ifndef EINDOPDRACHT_SAILINGVIEW_H
 #define EINDOPDRACHT_SAILINGVIEW_H
 
-#include "nostd/IOHandler.h"
-#include "Player.h"
+#include "../nostd/IOHandler.h"
 
 namespace views{
 

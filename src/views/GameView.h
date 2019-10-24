@@ -5,15 +5,15 @@
 #ifndef EINDOPDRACHT_DOCKVIEW_H
 #define EINDOPDRACHT_DOCKVIEW_H
 
-#include "nostd/IOHandler.h"
+#include "../nostd/IOHandler.h"
 
 namespace views {
 
     class GameView {
     public:
         ~GameView() = default;
-    private:
         void PrintIntroduction();
+    private:
         nostd::IOHandler io;
     };
 

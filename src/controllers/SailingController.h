@@ -5,8 +5,7 @@
 #ifndef EINDOPDRACHT_SAILINGCONTROLLER_H
 #define EINDOPDRACHT_SAILINGCONTROLLER_H
 
-#include "nostd/IOHandler.h"
-#include "Player.h"
+#include "../nostd/IOHandler.h"
 #include "GameController.h"
 
 namespace controllers {
@@ -19,5 +18,6 @@ namespace controllers {
 
         void Sail(const int turns);
 
+    };
 }
 #endif //EINDOPDRACHT_SAILINGCONTROLLER_H

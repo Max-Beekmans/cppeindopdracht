@@ -1,12 +1,11 @@
 #include "PortController.h"
-#include "FileReader.h"
-#include "SailingState.h"
-#include "Factory/PortFactory.h"
-#include "exceptions/PortNotFoundException.h"
+#include "../FileReader.h"
+#include "../factories/PortFactory.h"
+#include "../exceptions/PortNotFoundException.h"
 
-DockedController::DockedController(Player& player, GameController& game), _player_ship(player.GetShip()) {
-    factory::PortFactory pf{};
-    try {
+controllers::PortController::PortController(GameController& game) {
+    factories::PortFactory pf{};
+    /*try {
         _current_port = pf.CreatePort(player.GetDestinationPort());
     } catch(exceptions::PortNotFoundException &e) {
         io.PrintLine(e.what());
@@ -18,10 +17,10 @@ DockedController::DockedController(Player& player, GameController& game), _playe
     options.addBack(nostd::String{"Buy/sell ship"});
     options.addBack(nostd::String{"Set sail"});
     options.addBack(nostd::String{"Repair Ship"});
-    options.addBack(nostd::String{"Quit Game"});
+    options.addBack(nostd::String{"Quit Game"});*/
 }
-
-bool DockedState::Update() {
+/*
+bool controllers::PortController::Update() {
     _current_port.PrintPortHeader();
     int op = io.HandleOptions(options);
     switch (op) {
@@ -392,3 +391,4 @@ void DockedState::ShowShipHealth() {
     io.Print("/");
     io.PrintLine(_player_ship.GetMaxHp());
 }
+*/

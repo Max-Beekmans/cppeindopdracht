@@ -11,8 +11,8 @@
 namespace factories {
     class ShipFactory : Factory {
     public:
-        Ship CreateRandomShip();
-        Ship CreateEnemyShip();
+        models::Ship CreateRandomShip();
+        models::Ship CreateEnemyShip();
     };
 }
 

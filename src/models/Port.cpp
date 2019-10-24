@@ -4,51 +4,55 @@
 
 #include "Port.h"
 
-Port::Port(const nostd::String port_name, const nostd::Array<Cargo> cargo_inventory,
-           const nostd::Array<Cannon> cannon_inventory, const nostd::Array<Ship> ship_inventory) :
-        _port_name{port_name}, _cargo_inventory{cargo_inventory}, _cannon_inventory{cannon_inventory}, _ship_inventory{ship_inventory} {}
+models::Port::Port(const nostd::String port_name, const nostd::Array<Cargo> cargo_inventory,
+           const nostd::Array<Cannon> cannon_inventory, const nostd::Array<Ship> ship_inventory) {
+    _port_name = port_name;
+    _cargo_inventory = cargo_inventory;
+    _cannon_inventory = cannon_inventory;
+    _ship_inventory = ship_inventory;
+}
 
-void Port::PrintPortHeader() {
+void models::Port::PrintPortHeader() {
     //_io.ClearConsole();
     _io.Print("Port name: ");
     _io.PrintLine(_port_name);
     _io.PrintDivider();
 }
 
-void Port::PrintCargo() {
+void models::Port::PrintCargo() {
     for(const auto &i : _cargo_inventory) {
         _io.Print(i);
         _io.PrintDivider();
     }
 }
 
-void Port::PrintCannons() {
+void models::Port::PrintCannons() {
     for(const auto &i : _cannon_inventory) {
         _io.Print(i);
         _io.PrintDivider();
     }
 }
 
-void Port::PrintShips() {
+void models::Port::PrintShips() {
     for(const auto &i : _ship_inventory) {
         _io.Print(i);
         _io.PrintDivider();
     }
 }
 
-nostd::Array<Cargo>& Port::GetCargoInventory() {
+nostd::Array<models::Cargo>& models::Port::GetCargoInventory() {
     return _cargo_inventory;
 }
 
-nostd::Array<Ship>& Port::GetShipInventory() {
+nostd::Array<models::Ship>& models::Port::GetShipInventory() {
     return _ship_inventory;
 }
 
-nostd::Array<Cannon>& Port::GetCannonInventory() {
+nostd::Array<models::Cannon>& models::Port::GetCannonInventory() {
     return _cannon_inventory;
 }
 
-nostd::String Port::GetPortName() const {
+nostd::String models::Port::GetPortName() const {
     return _port_name;
 }
 

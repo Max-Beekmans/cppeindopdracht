@@ -38,5 +38,4 @@ add_executable(eindopdracht
         src/controllers/FightingController.cpp
         src/controllers/FightingController.h
         src/controllers/SailingController.cpp
-        src/controllers/SailingController.h
-        )
+        src/controllers/SailingController.h)

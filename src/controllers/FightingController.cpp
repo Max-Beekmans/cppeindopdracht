@@ -1,16 +1,17 @@
 #include "FightingController.h"
-#include "nostd/Random.h"
-#include "Factory/ShipFactory.h"
+#include "../nostd/Random.h"
+#include "../factories/ShipFactory.h"
+#include "GameController.h"
 
-FightingState::FightingState(Player& player, StateManager& stateManager) : BaseState(player, stateManager) {
-    init_options();
+controllers::FightingController::FightingController(GameController& game) {
+    /*init_options();
     init_flee_lookup_table();
-    generate_enemy();
+    generate_enemy();*/
 }
 
-bool FightingState::Update() {
+bool controllers::FightingController::Update() {
 
-    int op = io.HandleOptions(options);
+    /*int op = io.HandleOptions(options);
     while(op < 0 || op > options.size() - 1) {
         io.Print("Invalid option. Select one of these options.");
         op = io.HandleOptions(options);
@@ -29,9 +30,10 @@ bool FightingState::Update() {
             io.PrintLine("Please select a viable option.");
             break;
     }
-    return true;
+    return true;*/
 }
 
+/*
 void FightingState::init_options() {
     options.addBack(nostd::String{"Attack"});
     options.addBack(nostd::String{"Flee"});
@@ -121,4 +123,4 @@ int FightingState::get_flee_chance(Ship& playerShip, Ship& enemyShip) {
 void FightingState::generate_enemy() {
     factory::ShipFactory factory;
     _enemy = factory.CreateEnemyShip();
-}
+}*/
