@@ -8,11 +8,11 @@
 models::Ship factories::ShipFactory::CreateRandomShip() {
     fileReader.Open("schepen.csv");
     nostd::Random rand;
-    std::string ship_line = fileReader.GetNthLine(static_cast<size_t> (rand.getRand(1, 13)));
-    nostd::Array<std::string> ship_tokens = ship_line.Tokenize(';');
+    nostd::String ship_line = fileReader.GetNthLine(static_cast<size_t> (rand.getRand(1, 13)));
+    nostd::Array<nostd::String> ship_tokens = ship_line.Tokenize(';');
 
     bool nospecials = true;
-    std::string specials;
+    nostd::String specials;
     try {
         specials = ship_tokens.at(5);
         if(specials.size() != 0) {
@@ -26,10 +26,10 @@ models::Ship factories::ShipFactory::CreateRandomShip() {
     bool isSmall = false;
     int weight = 1;
     if(!nospecials) {
-        std::string* s = specials.Split(',');
-        std::string log{"log"};
-        std::string licht{"licht"};
-        std::string klein{"klein"};
+        nostd::String* s = specials.Split(',');
+        nostd::String log{"log"};
+        nostd::String licht{"licht"};
+        nostd::String klein{"klein"};
         //',' can't be found so only one param
         if(s == nullptr) {
             if(specials == log) {

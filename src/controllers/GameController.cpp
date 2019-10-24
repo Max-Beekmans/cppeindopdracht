@@ -14,7 +14,7 @@ void controllers::GameController::StartGame() {
     _view->PrintIntroduction();
     /*factory::ShipFactory sf;
     _ship = sf.CreateRandomShip();
-    _destinationPort = std::string{"Port Royale"};
+    _destinationPort = nostd::String{"Port Royale"};
 
     //TODO remove test line
     _ship.AddCannon(Cannon{1, 0, 25});

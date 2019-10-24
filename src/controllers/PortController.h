@@ -2,7 +2,7 @@
 #define EINDOPDRACHT_PORTCONTROLLER_H
 
 #include "../nostd/Array.h"
-#include <string>
+#include "../nostd/String.h"
 #include "GameController.h"
 #include "../models/Port.h"
 namespace controllers {

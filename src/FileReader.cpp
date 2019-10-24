@@ -13,12 +13,12 @@ FileReader::~FileReader() {
     Close();
 }
 
-const std::string FileReader::GetLine() {
+const nostd::String FileReader::GetLine() {
     char buffer[512];
     if(_file_stream.is_open()) {
         _file_stream.getline(buffer, sizeof(buffer));
     }
-    return std::string{buffer};
+    return nostd::String{buffer};
 }
 
 const bool FileReader::EndOfFile() {
@@ -26,11 +26,11 @@ const bool FileReader::EndOfFile() {
 }
 
 //NOTE I return a ptr to heap memory here cause I cannot return a null object or nullptr when copying a stack object.
-//In order to copy the stack object I need it to be an object of type std::string. I could return an empty string but I prefer this method.
-std::string* FileReader::GetSpecificLine(const std::string line_specifier) {
+//In order to copy the stack object I need it to be an object of type nostd::String. I could return an empty string but I prefer this method.
+nostd::String* FileReader::GetSpecificLine(const nostd::String line_specifier) {
     while(!EndOfFile()) {
-        std::string* s = new std::string{GetLine()};
-        std::string* ptr = s->Split(';');
+        nostd::String* s = new nostd::String{GetLine()};
+        nostd::String* ptr = s->Split(';');
         //line didn't contain ';' delim
         //If the first column matches the line_specifier return current line and exit
         if(ptr != nullptr && ptr[0] == line_specifier) {
@@ -43,10 +43,10 @@ std::string* FileReader::GetSpecificLine(const std::string line_specifier) {
     return nullptr;
 }
 
-std::string FileReader::GetNthLine(const size_t n) {
+nostd::String FileReader::GetNthLine(const size_t n) {
     size_t count = 0;
     while(!EndOfFile()) {
-        std::string s = GetLine();
+        nostd::String s = GetLine();
         if(count == n) {
             return s;
         }

@@ -2,7 +2,7 @@
 #define EINDOPDRACHT_CARGO_H
 
 #include <ostream>
-#include <string>
+#include "../nostd/String.h"
 namespace models {
     class Cargo {
     public:
@@ -10,7 +10,7 @@ namespace models {
 
         ~Cargo() = default;
 
-        Cargo(const std::string _cargo_name, const int cost, const int amount) : _cargo_name{_cargo_name},
+        Cargo(const nostd::String _cargo_name, const int cost, const int amount) : _cargo_name{_cargo_name},
                                                                                    _cost{cost}, _amount{amount} {};
 
         friend std::ostream &operator<<(std::ostream &os, Cargo &cargo) {
@@ -31,7 +31,7 @@ namespace models {
             return (a._cargo_name == this->_cargo_name);
         }
 
-        const std::string GetCargoName() const {
+        const nostd::String GetCargoName() const {
             return _cargo_name;
         }
 
@@ -56,7 +56,7 @@ namespace models {
         }
 
     private:
-        std::string _cargo_name;
+        nostd::String _cargo_name;
         int _cost;
         int _amount;
     };

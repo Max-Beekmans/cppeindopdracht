@@ -10,14 +10,14 @@ controllers::PortController::PortController(GameController& game) {
     } catch(exceptions::PortNotFoundException &e) {
         io.PrintLine(e.what());
     }
-    options.addBack(std::string{"Buy cargo"});
-    options.addBack(std::string{"Sell cargo"});
-    options.addBack(std::string{"Buy cannons"});
-    options.addBack(std::string{"Sell cannons"});
-    options.addBack(std::string{"Buy/sell ship"});
-    options.addBack(std::string{"Set sail"});
-    options.addBack(std::string{"Repair Ship"});
-    options.addBack(std::string{"Quit Game"});*/
+    options.addBack(nostd::String{"Buy cargo"});
+    options.addBack(nostd::String{"Sell cargo"});
+    options.addBack(nostd::String{"Buy cannons"});
+    options.addBack(nostd::String{"Sell cannons"});
+    options.addBack(nostd::String{"Buy/sell ship"});
+    options.addBack(nostd::String{"Set sail"});
+    options.addBack(nostd::String{"Repair Ship"});
+    options.addBack(nostd::String{"Quit Game"});*/
 }
 /*
 bool controllers::PortController::Update() {
@@ -63,7 +63,7 @@ bool controllers::PortController::Update() {
 //receive gold
 bool DockedState::SellCargo() {
     //get all cargo names aboard
-    nostd::Array<std::string> arr{};
+    nostd::Array<nostd::String> arr{};
     for(const auto &i : player.GetShip().GetCargo()) {
         arr.addBack(i.GetCargoName());
     }
@@ -113,7 +113,7 @@ bool DockedState::SellCargo() {
 //
 void DockedState::BuyCargo() {
     _current_port.PrintCargo();
-    nostd::Array<std::string> arr;
+    nostd::Array<nostd::String> arr;
     for(const auto &i : _current_port.GetCargoInventory()) {
         arr.addBack(i.GetCargoName());
     }
@@ -170,7 +170,7 @@ bool DockedState::SellCannons() {
     }
 
     //get all cannon weights aboard
-    nostd::Array<std::string> arr;
+    nostd::Array<nostd::String> arr;
     for(const auto &i : player.GetShip().GetCannons()) {
         arr.addBack(i.GetStringWeight());
     }
@@ -226,7 +226,7 @@ bool DockedState::SellCannons() {
 
 void DockedState::BuyCannons() {
     _current_port.PrintCannons();
-    nostd::Array<std::string> arr;
+    nostd::Array<nostd::String> arr;
     for(const auto &i : _current_port.GetCannonInventory()) {
         arr.addBack(i.GetStringWeight());
     }
@@ -292,7 +292,7 @@ void DockedState::BuyCannons() {
 
 bool DockedState::BuyShip() {
     _current_port.PrintShips();
-    nostd::Array<std::string> arr;
+    nostd::Array<nostd::String> arr;
     for(const auto &i : _current_port.GetShipInventory()) {
         arr.addBack(i.GetType());
     }
@@ -355,17 +355,17 @@ void DockedState::RepairShip() {
 //print turns and go to sailing state.
 void DockedState::SailTo() {
     FileReader fr{"afstanden_tussen_steden.csv"};
-    std::string* first_row {fr.GetSpecificLine(std::string{""})};
-    nostd::Array<std::string> token_arr = first_row->Tokenize(';');
+    nostd::String* first_row {fr.GetSpecificLine(nostd::String{""})};
+    nostd::Array<nostd::String> token_arr = first_row->Tokenize(';');
     //first token is empty string
     token_arr.removeN(0);
     int op = io.HandleOptions(token_arr);
     if(op < 0) {
         return;
     }
-    std::string* city_row {fr.GetSpecificLine(_current_port.GetPortName())};
-    nostd::Array<std::string> city_token_arr = city_row->Tokenize(';');
-    std::string str = city_token_arr.at(op + 1);
+    nostd::String* city_row {fr.GetSpecificLine(_current_port.GetPortName())};
+    nostd::Array<nostd::String> city_token_arr = city_row->Tokenize(';');
+    nostd::String str = city_token_arr.at(op + 1);
     io.Print("Sailing to: ");
     io.PrintLine(token_arr[op]);
     io.Print("Turns: ");

@@ -2,7 +2,7 @@
 #define EINDOPDRACHT_SHIP_H
 
 #include <ostream>
-#include <string>
+#include "../nostd/String.h"
 #include "../nostd/Array.h"
 #include "Cannon.h"
 #include "Cargo.h"
@@ -15,12 +15,12 @@ namespace models {
 
         ~Ship() = default;
 
-        Ship(const std::string type, const int cost, const int space, const int maxCannons, const int maxHp,
+        Ship(const nostd::String type, const int cost, const int space, const int maxCannons, const int maxHp,
              const int weight, const bool isSmall)
                 : _type(type), _cost(cost), _maxSpace(space), _space(0), _maxCannons(maxCannons), _cannon_amount(0),
                   _maxHp(maxHp), _currentHp(maxHp), _weight(weight), _isSmall(isSmall) {}
 
-        std::string GetType() const {
+        nostd::String GetType() const {
             return _type;
         }
 
@@ -198,7 +198,7 @@ namespace models {
     private:
         nostd::Array <Cannon> _cannons;
         nostd::Array <Cargo> _cargo;
-        std::string _type;
+        nostd::String _type;
         int _maxHp;
         int _currentHp;
         int _cost;

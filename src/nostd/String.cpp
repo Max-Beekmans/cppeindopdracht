@@ -68,9 +68,9 @@ namespace nostd {
         if (index < 0) {
             return nullptr;
         }
-        auto *res = new std::string[2];
-        res[0] = std::string{};
-        res[1] = std::string{};
+        auto *res = new nostd::String[2];
+        res[0] = nostd::String{};
+        res[1] = nostd::String{};
         for (int i = 0; i <= index - 1; ++i) {
             res[0] += this->at(i);
         }
@@ -82,14 +82,14 @@ namespace nostd {
         return res;
     }
 
-    Array<String> String::Split(std::string str, const char delim) {
-        nostd::Array<std::string> array{};
+    Array<String> String::Split(nostd::String str, const char delim) {
+        nostd::Array<nostd::String> array{};
         const int index = str.Find(delim);
         if (index < 0) {
             return array;
         }
-        std::string before{};
-        std::string after{};
+        nostd::String before{};
+        nostd::String after{};
         for (int i = 0; i <= index - 1; ++i) {
             before += str.at(i);
         }
@@ -103,8 +103,8 @@ namespace nostd {
     }
 
     Array<String> String::Tokenize(const char delim) {
-        std::string *arr = this->Split(delim);
-        nostd::Array<std::string> token_arr{};
+        nostd::String *arr = this->Split(delim);
+        nostd::Array<nostd::String> token_arr{};
         while (arr != nullptr) {
             token_arr.addBack(arr[0]);
             *this = arr[1];
