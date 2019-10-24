@@ -20,8 +20,7 @@ bool FightingState::Update() {
         case 0:
             return fight();
         case 1:
-            flee();
-            break;
+            return flee();
         case 2:
             surrender();
             break;
@@ -45,9 +44,9 @@ void FightingState::init_flee_lookup_table() {
     _fleeLookupTable[0][1] = 60;
     _fleeLookupTable[1][1] = 40;
     _fleeLookupTable[2][1] = 15;
-    _fleeLookupTable[0][1] = 75;
-    _fleeLookupTable[1][1] = 55;
-    _fleeLookupTable[2][1] = 30;
+    _fleeLookupTable[0][2] = 75;
+    _fleeLookupTable[1][2] = 55;
+    _fleeLookupTable[2][2] = 30;
 }
 
 bool FightingState::fight() {
@@ -56,7 +55,7 @@ bool FightingState::fight() {
         shoot_player();
         if(player.GetShip().GetCurrentHp() <= 0) {
             //gameover
-            io.PrintLine("Your ship has sunk, the game is over.");
+            io.PrintLine("You died fighting!");
             return false;
         }
     } else {
@@ -95,8 +94,12 @@ void FightingState::shoot_enemy() {
     }
 }
 
-void FightingState::flee() {
+bool FightingState::flee() {
     shoot_player();
+    if(player.GetShip().GetCurrentHp() <= 0) {
+        io.PrintLine(" You died like a coward.");
+        return false;
+    }
 
     nostd::Random r;
 
@@ -106,6 +109,7 @@ void FightingState::flee() {
     } else {
         io.PrintLine("Sadly you weren't fast enough, you are still in battle!");
     }
+    return true;
 }
 
 void FightingState::surrender() {
