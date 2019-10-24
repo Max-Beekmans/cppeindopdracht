@@ -13,7 +13,7 @@ namespace factories {
     public:
         //Create port based on port_name.
         //Will look for this name to be in the first column of the file.
-        models::Port CreatePort(nostd::String port_name);
+        models::Port CreatePort(std::string port_name);
     };
 }
 

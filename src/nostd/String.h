@@ -39,7 +39,7 @@ namespace nostd {
 
         String* Split(const char delim);
 
-        Array<String> Split(nostd::String str, const char delim);
+        Array<String> Split(std::string str, const char delim);
 
         Array<String> Tokenize(const char delim);
 

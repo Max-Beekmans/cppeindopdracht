@@ -17,7 +17,7 @@ namespace controllers {
 
             void StartGame();
 
-            void EnterPort(const nostd::String name);
+            void EnterPort(const std::string name);
             void StartBattle();
             void Sail();
 
@@ -41,17 +41,17 @@ namespace controllers {
                 _ship = &ship;
             }
 
-            const nostd::String GetDestinationPort() {
+            const std::string GetDestinationPort() {
                 return _destinationPort;
             }
 
-            void SetDestinationPort(const nostd::String port) {
+            void SetDestinationPort(const std::string port) {
                 _destinationPort = port;
             }
 
         private:
             nostd::IOHandler io;
-            nostd::String _destinationPort;
+            std::string _destinationPort;
             int _gold;
             models::Ship* _ship;
             views::GameView* _view;

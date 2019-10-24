@@ -4,7 +4,7 @@
 
 #include "Port.h"
 
-models::Port::Port(const nostd::String port_name, const nostd::Array<Cargo> cargo_inventory,
+models::Port::Port(const std::string port_name, const nostd::Array<Cargo> cargo_inventory,
            const nostd::Array<Cannon> cannon_inventory, const nostd::Array<Ship> ship_inventory) {
     _port_name = port_name;
     _cargo_inventory = cargo_inventory;
@@ -52,7 +52,7 @@ nostd::Array<models::Cannon>& models::Port::GetCannonInventory() {
     return _cannon_inventory;
 }
 
-nostd::String models::Port::GetPortName() const {
+std::string models::Port::GetPortName() const {
     return _port_name;
 }
 

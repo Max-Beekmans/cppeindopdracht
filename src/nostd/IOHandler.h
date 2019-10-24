@@ -18,10 +18,10 @@ namespace nostd {
             std::cout << obj << std::endl;
         }
 
-        const nostd::String GetString() const {
+        const std::string GetString() const {
             char str[512];
             std::cin.getline(str, sizeof(str));
-            return nostd::String {str};
+            return std::string {str};
         }
 
         const int GetInt() const {
@@ -30,7 +30,7 @@ namespace nostd {
             return x;
         }
 
-        const int HandleOptions(const nostd::Array<nostd::String>& options) {
+        const int HandleOptions(const nostd::Array<std::string>& options) {
             PrintLine("Enter number for option or 11 for more options");
             //left to print
             auto op = static_cast<size_t>(options.size());
@@ -74,7 +74,7 @@ namespace nostd {
             std::cout << "_____________________________________________" << std::endl;
         }
     private:
-        void PrintN(const size_t n, const size_t start, const nostd::Array<nostd::String>& options) const {
+        void PrintN(const size_t n, const size_t start, const nostd::Array<std::string>& options) const {
             for (size_t i = start; i < start + n; ++i) {
                 std::cout << '[' << (i - start) + 1 << ']' << options[i] << std::endl;
             }

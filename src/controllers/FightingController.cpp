@@ -35,9 +35,9 @@ bool controllers::FightingController::Update() {
 
 /*
 void FightingState::init_options() {
-    options.addBack(nostd::String{"Attack"});
-    options.addBack(nostd::String{"Flee"});
-    options.addBack(nostd::String{"Surrender"});
+    options.addBack(std::string{"Attack"});
+    options.addBack(std::string{"Flee"});
+    options.addBack(std::string{"Surrender"});
 }
 
 void FightingState::init_flee_lookup_table() {

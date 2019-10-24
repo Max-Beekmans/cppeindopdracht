@@ -3,7 +3,7 @@
 
 #include <ostream>
 #include "../nostd/Range.h"
-#include "../nostd/String.h"
+#include <string>
 
 namespace models {
     class Cannon {
@@ -82,11 +82,11 @@ namespace models {
                 case 0:
                     return std::string{"Light cannon"};
                 case 1:
-                    return nostd::String{"Medium cannon"};
+                    return std::string{"Medium cannon"};
                 case 2:
-                    return nostd::String{"Heavy cannon"};
+                    return std::string{"Heavy cannon"};
                 default:
-                    return nostd::String{"Invalid cannon"};
+                    return std::string{"Invalid cannon"};
             }
         }
 
