@@ -67,8 +67,7 @@ bool DockedState::SellCargo() {
     nostd::Array<nostd::String> arr{};
     for(const auto &i : player.GetShip().GetCargo()) {
         if(i.GetAmount() > 0)
-            if(i.GetAmount() > 0)
-                arr.addBack(i.GetCargoName());
+            arr.addBack(i.GetCargoName());
     }
     //we print in order of arr so we know op is the index of the cargo to be sold from the player ship
     int op = io.HandleOptions(arr);
