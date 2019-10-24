@@ -1,7 +1,7 @@
 #include "DockedState.h"
 #include "FileReader.h"
 #include "SailingState.h"
-#include "Factory/PortFactory.h"
+#include "factory/PortFactory.h"
 #include "exceptions/PortNotFoundException.h"
 
 DockedState::DockedState(Player& player, StateManager& stateManager) : BaseState(player, stateManager), _player_ship(player.GetShip()) {

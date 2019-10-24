@@ -13,11 +13,18 @@ namespace nostd {
     class String {
     public:
         //Construct ro5
+        //default constructor
         String() noexcept;
-        ~String();
+        //constructor for c-style strings
         explicit String(const char* val);
-        String(const String& str);
-        String(String&& move) noexcept;
+        //copy
+        String(const String&);
+        String& operator=(const String& copy);
+        //move
+        String(String&&) noexcept;
+        String& operator=(String&& move) noexcept;
+        //destructor
+        ~String();
 
         //Operators
         //unchecked element access
@@ -26,10 +33,6 @@ namespace nostd {
         //ostream
         friend std::ostream &operator<<(std::ostream &os, String &string);
         friend std::ostream &operator<<(std::ostream &os, const String &string);
-        //copy
-        String& operator=(const String& copy);
-        //move
-        String& operator=(String&& move) noexcept;
         //add another string and return new
         //String& operator+(String& add);
         //add char to the end of the string
@@ -51,8 +54,8 @@ namespace nostd {
         nostd::Array<nostd::String> Tokenize(const char delim);
     private:
         static const int short_max = 15;
-        int count = 0;
-        char* ptr = nullptr;
+        int count;
+        char* ptr;
         // discriminated union (count <= short_max)
         union {
             // unused space;
@@ -62,7 +65,7 @@ namespace nostd {
         };
 
         void check(int n) const;
-        char* expand(const char* ptr, int n);
+        static char* expand(const char* ptr, int n);
         void copy_from(const String& copy);
         void move_from(String& move);
     };
