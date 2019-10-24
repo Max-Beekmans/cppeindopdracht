@@ -27,6 +27,10 @@ namespace nostd {
         String(const String &other);
         ~String();
 
+        char* c_str();
+
+        const char* c_str() const;
+
         char& at(const int n);
 
         char at(int n) const;
@@ -41,30 +45,10 @@ namespace nostd {
 
         int size();
 
-        String& operator+=(char c) {
-            String res;
-            res.length = length+1;
-            res.buff = new char[res.length];
-
-            res.buff = new char[res.length];
-            strncpy(res.buff, buff, length);
-            res.buff[length] = c;
-            res.buff[length++] = '\0';
-
-            return res;
-        }
-
         // operator= returns  myString&  to allow multiple assignments
+        String& operator+=(char c);
 
-        String &operator=(const String &other) {
-            if (this != &other) {          // guard against  a = a;
-                delete[] buff;              // release old memory & then
-                length = other.length;       // allocate new memory
-                buff = new char[length];
-                strncpy(buff, other.buff, length);
-            }
-            return *this;                  // return a reference to itself
-        }                                // to allow a = b = c;
+        String &operator=(const String &other);
 
         friend String operator+(const String &s1, const String &s2);
 
@@ -85,6 +69,8 @@ namespace nostd {
     bool operator==(const String& a, const String& b);
 
     String operator+(const String &s1, const String &s2);
+
+    String& operator +=(const String &s1, const String &s2);
 
     std::ostream &operator<<(std::ostream &os, const String &s);
 }

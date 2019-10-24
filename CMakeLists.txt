@@ -18,30 +18,25 @@ add_executable(eindopdracht
         src/FileReader.cpp
         src/FileReader.h
         src/nostd/IOHandler.h
-        src/Ship.h
-        src/Cannon.h
+        src/models/Ship.h
+        src/models/Cannon.h
         src/nostd/Range.h
-        src/Cargo.h
-        src/Game.cpp
-        src/Game.h
-        src/Player.h
-        src/Port.cpp
-        src/Port.h
-        src/Factory/PortFactory.cpp
-        src/Factory/PortFactory.h
+        src/models/Cargo.h
+        src/controllers/GameController.cpp
+        src/controllers/GameController.h
+        src/models/Port.cpp
+        src/models/Port.h
+        src/factories/PortFactory.cpp
+        src/factories/PortFactory.h
         src/exceptions/PortNotFoundException.h
-        src/StateManager.h
-        src/StateManager.cpp
-        src/BaseState.h
-        src/nostd/Stack.h
-        src/DockedState.h
-        src/DockedState.cpp
-        src/SailingState.h
-        src/SailingState.cpp
-        src/FightingState.cpp
-        src/FightingState.h
-        src/Factory/Factory.h
-        src/Factory/ShipFactory.cpp
-        src/Factory/ShipFactory.h
-        src/exceptions/OutOfFileException.h src/controllers/GameController.h)
-
+        src/factories/Factory.h
+        src/factories/ShipFactory.cpp
+        src/factories/ShipFactory.h
+        src/exceptions/OutOfFileException.h src/controllers/GameController.h
+        src/controllers/PortController.cpp
+        src/controllers/PortController.h
+        src/controllers/FightingController.cpp
+        src/controllers/FightingController.h
+        src/controllers/SailingController.cpp
+        src/controllers/SailingController.h
+        )

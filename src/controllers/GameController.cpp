@@ -12,14 +12,14 @@ GameController::GameController() : _gold(0), _view(new GameView()), _port(new Po
 
 void GameController::StartGame() {
     view.PrintIntroduction();
-    factory::ShipFactory sf;
+    /*factory::ShipFactory sf;
     _ship = sf.CreateRandomShip();
     _destinationPort = nostd::String{"Port Royale"};
 
     //TODO remove test line
     _ship.AddCannon(Cannon{1, 0, 25});
 
-    EnterPort();
+    EnterPort();*/
 }
 
 void GameController::EnterPort() {

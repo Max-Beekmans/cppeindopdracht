@@ -23,8 +23,7 @@ namespace nostd {
 
     String::String() : length(0), buff(NULL) {}
 
-    String::String(char *init_val) : length(strlen(init_val)), buff(new char[length])
-    {
+    String::String(char *init_val) : length(strlen(init_val)), buff(new char[length]) {
         strncpy(buff, init_val, length);
     }
 
@@ -36,7 +35,16 @@ namespace nostd {
         delete[] buff;
     }
 
-    char& String::at(const int n) {
+
+    char *String::c_str() {
+        return buff;
+    }
+
+    const char *String::c_str() const {
+        return buff;
+    }
+
+    char &String::at(const int n) {
         check(n);
         return buff[n];
     }
@@ -47,20 +55,20 @@ namespace nostd {
     }
 
     const int String::Find(const char c) {
-        char* pch = strchr(this->buff, c);
-        if(pch == nullptr) {
+        char *pch = strchr(this->buff, c);
+        if (pch == nullptr) {
             return -1;
         }
-        int found = pch-this->buff;
+        int found = pch - this->buff;
         return found;
     }
 
-    String* String::Split(const char delim) {
+    String *String::Split(const char delim) {
         const int index = this->Find(delim);
         if (index < 0) {
             return nullptr;
         }
-        auto* res = new nostd::String[2];
+        auto *res = new nostd::String[2];
         res[0] = nostd::String{};
         res[1] = nostd::String{};
         for (int i = 0; i <= index - 1; ++i) {
@@ -74,7 +82,7 @@ namespace nostd {
         return res;
     }
 
-    Array<String> String::Split(nostd::String str, const char delim){
+    Array<String> String::Split(nostd::String str, const char delim) {
         nostd::Array<nostd::String> array{};
         const int index = str.Find(delim);
         if (index < 0) {
@@ -95,9 +103,9 @@ namespace nostd {
     }
 
     Array<String> String::Tokenize(const char delim) {
-        nostd::String* arr = this->Split(delim);
+        nostd::String *arr = this->Split(delim);
         nostd::Array<nostd::String> token_arr{};
-        while(arr != nullptr) {
+        while (arr != nullptr) {
             token_arr.addBack(arr[0]);
             *this = arr[1];
             delete[] arr;
@@ -115,6 +123,26 @@ namespace nostd {
             throw std::out_of_range("String::at()");
     }
 
+    String &String::operator+=(char c) {
+        String res;
+        res.length = length + 1;
+        res.buff = new char[res.length];
+        strncpy(res.buff, buff, length);
+        res.buff[length] = c;
+        res.buff[res.length] = ' \0';
+
+    }
+
+    String &String::operator=(const String &other) {
+        if (this != &other) {          // guard against  a = a;
+            delete[] buff;              // release old memory & then
+            length = other.length;       // allocate new memory
+            buff = new char[length];
+            strncpy(buff, other.buff, length);
+        }
+        return *this;                  // return a reference to itself
+    }                                // to allow a = b = c;
+
     String operator+(const String &s1, const String &s2) {
         String res;
         res.length = s1.length + s2.length;
@@ -130,6 +158,6 @@ namespace nostd {
         // print char after char from buff
         for (int i = 0; i < s.length; i++) os.put(s.buff[i]);
         return os;         // this is to allow multiple <<, as in  cout << a << b;
-    }
 
+    }
 }
